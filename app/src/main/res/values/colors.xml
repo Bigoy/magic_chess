@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#7e561b</color>
+    <color name="colorPrimaryDark">#7e561b</color>
+    <color name="colorAccent">#cacaca</color>
+
+    <!-- 白色系 -->
+    <color name="white_ffffff">#ffffff</color>
+
+    <!-- 黑色系 -->
+    <color name="black_a7a7a7">#a7a7a7</color>
+    <color name="black_474344">#474344</color>
+    <color name="black_1d1d1d">#1d1d1d</color>
+    <color name="black_000000">#000000</color>
+
+    <!-- 红色系 -->
+    <color name="red_fe3454">#fe3454</color>
+
+    <!-- 黄色系 -->
+    <color name="yellow_f2d047">#f2d047</color>
+    <color name="yellow_ffcc00">#ffcc00</color>
+
+    <!-- 绿色系 -->
+    <color name="green_56ce4d">#41a03a</color>
+
+    <!-- 棕色系 -->
+    <color name="brown_ffd4c49a">#ffd4c49a</color>
+    <color name="brown_00D4C49A">#684f0d</color>
+
+    <!-- 蓝色系 -->
+    <color name="blue_86a1d1">#86a1d1</color>
+    <color name="blue_3474d4">#3474d4</color>
+
 </resources>

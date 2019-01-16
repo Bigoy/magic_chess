@@ -5,17 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Replace findViewById() with annotation @FindViewById
- * <p>
- * eg:@OnClick(R.id.btn)
- * private Button mBtn;
- *
- * @author Tssss
- * @date 2019-01-15
- */
-
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface OnClick {
+public @interface ContentView {
+    int value();
 }
