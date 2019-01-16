@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_common"
+    tools:context=".activity.ChatActivity">
+
+    <ImageButton
+        android:id="@+id/chat_back_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/chat_more_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_btn_more"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_back_ib"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/chat_back_ib"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/chat_title_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/chat_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_back_ib"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/chat_name_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="对方是：Tssss"
+        android:textColor="@color/black_1d1d1d"
+        android:textSize="@dimen/font_size_20sp"
+        app:layout_constraintEnd_toEndOf="@+id/chat_title_iv"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/chat_title_iv"
+        app:layout_constraintTop_toBottomOf="@+id/chat_title_iv"
+        tools:ignore="HardcodedText" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_rv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/padding_16dp"
+        android:layout_marginBottom="@dimen/padding_16dp"
+        app:layout_constraintBottom_toTopOf="@id/chat_msg_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chat_name_gtv"
+        app:layout_constraintVertical_weight="1" />
+
+    <EditText
+        android:id="@+id/chat_msg_et"
+        style="@style/GEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="说出你想告诉TA的话吧"
+        android:inputType="text"
+        android:singleLine="false"
+        android:textSize="@dimen/font_size_14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chat_chat_ib"
+        tools:ignore="Autofill,HardcodedText,LabelFor" />
+
+    <ImageButton
+        android:id="@+id/chat_chat_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_16dp"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_btn_chat"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_msg_et"
+        app:layout_constraintLeft_toRightOf="@id/chat_msg_et"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/chat_msg_et"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

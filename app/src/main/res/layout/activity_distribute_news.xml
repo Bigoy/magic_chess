@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_common"
+    tools:context=".activity.DistributeNewsActivity">
+
+    <!--<com.tssss.bysj.widget.GButton
+        android:id="@+id/distribute_news_cancel_gb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:background="@null"
+        android:textColor="@color/black_474344"
+        android:gravity="start|center_vertical"
+        android:src="@drawable/ic_btn_back"
+        android:textSize="@dimen/font_size_24sp"
+        android:text="@string/btn_distribute_news_cancel"
+        app:layout_constraintBottom_toBottomOf="@+id/distribute_news_title_gtv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/distribute_news_title_gtv"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/distribute_news_title_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/title_distribute_news"
+        android:textColor="@color/black_000000"
+        android:textSize="@dimen/font_size_36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.tssss.bysj.widget.GButton
+        android:id="@+id/distribute_news_distribute_gb"
+        android:layout_width="wrap_content"
+        android:gravity="end|center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:background="@null"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_size_24sp"
+        android:text="@string/btn_distribute_news_distribute"
+        app:layout_constraintBottom_toBottomOf="@+id/distribute_news_title_gtv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/distribute_news_title_gtv" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

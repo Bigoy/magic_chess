@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 字体大小-->
+    <dimen name="font_size_6sp">6sp</dimen>
+    <dimen name="font_size_8sp">8sp</dimen>
+    <dimen name="font_size_12sp">12sp</dimen>
+    <dimen name="font_size_14sp">14sp</dimen>
+    <dimen name="font_size_20sp">20sp</dimen>
+    <dimen name="font_size_24sp">24sp</dimen>
+    <dimen name="font_size_28sp">28sp</dimen>
+    <dimen name="font_size_32sp">32sp</dimen>
+    <dimen name="font_size_36sp">36sp</dimen>
+    <dimen name="font_size_48sp">48sp</dimen>
+    <dimen name="font_size_64sp">64sp</dimen>
+
+    <!-- 界面间隔padding，margin -->
+    <dimen name="padding_2dp">2dp</dimen>
+    <dimen name="padding_4dp">4dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="padding_24dp">24dp</dimen>
+    <dimen name="padding_32dp">32dp</dimen>
+    <dimen name="padding_48dp">48dp</dimen>
+    <dimen name="padding_64dp">64dp</dimen>
+    <dimen name="padding_72dp">72dp</dimen>
+    <dimen name="padding_96dp">96dp</dimen>
+    <dimen name="padding_128dp">128dp</dimen>
+
+    <!-- 边框 -->
+    <dimen name="stroke_width_2">2dp</dimen>
+    <dimen name="stroke_width_6">6dp</dimen>
+
+    <!-- 圆角 -->
+    <dimen name="radius_4">4dp</dimen>
+    <dimen name="radius_32">32dp</dimen>
+
+    <!-- 固定宽高 -->
+    <dimen name="width_128dp">128dp</dimen>
+    <dimen name="width_248dp">248dp</dimen>
+
+    <!-- 页面切换动画时长 -->
+    <dimen name="duration">500</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+</resources>
