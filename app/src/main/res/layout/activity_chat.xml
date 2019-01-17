@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_common"
-    tools:context=".activity.ChatActivity">
+    android:background="@drawable/bg_common">
 
     <ImageButton
         android:id="@+id/chat_back_ib"
@@ -56,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/chat_title_iv"
         tools:ignore="HardcodedText" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_rv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

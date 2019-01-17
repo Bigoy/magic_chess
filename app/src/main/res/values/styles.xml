@@ -11,9 +11,11 @@
     </style>
 
     <style name="GEditText">
-        <item name="background">@drawable/bg_input</item>
-        <item name="paddingStart">@dimen/padding_16dp</item>
-        <item name="paddingEnd">@dimen/padding_16dp</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:paddingLeft">@dimen/padding_16dp</item>
+        <item name="android:paddingRight">@dimen/padding_16dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:textColor">@color/brown_00D4C49A</item>

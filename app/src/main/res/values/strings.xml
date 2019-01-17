@@ -6,7 +6,7 @@
     <string name="default_player_name">Player</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="tips_input_account">首先，填写手机号。</string>
-    <string name="tips_input_password">然后，填写密码（16位数哟）。</string>
+    <string name="tips_input_password">然后，填写密码。</string>
     <string name="tips_login">最后，点击登录。</string>
     <string name="tips_register">最后，注册账户。</string>
     <string name="tips_rule">点击这里，先看规则。</string>

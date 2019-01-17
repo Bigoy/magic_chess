@@ -2,33 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_common"
+    android:layout_height="wrap_content"
     tools:context=".login.LoginActivity">
-
-    <ImageButton
-        android:id="@+id/login_back_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:background="@null"
-        app:srcCompat="@drawable/ic_btn_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/login_title_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/login_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_back_ib"
-        tools:ignore="ContentDescription" />
 
     <com.tssss.bysj.widget.GTextView
         android:id="@+id/login_account_gtv"
@@ -38,20 +15,18 @@
         android:text="@string/tips_input_account"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/font_size_20sp"
-        app:layout_constraintStart_toStartOf="@+id/login_account_et"
-        app:layout_constraintTop_toBottomOf="@+id/login_title_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/login_account_et"
         style="@style/GEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/login_account_gtv"
         app:layout_constraintTop_toBottomOf="@+id/login_account_gtv"
         tools:ignore="Autofill,LabelFor" />
 
@@ -63,20 +38,16 @@
         android:text="@string/tips_input_password"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/font_size_20sp"
-        app:layout_constraintStart_toStartOf="@+id/login_key_et"
+        app:layout_constraintStart_toStartOf="@+id/login_account_et"
         app:layout_constraintTop_toBottomOf="@+id/login_account_et"
         tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/login_key_et"
         style="@style/GEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/login_password_gtv"
         app:layout_constraintTop_toBottomOf="@+id/login_password_gtv"
         tools:ignore="Autofill,LabelFor" />
 
@@ -98,10 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@null"
-        app:srcCompat="@drawable/ic_btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_login_gtv"
+        app:srcCompat="@drawable/ic_btn_login"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

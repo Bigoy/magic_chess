@@ -5,9 +5,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.activity.HallActivity;
-import com.tssss.bysj.activity.RegisterActivity;
-import com.tssss.bysj.annotation.ContentView;
 import com.tssss.bysj.contract.BaseActivity;
 import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.interfaces.OnGDialogListener;
@@ -17,10 +14,9 @@ import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 import com.tssss.bysj.widget.GDialog;
 
-@ContentView(R.layout.activity_login)
-public class LoginActivity extends BaseActivity implements OnLoginListener, View.OnClickListener {
+public class LoginActivity extends BaseActivity implements OnLoginListener {
     private EditText mAccountEt, mPasswordEt;
-    private ImageButton mLoginIb, mBackIb;
+    private ImageButton mLoginIb;
 
     private LoginPresenter mPresenter;
 
@@ -41,21 +37,28 @@ public class LoginActivity extends BaseActivity implements OnLoginListener, View
         mAccountEt = findViewById(R.id.login_account_et);
         mPasswordEt = findViewById(R.id.login_key_et);
         mLoginIb = findViewById(R.id.login_ib);
-        mBackIb = findViewById(R.id.login_back_ib);
     }
 
     @Override
     protected void setEventListeners() {
-        mBackIb.setOnClickListener(this);
         mLoginIb.setOnClickListener(this);
     }
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected int getCenterIvStyle() {
+        return R.drawable.login_title;
+    }
+
+    @Override
     public void onClick(View v) {
+        super.onClick(v);
+
         switch (v.getId()) {
-            case R.id.login_back_ib:
-                finish();
-                break;
             case R.id.login_ib:
                 login();
                 break;
@@ -85,7 +88,7 @@ public class LoginActivity extends BaseActivity implements OnLoginListener, View
     @Override
     public void onLoginSuccess() {
         ToastUtil.showToast(this, "登录成功！", ToastUtil.TOAST_DEFAULT);
-        openActivity(HallActivity.class);
+//        openActivity(HallActivity.class);
     }
 
     @Override
@@ -104,7 +107,7 @@ public class LoginActivity extends BaseActivity implements OnLoginListener, View
 
             @Override
             public void onPositive() {
-                openActivity(RegisterActivity.class);
+//                openActivity(RegisterActivity.class);
             }
         });
         gDialog.show();
