@@ -8,9 +8,8 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.contract.BaseActivity;
 import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.interfaces.OnGDialogListener;
-import com.tssss.bysj.util.NumberUtil;
-import com.tssss.bysj.util.PasswordUtil;
-import com.tssss.bysj.util.StringUtil;
+import com.tssss.bysj.user.User;
+import com.tssss.bysj.util.AccountUtil;
 import com.tssss.bysj.util.ToastUtil;
 import com.tssss.bysj.widget.GDialog;
 
@@ -65,18 +64,21 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
         }
     }
 
+    /**
+     * Login
+     */
     private void login() {
-        if (StringUtil.empty(mAccountEt.getText().toString()) && StringUtil.empty(mPasswordEt.getText().toString())) {
-            long userId = Long.parseLong(mAccountEt.getText().toString());
-            String password = mPasswordEt.getText().toString();
+        // Verify the validity of account
+        if (!AccountUtil.validAccount(mAccountEt.getText().toString(),
+                mPasswordEt.getText().toString())) {
 
-            if (NumberUtil.isPhoneNumber(userId) && PasswordUtil.isValidPassword(password)) {
-                mPresenter.requestLogin(userId, password, this);
-            } else {
-                ToastUtil.showToast(this, "账户或密码格式错误！", ToastUtil.TOAST_ERROR);
-            }
+            ToastUtil.showToast(this, getString(R.string.account_invalid),
+                    ToastUtil.TOAST_ERROR);
         } else {
-            ToastUtil.showToast(this, "账户或密码不能为空！", ToastUtil.TOAST_ERROR);
+            // login
+            User user = new User(Long.parseLong(mAccountEt.getText().toString()),
+                    mPasswordEt.getText().toString());
+            mPresenter.requestLogin(user, this);
         }
     }
 
@@ -87,18 +89,32 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
 
     @Override
     public void onLoginSuccess() {
-        ToastUtil.showToast(this, "登录成功！", ToastUtil.TOAST_DEFAULT);
+        ToastUtil.showToast(this, getString(R.string.success), ToastUtil.TOAST_DEFAULT);
 //        openActivity(HallActivity.class);
     }
 
     @Override
     public void onLoginError() {
-        ToastUtil.showToast(this, "发生错误，请检查网络！", ToastUtil.TOAST_ERROR);
+        ToastUtil.showToast(this, getString(R.string.error), ToastUtil.TOAST_ERROR);
     }
 
     @Override
     public void onUserNotExit() {
-        final GDialog gDialog = new GDialog(this, "注册提示", "未注册，现在注册？");
+        remindUserRegister();
+    }
+
+    @Override
+    public void onUserPasswordError() {
+        mPasswordEt.setText("");
+        ToastUtil.showToast(this, "密码错误，请重试！", ToastUtil.TOAST_ERROR);
+    }
+
+    /**
+     * Remind user to register game account
+     */
+    private void remindUserRegister() {
+        final GDialog gDialog = new GDialog(this, getString(R.string.register_dialog_title),
+                getString(R.string.register_dialog_content));
         gDialog.setOnGDialogListener(new OnGDialogListener() {
             @Override
             public void onPassive() {
@@ -111,12 +127,6 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
             }
         });
         gDialog.show();
-    }
-
-    @Override
-    public void onUserPasswordError() {
-        mPasswordEt.setText("");
-        ToastUtil.showToast(this, "密码错误，请重试！", ToastUtil.TOAST_ERROR);
     }
 
 }

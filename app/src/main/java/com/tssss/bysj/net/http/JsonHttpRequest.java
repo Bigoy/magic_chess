@@ -2,24 +2,30 @@ package com.tssss.bysj.net.http;
 
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+
+import java.io.BufferedOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class JsonGetHttpRequest implements IHttpRequest {
+public class JsonHttpRequest implements IHttpRequest {
     private String mUrl;
     private IHttpResponse mResponse;
+    // JSON string
+    private String mJsonRequestData;
 
     @Override
     public void setUrl(String url) {
         this.mUrl = url;
     }
 
-    /**
-     * Do nothing if request method is GET
-     */
     @Override
-    public void setRequestParam(byte[] requestParam) {
+    public void setRequestParam(Object requestParam) {
+        mJsonRequestData = JSON.toJSONString(requestParam);
+
+        Log.i(getClass().getSimpleName(), mJsonRequestData);
     }
 
     @Override
@@ -27,15 +33,29 @@ public class JsonGetHttpRequest implements IHttpRequest {
         this.mResponse = iHttpResponse;
     }
 
+    /**
+     * User HttpUrlConnection to access server actually
+     */
     @Override
     public void execute() {
         try {
             URL url = new URL(mUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setUseCaches(true);
+            conn.setRequestMethod("POST");
+            conn.setUseCaches(false);
             conn.setConnectTimeout(20000);
+            conn.setRequestProperty("Content-type", "application/json");
             conn.connect();
+
+            /*
+            write paramData
+             */
+            OutputStream os = conn.getOutputStream();
+            BufferedOutputStream bos = new BufferedOutputStream(os);
+            bos.write(mJsonRequestData.getBytes());
+            bos.flush();
+            bos.close();
+            os.close();
 
             /*
             read data

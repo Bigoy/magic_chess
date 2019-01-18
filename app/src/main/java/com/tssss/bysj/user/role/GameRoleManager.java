@@ -1,14 +1,12 @@
-package com.tssss.bysj.game.role;
+package com.tssss.bysj.user.role;
 
 import android.util.Log;
-
-import com.tssss.bysj.user.role.GameRole;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Manage the players that will be used on the current client, usually only two players
+ * Manage the roles that will be used on the current client, usually only two roles
  * GameRole self and GameRole army
  *
  * @author Tssss
@@ -18,12 +16,12 @@ public class GameRoleManager {
     private static GameRoleManager gameRoleManager;
 
     public static String SELF = "self";
-    public static String ARMY = "army";
+    public static String OTHER = "other";
 
-    private Map<String, GameRole> players;
+    private Map<String, GameRole> roles;
 
     private GameRoleManager() {
-        players = new HashMap<>();
+        roles = new HashMap<>();
     }
 
     public static GameRoleManager getGameRoleManager() {
@@ -36,33 +34,33 @@ public class GameRoleManager {
     /**
      * Add a gameRole
      *
-     * @param key    identity of the gameRole
+     * @param key      identity of the gameRole
      * @param gameRole instance of GameRole
      */
-    public void addPlayer(String key, GameRole gameRole) {
-        if (getPlayer(key) == null) {
-            players.put(key, gameRole);
+    public void addRole(String key, GameRole gameRole) {
+        if (getRole(key) == null) {
+            roles.put(key, gameRole);
         }
 
         Log.wtf(getClass().getSimpleName(), "gameRole existed");
     }
 
     /**
-     * Remove a player but not self
+     * Remove a role but not self
      *
      * @param key identity of the player
      */
-    public void removePlayer(String key) {
-        players.remove(key);
+    public void removeRole(String key) {
+        roles.remove(key);
     }
 
     /**
-     * Get a player object according to key (GameRole.SELF and GameRole.ARMY)
+     * Get a role object according to key (GameRole.SELF and GameRole.OTHER)
      *
      * @param key key
-     * @return player object
+     * @return role object
      */
-    public GameRole getPlayer(String key) {
-        return players.get(key);
+    public GameRole getRole(String key) {
+        return roles.get(key);
     }
 }

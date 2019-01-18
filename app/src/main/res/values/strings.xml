@@ -1,22 +1,25 @@
 <resources>
+    <!-- Common -->
     <string name="app_name_cn">神奇的棋</string>
     <string name="app_name_en">magic_chess</string>
-    <string name="time_divider">:</string>
-    <string name="timer_init">0</string>
-    <string name="default_player_name">Player</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="tips_input_account">首先，填写手机号。</string>
-    <string name="tips_input_password">然后，填写密码。</string>
-    <string name="tips_login">最后，点击登录。</string>
-    <string name="tips_register">最后，注册账户。</string>
-    <string name="tips_rule">点击这里，先看规则。</string>
-    <string name="null_friends_number">当前好友数量：0</string>
-    <string name="input_player_name">然后，输入玩家昵称。</string>
-    <string name="input_player_sex">再然后，选择你的性别。</string>
-    <string name="btn_create_role">最后，点击创建就好了。</string>
-    <string name="check_player_head">首先，选择一个头像。</string>
-    <string name="btn_distribute_news_cancel">取消</string>
-    <string name="title_distribute_news">发布动态</string>
-    <string name="btn_distribute_news_distribute">发布</string>
+    <string name="account_invalid">手机号或密码无效</string>
+    <string name="error">发生错误</string>
+    <string name="success">成功</string>
+    <string name="input_account">首先，填写手机号。</string>
+    <string name="input_password">然后，填写密码。</string>
 
+
+    <!-- LoginActivity -->
+    <string name="login_btn_login">最后，点击登录。</string>
+
+
+    <!-- RegisterActivity -->
+    <string name="register_input_register">最后，注册账户。</string>
+    <string name="register_dialog_title">注册提示</string>
+    <string name="register_dialog_content">你还未注册，选择注册？</string>
+    <string name="register_registered">你已经注册过了，可直接登录</string>
+
+
+    <!-- FriendActivity -->
+    <string name="friend_friends_number">当前好友数量：0</string>
 </resources>

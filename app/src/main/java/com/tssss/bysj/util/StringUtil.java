@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class StringUtil {
-    public static boolean empty(String str) {
-        return str != null && str.length() != 0;
+    public static boolean isBlank(String str) {
+        return str == null || str.length() == 0;
     }
 
     /**
@@ -39,5 +39,15 @@ public class StringUtil {
         }
 
         return sb.toString();
+    }
+
+    public static boolean isNumber(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isDigit(s.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

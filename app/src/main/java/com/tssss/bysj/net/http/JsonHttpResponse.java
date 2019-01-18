@@ -4,13 +4,13 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.tssss.bysj.util.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class JsonHttpResponse<T> implements IHttpResponse {
-    Class<T> responseClass;
+public class JsonHttpResponse implements IHttpResponse {
     private IDataListener mDataListener;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -21,8 +21,8 @@ public class JsonHttpResponse<T> implements IHttpResponse {
     @Override
     public void onSuccess(InputStream is) {
         try {
-            String str = StringUtil.convertInputStream(is);
-            final T response = JSON.parseObject(str, responseClass);
+            final String str = StringUtil.convertInputStream(is);
+            final JSONObject response = (JSONObject) JSON.toJSON(str);
 
             if (mDataListener != null) {
                 mHandler.post(new Runnable() {

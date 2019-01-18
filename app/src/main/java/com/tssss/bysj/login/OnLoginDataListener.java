@@ -1,7 +1,9 @@
 package com.tssss.bysj.login;
 
+import com.tssss.bysj.user.role.GameRole;
+
 public interface OnLoginDataListener {
-    void onLoadDataCompleted(com.alibaba.fastjson.JSONObject userJson);
+    void onLoadDataCompleted(GameRole gameRole);
 
     void onUserNotExit();
 

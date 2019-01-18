@@ -22,14 +22,5 @@ public class Constant {
     public static int NET_POST_SUCCEED = 0;
     public static int NET_POST_FAILED = 1;
 
-    // json key
-    public static String JSON_KEY_USER_STATE = "userState";
-    public static String JSON_KEY_GAME_ROLE = "gameRole";
-    public static String JSON_KEY_ROLE_HEAD = "roleHead";
-    public static String JSON_KEY_ROLE_NAME = "roleName";
-    public static String JSON_KEY_ROLE_SEX = "roleSex";
-    public static String JSON_KEY_ROLE_LEVEL = "roleLevel";
-    public static String JSON_KEY_ROLE_EXPERIENCE = "roleExperience";
-
 }
 

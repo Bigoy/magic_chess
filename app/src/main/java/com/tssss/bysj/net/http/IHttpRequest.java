@@ -6,10 +6,10 @@ package com.tssss.bysj.net.http;
  * @author Tssss
  * @date 2019-01-07
  */
-public interface IHttpRequest {
+public interface IHttpRequest<T> {
     void setUrl(String url);
 
-    void setRequestParam(byte[] requestParam);
+    void setRequestParam(T requestParam);
 
     void setHttpResponse(IHttpResponse iHttpResponse);
 

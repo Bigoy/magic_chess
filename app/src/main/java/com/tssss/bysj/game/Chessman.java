@@ -1,12 +1,6 @@
 package com.tssss.bysj.game;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-
-import com.tssss.bysj.R;
-import com.tssss.bysj.game.role.GameRoleManager;
-import com.tssss.bysj.util.GameUtil;
 
 public class Chessman {
     // 棋子所属的阵营。
@@ -47,15 +41,15 @@ public class Chessman {
 
         Bitmap src = null;
         if (mCamp == CAMP_SELF) {
-            if (pm.getPlayer(GameRoleManager.SELF).getSexResId() == (GameRole.SEX_BOY)) {
+            if (pm.getRole(GameRoleManager.SELF).getSexResId() == (GameRole.SEX_BOY)) {
                 src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_boy);
-            } else if (pm.getPlayer(GameRoleManager.SELF).getSexResId() == (GameRole.SEX_GIRL)) {
+            } else if (pm.getRole(GameRoleManager.SELF).getSexResId() == (GameRole.SEX_GIRL)) {
                 src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_girl);
             }
         } else if (mCamp == CAMP_ARMY) {
-            if (pm.getPlayer(GameRoleManager.ARMY).getSexResId() == (GameRole.SEX_BOY)) {
+            if (pm.getRole(GameRoleManager.OTHER).getSexResId() == (GameRole.SEX_BOY)) {
                 src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_boy_02);
-            } else if (pm.getPlayer(GameRoleManager.ARMY).getSexResId() == (GameRole.SEX_GIRL)) {
+            } else if (pm.getRole(GameRoleManager.OTHER).getSexResId() == (GameRole.SEX_GIRL)) {
 
                 src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_girl_02);
             }
