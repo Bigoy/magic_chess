@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.tssss.bysj.game.role.GameRoleManager;
+import com.tssss.bysj.user.role.GameRoleManager;
 import com.tssss.bysj.util.GameUtil;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable{

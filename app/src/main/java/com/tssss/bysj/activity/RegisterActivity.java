@@ -10,8 +10,6 @@ import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.interfaces.OnRegisterListener;
 import com.tssss.bysj.login.LoginActivity;
 import com.tssss.bysj.presenter.RegisterPresenter;
-import com.tssss.bysj.user.User;
-import com.tssss.bysj.util.AccountUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 public class RegisterActivity extends BaseActivity implements OnRegisterListener {
@@ -72,7 +70,7 @@ public class RegisterActivity extends BaseActivity implements OnRegisterListener
      * Register account
      */
     private void registerAccount() {
-        // Verify the validity of account
+        /*// Verify the validity of account
         if (!AccountUtil.validAccount(mAccountEt.getText().toString(),
                 mPasswordEt.getText().toString())) {
 
@@ -83,7 +81,10 @@ public class RegisterActivity extends BaseActivity implements OnRegisterListener
             User user = new User(Long.parseLong(mAccountEt.getText().toString()),
                     mPasswordEt.getText().toString());
             mPresenter.requestRegister(user, this);
-        }
+        }*/
+
+        // Test
+        openActivity(NewRoleActivity.class);
     }
 
     /**
@@ -105,6 +106,5 @@ public class RegisterActivity extends BaseActivity implements OnRegisterListener
                 ToastUtil.TOAST_DEFAULT);
         // Open LoginActivity
         openActivity(LoginActivity.class);
-        finish();
     }
 }

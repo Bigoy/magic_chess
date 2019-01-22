@@ -7,14 +7,18 @@ package com.tssss.bysj.net.http;
  * @date 2019-01-07
  */
 class HttpTask implements Runnable {
+
     private IHttpRequest mHttpRequest;
     private IHttpResponse mHttpResponse;
 
-    <T> HttpTask(String url, T requestParam, IHttpRequest httpRequest,
+
+    <T> HttpTask(String url,
+                 T requestParam,
+                 IHttpRequest httpRequest,
                  IHttpResponse httpListener) {
+
         mHttpRequest = httpRequest;
         mHttpResponse = httpListener;
-
         mHttpRequest.setUrl(url);
         mHttpRequest.setHttpResponse(mHttpResponse);
 

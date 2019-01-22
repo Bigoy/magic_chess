@@ -5,11 +5,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
+import com.tssss.bysj.activity.HallActivity;
 import com.tssss.bysj.contract.BaseActivity;
 import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.interfaces.OnGDialogListener;
-import com.tssss.bysj.user.User;
-import com.tssss.bysj.util.AccountUtil;
 import com.tssss.bysj.util.ToastUtil;
 import com.tssss.bysj.widget.GDialog;
 
@@ -68,7 +67,7 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
      * Login
      */
     private void login() {
-        // Verify the validity of account
+        /*// Verify the validity of account
         if (!AccountUtil.validAccount(mAccountEt.getText().toString(),
                 mPasswordEt.getText().toString())) {
 
@@ -79,7 +78,11 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
             User user = new User(Long.parseLong(mAccountEt.getText().toString()),
                     mPasswordEt.getText().toString());
             mPresenter.requestLogin(user, this);
-        }
+        }*/
+
+        // Test
+        openActivity(HallActivity.class);
+        finish();
     }
 
     private void clearInputText() {
@@ -90,7 +93,7 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
     @Override
     public void onLoginSuccess() {
         ToastUtil.showToast(this, getString(R.string.success), ToastUtil.TOAST_DEFAULT);
-//        openActivity(HallActivity.class);
+        openActivity(HallActivity.class);
     }
 
     @Override

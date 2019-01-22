@@ -25,7 +25,7 @@ public class JsonHttpRequest implements IHttpRequest {
     public void setRequestParam(Object requestParam) {
         mJsonRequestData = JSON.toJSONString(requestParam);
 
-        Log.i(getClass().getSimpleName(), mJsonRequestData);
+        Log.wtf(getClass().getSimpleName(), mJsonRequestData);
     }
 
     @Override

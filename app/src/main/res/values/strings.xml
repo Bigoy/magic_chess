@@ -17,9 +17,17 @@
     <string name="register_input_register">最后，注册账户。</string>
     <string name="register_dialog_title">注册提示</string>
     <string name="register_dialog_content">你还未注册，选择注册？</string>
-    <string name="register_registered">你已经注册过了，可直接登录</string>
+    <string name="register_registered">你已经注册过了，可直接登录。</string>
 
 
     <!-- FriendActivity -->
     <string name="friend_friends_number">当前好友数量：0</string>
+
+
+    <!-- NewRoleActivity -->
+    <string name="new_role_input_name">填写新角色的名称。</string>
+    <string name="new_role_sex">选择性别。</string>
+    <string name="new_role_head_img">选择你喜欢的头像。</string>
+    <string name="new_role_null_name">角色名称不能为空</string>
+    <string name="new_role_null_sex">请选择角色性别</string>
 </resources>

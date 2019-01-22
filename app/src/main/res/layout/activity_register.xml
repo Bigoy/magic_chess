@@ -60,7 +60,7 @@
         android:layout_marginTop="124dp"
         android:text="@string/register_input_register"
         android:textColor="@color/blue_3474d4"
-        android:textSize="@dimen/font_size_20sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/register_ib"
         app:layout_constraintTop_toBottomOf="@+id/register_key_et"
         tools:ignore="ContentDescription" />

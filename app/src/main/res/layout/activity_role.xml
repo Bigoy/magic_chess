@@ -5,30 +5,89 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_common"
-    tools:context=".activity.RoleActivity">
+    tools:context=".activity.NewRoleActivity">
 
-    <ImageButton
-        android:id="@+id/role_home_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:background="@null"
-        app:srcCompat="@drawable/ic_btn_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/new_role_name_gtv"
+        style="@style/GInputPrompt"
+        android:layout_height="31dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/new_role_input_name"
+        app:layout_constraintStart_toStartOf="@+id/new_role_name_et"
+        app:layout_constraintTop_toTopOf="parent" />
 
-   <ImageView
-        android:id="@+id/role_title_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/role_title"
+    <EditText
+        android:id="@+id/new_role_name_et"
+        style="@style/GEditText"
+        android:layout_marginTop="16dp"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/role_home_ib"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_name_gtv"
+        tools:ignore="Autofill,LabelFor" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/new_role_sex_gtv"
+        style="@style/GInputPrompt"
+        android:layout_marginTop="48dp"
+        android:text="@string/new_role_sex"
+        app:layout_constraintStart_toStartOf="@+id/new_role_name_et"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_name_et" />
+
+    <ImageButton
+        android:id="@+id/new_role_sex_girl_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:src="@drawable/sex_girl"
+        app:layout_constraintStart_toStartOf="@+id/new_role_sex_gtv"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_sex_gtv"
         tools:ignore="ContentDescription" />
 
+    <ImageButton
+        android:id="@+id/new_role_sex_boy_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:src="@drawable/sex_boy"
+        app:layout_constraintStart_toEndOf="@+id/new_role_sex_girl_ib"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_sex_gtv"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/new_role_head_img_gtv"
+        style="@style/GInputPrompt"
+        android:layout_marginTop="48dp"
+        android:text="@string/new_role_head_img"
+        app:layout_constraintStart_toStartOf="@+id/new_role_sex_girl_ib"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_sex_girl_ib" />
+
+    <ImageButton
+        android:id="@+id/new_role_add_imgs_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:src="@drawable/ic_add_imgs"
+        app:layout_constraintStart_toStartOf="@+id/new_role_head_img_gtv"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_head_img_gtv"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/new_role_create_role_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:background="@null"
+        android:src="@drawable/ic_btn_create_role"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_role_add_imgs_ib"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

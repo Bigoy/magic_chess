@@ -4,5 +4,5 @@ public class HttpConstant {
     /**
      * Base url (TEST)
      */
-    public static String BASE_URL = "http://www.baidu.com";
+    public static String BASE_URL = "http://www.magicchess.com";
 }

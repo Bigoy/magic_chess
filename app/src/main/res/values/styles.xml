@@ -10,6 +10,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <!-- Standard input box -->
     <style name="GEditText">
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">48dp</item>
@@ -20,6 +21,14 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:textColor">@color/brown_00D4C49A</item>
+    </style>
+
+    <!-- Standard tips text on input box -->
+    <style name="GInputPrompt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
 </resources>
