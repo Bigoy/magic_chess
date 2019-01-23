@@ -19,9 +19,34 @@ public class GameRole {
     public static String ROLE_LEVEL_MASTER = "大师";
     public static String ROLE_LEVEL_GURU = "宗师";
 
-    private String mRoleName, mRoleSex, mRoleLevel;
+    public static String ROLE_STATE_ONLINE = "在线";
+    public static String ROLE_STATE_OFFLINE = "不在线";
+
+    private String mRoleName,
+            mRoleSex,
+            mRoleLevel,
+            mRoleState;
     private int mRoleExperience;
     private byte[] mRoleHeadImg;
+
+
+    public GameRole() {
+    }
+
+    public GameRole(String roleName,
+                    String roleSex,
+                    String roleLevel,
+                    String roleState,
+                    int roleExperience,
+                    byte[] roleHeadImg) {
+
+        this.mRoleName = roleName;
+        this.mRoleSex = roleSex;
+        this.mRoleLevel = roleLevel;
+        this.mRoleState = roleState;
+        this.mRoleExperience = roleExperience;
+        this.mRoleHeadImg = roleHeadImg;
+    }
 
     public String getRoleName() {
         return mRoleName;
@@ -63,4 +88,61 @@ public class GameRole {
         return this.mRoleHeadImg;
     }
 
+    public String getRoleState() {
+        return mRoleState;
+    }
+
+    public void setRoleState(String roleState) {
+        this.mRoleState = roleState;
+    }
+
+    public static class GameRoleBuilder {
+        private String mRoleName,
+                mRoleSex,
+                mRoleLevel,
+                mRoleState;
+        private int mRoleExperience;
+        private byte[] mRoleHeadImg;
+
+
+        public GameRoleBuilder setRoleName(String roleName) {
+            this.mRoleName = roleName;
+            return this;
+        }
+
+        public GameRoleBuilder setRoleSex(String roleSex) {
+            this.mRoleSex = roleSex;
+            return this;
+        }
+
+        public GameRoleBuilder setRoleLevel(String roleLevel) {
+            this.mRoleLevel = roleLevel;
+            return this;
+        }
+
+        public GameRoleBuilder setRoleState(String roleState) {
+            this.mRoleState = roleState;
+            return this;
+        }
+
+        public GameRoleBuilder setRoleExperience(int roleExperience) {
+            this.mRoleExperience = roleExperience;
+            return this;
+        }
+
+        public GameRoleBuilder setRoleHeadImg(byte[] roleHeadImg) {
+            this.mRoleHeadImg = roleHeadImg;
+            return this;
+        }
+
+        public GameRole build() {
+            return new GameRole(
+                    mRoleName,
+                    mRoleSex,
+                    mRoleLevel,
+                    mRoleState,
+                    mRoleExperience,
+                    mRoleHeadImg);
+        }
+    }
 }

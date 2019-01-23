@@ -2,7 +2,6 @@ package com.tssss.bysj.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -12,6 +11,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 public class RuleAdapter extends PagerAdapter {
     private List<ImageView> mRules;
+
 
     public RuleAdapter(List<ImageView> rules) {
         this.mRules = rules;

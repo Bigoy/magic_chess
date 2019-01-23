@@ -6,7 +6,7 @@ import com.tssss.bysj.user.role.GameRole;
 import java.util.List;
 
 public interface OnFriendsDataListener {
-    void onFriendsNumber(int friends);
+    void onComplete(List<GameRole> friends);
 
-    void onFriends(List<GameRole> friends);
+    void onFailure();
 }

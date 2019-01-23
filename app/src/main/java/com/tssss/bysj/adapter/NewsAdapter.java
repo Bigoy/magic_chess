@@ -1,7 +1,6 @@
 package com.tssss.bysj.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -32,7 +31,6 @@ public class NewsAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        Log.wtf(getClass().getSimpleName(), "" + i);
         if (i == News.STYLE_TEXT) {
             return new TextNewsHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_text,
                     viewGroup, false));
@@ -41,12 +39,10 @@ public class NewsAdapter extends RecyclerView.Adapter {
             return new PictureNewsHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_pic,
                     viewGroup, false));
 
-        } else if (i == News.STYLE_TEXT_PICTURE) {
+        } else {
             return new TextPicNewsHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_text_pic,
                     viewGroup, false));
-
         }
-        return null;
     }
 
     /**

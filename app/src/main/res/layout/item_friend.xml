@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#8dd0ff"
+    android:background="@drawable/bg_item_friend"
     android:padding="@dimen/padding_24dp">
 
     <com.tssss.bysj.widget.GTextView
-        android:id="@+id/friends_rank_gtv"
+        android:id="@+id/item_friend_rank_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -18,8 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/friends_name_gtv"
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/item_friend_name_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -29,11 +29,11 @@
         android:textSize="@dimen/font_size_24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/friends_rank_gtv"
+        app:layout_constraintStart_toEndOf="@+id/item_friend_rank_gtv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.tssss.bysj.widget.GTextView
-        android:id="@+id/friends_state_gtv"
+        android:id="@+id/item_friend_state_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

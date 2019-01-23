@@ -7,6 +7,8 @@
     <string name="success">成功</string>
     <string name="input_account">首先，填写手机号。</string>
     <string name="input_password">然后，填写密码。</string>
+    <string name="exit_app">退出游戏吗？</string>
+    <string name="dialog_title">提示</string>
 
 
     <!-- LoginActivity -->
@@ -30,4 +32,5 @@
     <string name="new_role_head_img">选择你喜欢的头像。</string>
     <string name="new_role_null_name">角色名称不能为空</string>
     <string name="new_role_null_sex">请选择角色性别</string>
+
 </resources>

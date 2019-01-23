@@ -1,16 +1,63 @@
 package com.tssss.bysj.model;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.tssss.bysj.interfaces.OnFriendsDataListener;
+import com.tssss.bysj.net.http.HttpConstant;
+import com.tssss.bysj.net.http.IDataListener;
+import com.tssss.bysj.net.http.JsonHttpRequest;
+import com.tssss.bysj.net.http.JsonHttpResponse;
+import com.tssss.bysj.net.http.TaoHttpClient;
+import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.role.GameRole;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsModel {
-    public void loadFriendsData(long userId, OnFriendsDataListener listener) {
-        List<GameRole> friends = new ArrayList<>();
-        listener.onFriendsNumber(friends.size());
-        listener.onFriends(friends);
+public class FriendsModel implements IDataListener {
+    private OnFriendsDataListener mListener;
+
+
+    public void loadFriendsData(User user, OnFriendsDataListener listener) {
+        mListener = listener;
+
+        if (user == null) {
+            mListener.onFailure();
+        }
+
+        TaoHttpClient client = new TaoHttpClient(
+                HttpConstant.BASE_URL,
+                user,
+                new JsonHttpRequest(),
+                new JsonHttpResponse(this));
+        client.request();
     }
 
+    /**
+     * @param data user json.
+     */
+    @Override
+    public void onSuccess(Object data) {
+        List<GameRole> friends = new ArrayList<>();
+
+        JSONObject userJson = (JSONObject) data;
+        JSONArray friendsJa = userJson.getJSONArray("friends");
+        for (int i = 0; i < friendsJa.size(); i++) {
+            String roleName = friendsJa.getJSONObject(i).getString("roleName");
+            String roleState = friendsJa.getJSONObject(i).getString("roleState");
+
+            friends.add(new GameRole.GameRoleBuilder()
+                    .setRoleName(roleName)
+                    .setRoleState(roleState)
+                    .build()
+            );
+        }
+
+        mListener.onComplete(friends);
+    }
+
+    @Override
+    public void onFailure() {
+        mListener.onFailure();
+    }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ece5d3"
     android:padding="@dimen/padding_16dp">
 
     <com.tssss.bysj.widget.GTextView
@@ -37,12 +38,13 @@
         android:id="@+id/g_dialog_positive_ib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
         android:background="@null"
-        app:srcCompat="@drawable/dialog_btn_ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/g_dialog_passive_ib"
+        app:srcCompat="@drawable/dialog_btn_ok"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -50,9 +52,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        app:srcCompat="@drawable/dialog_btn_no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/g_dialog_positive_ib"
         app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/dialog_btn_no"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

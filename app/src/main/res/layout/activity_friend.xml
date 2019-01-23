@@ -5,30 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_common"
-    tools:context=".activity.FriendsActivity">
+    tools:context=".activity.FriendActivity">
 
-    <ImageButton
-        android:id="@+id/friends_back_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:background="@null"
-        app:srcCompat="@drawable/ic_btn_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/friends_title_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/friends_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_back_ib"
-        tools:ignore="ContentDescription" />
 
     <com.tssss.bysj.widget.GTextView
         android:id="@+id/friends_number_gtv"
@@ -39,20 +17,20 @@
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_title_iv"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/friends_null_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/null_friends"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/null_friends"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -61,15 +39,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_16dp"
         android:background="@null"
-        app:srcCompat="@drawable/ic_btn_seek_friends"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_btn_seek_friends"
         tools:ignore="ContentDescription" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friends_rv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

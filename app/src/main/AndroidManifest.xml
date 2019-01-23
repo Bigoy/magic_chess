@@ -12,6 +12,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,18 +22,41 @@
         </activity>
         <activity
             android:name=".login.LoginActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.StartActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegisterActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NewRoleActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HallActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DistributeNewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.FriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MatchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PeopleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MeActivity"
             android:screenOrientation="portrait" />
     </application>
 

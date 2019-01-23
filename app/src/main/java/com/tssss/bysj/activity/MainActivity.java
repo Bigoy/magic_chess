@@ -1,7 +1,6 @@
 package com.tssss.bysj.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.contract.BaseActivity;
@@ -38,8 +37,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void welcome() {
-        Log.wtf(getClass().getSimpleName(), "run MainActivity");
-
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -1,7 +1,5 @@
 package com.tssss.bysj.presenter;
 
-import android.content.Context;
-
 import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.game.news.News;
 import com.tssss.bysj.interfaces.OnNewsDataListener;
@@ -14,11 +12,11 @@ public class NewsPresenter extends PresenterImp implements OnNewsDataListener {
     private OnNewsListener mListener;
     private NewsModel mModel;
 
-    public void requestNewsData(Context context, OnNewsListener listener) {
+    public void requestNewsData(OnNewsListener listener) {
         this.mListener = listener;
 
         mModel = new NewsModel();
-        mModel.loadNewsData(context, this);
+        mModel.loadNewsData(this);
     }
 
     @Override
