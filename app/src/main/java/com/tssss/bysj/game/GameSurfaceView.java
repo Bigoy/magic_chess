@@ -8,28 +8,21 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Xfermode;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
-import com.tssss.bysj.user.role.GameRoleManager;
-import com.tssss.bysj.util.GameUtil;
-
-public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable{
-    public static boolean isDrawing = false;
+public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable,
+        View.OnTouchListener {
+    public static boolean isDrawing;
+    public static boolean canTouch;
 
     private Canvas gameCanvas;
     private SurfaceHolder gameHolder;
-    private boolean canTouch = true;
+    private int mSurfaceSize;
 
-    private AnchorManager am;
-    private ChessmanManager cm;
-    private Chessboard chessboard;
-    private GameRoleManager pm;
-    private Umpire umpire;
-    private GameUtil gameUtil;
-    private GameManager gm;
+    private GameProgress mGameProgress;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -51,16 +44,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredSurfaceSize = MeasureSpec.getSize(widthMeasureSpec);
 
-        gameUtil.setSurfaceSize(measuredSurfaceSize);
-        am.createAnchors();
-
+        mSurfaceSize = measuredSurfaceSize;
+        GameHelper.getGameHelper().setSurfaceSize(mSurfaceSize);
         setMeasuredDimension(measuredSurfaceSize, measuredSurfaceSize);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         isDrawing = true;
-        // 开启绘制线程。
+
         Thread drawThread = new Thread(this);
         drawThread.setPriority(Thread.MAX_PRIORITY);
         drawThread.start();
@@ -73,13 +65,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         isDrawing = false;
-        Log.wtf(getClass().getSimpleName(), "surfaceView destroyed");
     }
 
     @Override
     public void run() {
-        gm.prepare(am, cm, pm);
-        // 绘制。
+        mGameProgress.prepare();
+
         while (isDrawing) {
             try {
                 draw();
@@ -93,82 +84,61 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private void init() {
         gameHolder = getHolder();
         gameHolder.addCallback(this);
-        setFocusable(true);
-        setFocusableInTouchMode(true);
-        // surfaceView背景透明。
-        setZOrderOnTop(true);
         gameHolder.setFormat(PixelFormat.TRANSLUCENT);
 
-        gameUtil = GameUtil.getGameUtil();
-        am = AnchorManager.getAnchorManager();
-        cm = ChessmanManager.getChessmanManager();
-        pm = GameRoleManager.getGameRoleManager();
-        umpire = new Umpire();
-        chessboard = new Chessboard();
-        gm = new GameManager();
+        setOnTouchListener(this);
+        setFocusable(true);
+        setFocusableInTouchMode(true);
+        setZOrderOnTop(true);
 
-        gameUtil.setContext(getContext());
+        mGameProgress = GameProgress.getGameProgress();
+
+        GameHelper.getGameHelper().setContext(getContext());
     }
 
-    /*
-    总绘制方法。
+    /**
+     * Main drawing.
      */
     private void draw() {
         try {
-            // 获取游戏画布对象。
             gameCanvas = gameHolder.lockCanvas();
-            // 重置画布，绘制下一帧。
-            clear(gameCanvas);
-            chessboard.draw(gameCanvas);
-            cm.drawChessmen(gameCanvas);
-            if (cm.whoChecked() != null) {
-                cm.drawMark(gameCanvas, cm.whoChecked());
-            }
-//            umpire.umpire();
+            clearGameCanvas(gameCanvas);
+
+            mGameProgress.setGameCanvas(gameCanvas);
+            mGameProgress.start();
+
         } finally {
             if (gameCanvas != null) {
-                // 释放画布并绘制内容。
                 gameHolder.unlockCanvasAndPost(gameCanvas);
-                canTouch = true;
             }
         }
     }
 
-    /*
-    Clear canvas.
+    /**
+     * Clear canvas.
      */
-    private void clear(Canvas gameCanvas) {
-        Paint paint = new Paint();
+    private void clearGameCanvas(Canvas gameCanvas) {
         Xfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
+
+        Paint paint = new Paint();
         paint.setXfermode(xfermode);
+
         gameCanvas.drawPaint(paint);
     }
 
-    /*
-    tackle touch event.
+    /**
+     * Tackle touch event.
      */
     public void doTouch(MotionEvent event) {
-        ChessmanManager cm = ChessmanManager.getChessmanManager();
-        AnchorManager am = AnchorManager.getAnchorManager();
-        Rule rule = Rule.getRule();
-        if (canTouch) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (cm.hasChessmanChecked()) {
-                        // 用户选中了棋子，准备移动。
-                        if (rule.canMoveChessman(event)) {
-                            cm.update(event, cm.whoChecked(), am.identifyAnchor((int) event.getX(), (int) event.getY()));
-                            cm.resetChessmenCheckedState();
-                        }
-                    } else {
-                        // 用户准备选中某一个棋子。
-                        cm.checkChessman(event);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+        mGameProgress.doTouch(event);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (canTouch)
+            doTouch(event);
+
+        return true;
     }
 }
 

@@ -58,6 +58,9 @@
         <activity
             android:name=".activity.MeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GameActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

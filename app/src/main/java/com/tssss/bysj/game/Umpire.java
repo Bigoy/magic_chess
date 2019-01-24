@@ -1,66 +1,104 @@
 package com.tssss.bysj.game;
 
-import com.tssss.bysj.user.role.GameRoleManager;
-import com.tssss.bysj.util.GameUtil;
+import android.os.Looper;
 
-/*
-裁判官类。
-负责判定输赢、友好结束游戏。
+import com.tssss.bysj.user.role.GameRole;
+import com.tssss.bysj.user.role.GameRoleManager;
+import com.tssss.bysj.util.ToastUtil;
+
+/**
+ * Responsible for monitoring the state of the pieces on the chessboard, and judging the
+ * result of the game if the game end condition is met.
+ *
+ * @author Tssss
+ * @date 2019-1-24
  */
 public class Umpire {
+    private GameRole winner;
+    private Turn mTurn;
+    private Rule mRule;
+
 
     public Umpire() {
+        mTurn = Turn.getInstance();
+        mRule = new Rule();
     }
 
-    /*
-    裁判判定游戏结果，有结果时，返回胜利的玩家对象的key值；无结果时，返回GamerResult.COMPETING。
-    有关玩家的获取操作请使用PlayerManager类。
+    /**
+     * Judging game result.
      */
-    public String umpire() {
-        ChessmanManager cm = ChessmanManager.getChessmanManager();
-        AnchorManager am = AnchorManager.getAnchorManager();
-        GameRoleManager roleManager = GameRoleManager.getGameRoleManager();
+    public void umpire(PieceManager pieceManager,
+                       GameRoleManager gameRoleManager,
+                       AnchorManager anchorManager,
+                       GameProgress gameProgress) {
 
-        GameUtil gameUtil = GameUtil.getGameUtil();
-        int tempA = gameUtil.getSurfaceSize() / 4 * 3;
-        int tempB = gameUtil.getSurfaceSize() / 4 * 2;
+        int y1 = anchorManager.getAnchor(AnchorManager.FOUR).getY();
+        int y2 = anchorManager.getAnchor(AnchorManager.SEVEN).getY();
 
-        if (am.getAnchor(cm.getChessman(ChessmanManager.SELF_A).getPosition()).getY() == tempA &&
-                am.getAnchor(cm.getChessman(ChessmanManager.SELF_B).getPosition()).getY() == tempA &&
-                am.getAnchor(cm.getChessman(ChessmanManager.SELF_C).getPosition()).getY() == tempA) {
-            if (am.getAnchor(cm.getChessman(ChessmanManager.ARMY_A).getPosition()).getY() == tempB &&
-                    am.getAnchor(cm.getChessman(ChessmanManager.ARMY_B).getPosition()).getY() == tempB &&
-                    am.getAnchor(cm.getChessman(ChessmanManager.ARMY_C).getPosition()).getY() == tempB) {
-                // self输掉对局。self经验减去50，army经验加上50。
-                roleManager.getRole(GameRoleManager.SELF).setRoleExperience(-50);
-                roleManager.getRole(GameRoleManager.OTHER).setRoleExperience(50);
-                // 游戏结束。
-                stop();
-                return GameRoleManager.OTHER;
+        if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y1
+                && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y1
+                && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y1) {
+
+            if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y2
+                    && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y2
+                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y2) {
+
+//                announce(gameRoleManager.getRole(GameRoleManager.SELF));
+//                settle(gameRoleManager.getRole(GameRoleManager.SELF), gameRoleManager.getRole(GameRoleManager.OTHER));
+                gameProgress.endGame();
+                Looper.prepare();
+                ToastUtil.showToast(GameHelper.getGameHelper().getContext(), "You win", ToastUtil.TOAST_DEFAULT);
+                Looper.loop();
             }
-        } else if (am.getAnchor(cm.getChessman(ChessmanManager.ARMY_A).getPosition()).getY() == tempA &&
-                am.getAnchor(cm.getChessman(ChessmanManager.ARMY_B).getPosition()).getY() == tempA &&
-                am.getAnchor(cm.getChessman(ChessmanManager.ARMY_C).getPosition()).getY() == tempA) {
-            if (am.getAnchor(cm.getChessman(ChessmanManager.SELF_A).getPosition()).getY() == tempB &&
-                    am.getAnchor(cm.getChessman(ChessmanManager.SELF_B).getPosition()).getY() == tempB &&
-                    am.getAnchor(cm.getChessman(ChessmanManager.SELF_C).getPosition()).getY() == tempB) {
-                // self赢得比赛。self经验加上50，army经验减去50。
-                roleManager.getRole(GameRoleManager.SELF).setRoleExperience(-50);
-                roleManager.getRole(GameRoleManager.OTHER).setRoleExperience(50);
-                // 游戏结束。
-                stop();
-                return GameRoleManager.SELF;
+
+        } else if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y2
+                && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y2
+                && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y2) {
+
+            if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y1
+                    && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y1
+                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y1) {
+
+//                announce(gameRoleManager.getRole(GameRoleManager.OTHER));
+//                settle(gameRoleManager.getRole(GameRoleManager.OTHER), gameRoleManager.getRole(GameRoleManager.SELF));
+                gameProgress.endGame();
+                Looper.prepare();
+                ToastUtil.showToast(GameHelper.getGameHelper().getContext(), "You lose", ToastUtil.TOAST_DEFAULT);
+                Looper.loop();
             }
         }
-        return GameResult.COMPETING;
     }
 
-    /*
-    游戏结束。
+    /**
+     * Announce game result.
      */
-    private void stop() {
-        // 停止绘制。
-        GameSurfaceView.isDrawing = false;
-        // 游戏结果弹窗。
+    private void announce(GameRole winner) {
+        this.winner = winner;
+    }
+
+    public GameRole getWinner() {
+        return winner;
+    }
+
+    /**
+     * Lock permission of playing.
+     */
+    public void lockPlayPermission() {
+        mTurn.setTurn(false);
+    }
+
+    /**
+     * Unlock permission of playing.
+     */
+    public void unlockPlayPermission() {
+        mTurn.setTurn(true);
+    }
+
+    /**
+     * Settlement.
+     */
+    private void settle(GameRole winner, GameRole loser) {
+        winner.setRoleExperience(mRule.reward());
+        loser.setRoleExperience(mRule.punish());
     }
 }

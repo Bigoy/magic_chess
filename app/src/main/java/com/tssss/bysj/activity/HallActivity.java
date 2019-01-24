@@ -83,7 +83,10 @@ public class HallActivity extends BaseActivity {
                 openActivity(FriendActivity.class);
                 break;
             case R.id.hall_match_player_ib:
-                openActivity(MatchActivity.class);
+//                openActivity(MatchActivity.class);
+
+                //Test
+                openActivity(GameActivity.class);
                 break;
             case R.id.hall_look_people_ib:
                 openActivity(PeopleActivity.class);

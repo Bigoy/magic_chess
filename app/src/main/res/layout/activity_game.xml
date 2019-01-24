@@ -8,14 +8,12 @@
     tools:context=".activity.GameActivity">
 
 
-
-    <!--<com.tssss.bysj.game.GameSurfaceView
+    <com.tssss.bysj.game.GameSurfaceView
         android:id="@+id/game_gsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/game_send_msg_ib"
-        app:layout_constraintBottom_toBottomOf="parent" />-->
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

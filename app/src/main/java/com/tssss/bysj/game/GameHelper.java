@@ -1,23 +1,29 @@
-package com.tssss.bysj.util;
+package com.tssss.bysj.game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-public class GameUtil {
+/**
+ * Provide help for the normal operation of the game.
+ *
+ * @author Tssss
+ * @date 2019-1-24
+ */
+public class GameHelper {
     @SuppressLint("StaticFieldLeak")
-    private static GameUtil gameUtil;
+    private static GameHelper gameHelper;
 
     private int surfaceSize;
     private Context context;
 
-    private GameUtil() {
+    private GameHelper() {
     }
 
-    public static GameUtil getGameUtil() {
-        if (gameUtil == null) {
-            gameUtil = new GameUtil();
+    public static GameHelper getGameHelper() {
+        if (gameHelper == null) {
+            gameHelper = new GameHelper();
         }
-        return gameUtil;
+        return gameHelper;
     }
 
     public void setSurfaceSize(int surfaceSize) {

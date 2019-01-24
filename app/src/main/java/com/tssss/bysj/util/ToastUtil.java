@@ -40,7 +40,7 @@ public class ToastUtil {
 
         GTextView gtv = view.findViewById(R.id.toast_gtv);
         gtv.setTextColor(Color.WHITE);
-        gtv.setText(filterText(text));
+        gtv.setText(text);
 
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 100);

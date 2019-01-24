@@ -1,14 +1,25 @@
 package com.tssss.bysj.game;
 
-import com.tssss.bysj.util.GameUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/*
- *管理棋盘上的所有锚点。
- * 生成锚点，监控各个锚点的使用情况。
+/**
+ * Manage nine anchor points on chess board.
+ *
+ * <P>The nine anchor points are named ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE in
+ * order from left to right and from top to bottom.</p>
+ *
+ * <p>
+ * one   two   three
+ * four  five  six
+ * seven eight nine
+ * </P>
+ *
+ * <P>If you need an anchor, just call the method {@code getAnchor(String anchorKey)}.</P>
+ *
+ * @author Tssss
+ * @date 2019-1-24
  */
 public class AnchorManager {
     private static AnchorManager mAnchorManager;
@@ -22,6 +33,7 @@ public class AnchorManager {
     public static String SEVEN = "seven";
     public static String EIGHT = "eight";
     public static String NINE = "nine";
+    public static String UNKNOWN = "unknown";
 
     private Anchor one;
     private Anchor two;
@@ -87,12 +99,11 @@ public class AnchorManager {
         anchors.get(NINE).setUsed(true);
     }
 
-    /*
-    生成锚点。
+    /**
+     * Create nine anchor points based on the size of game surface view.
      */
-    public void createAnchors() {
-        GameUtil gameUtil = GameUtil.getGameUtil();
-        int temp = gameUtil.getSurfaceSize() / 4;
+    public void createAnchors(int chessboardSize) {
+        int temp = chessboardSize / 4;
 
         Objects.requireNonNull(anchors.get(ONE)).setX(temp);
         Objects.requireNonNull(anchors.get(ONE)).setY(temp);
@@ -116,108 +127,112 @@ public class AnchorManager {
         Objects.requireNonNull(anchors.get(NINE)).setY(temp * 3);
     }
 
-    /*
-    用户是否点击在锚点上。
+    /**
+     * Judge if the user's click position is within an anchor point.
      */
     public boolean inRange(int x, int y) {
-        GameUtil gameUtil = GameUtil.getGameUtil();
-        int temp = gameUtil.getSurfaceSize() / 16;
+        int temp = GameHelper.getGameHelper().getSurfaceSize() / 16;
 
         if (x >= anchors.get(AnchorManager.ONE).getX() - temp &&
                 x <= anchors.get(AnchorManager.ONE).getX() + temp &&
                 y >= anchors.get(AnchorManager.ONE).getY() - temp &&
                 y <= anchors.get(AnchorManager.ONE).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点ONE上");
             return true;
+
         } else if (x >= anchors.get(AnchorManager.TWO).getX() - temp &&
                 x <= anchors.get(AnchorManager.TWO).getX() + temp &&
                 y >= anchors.get(AnchorManager.TWO).getY() - temp &&
                 y <= anchors.get(AnchorManager.TWO).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点TWO上");
             return true;
+
         } else if (x >= anchors.get(AnchorManager.THREE).getX() - temp &&
                 x <= anchors.get(AnchorManager.THREE).getX() + temp &&
                 y >= anchors.get(AnchorManager.THREE).getY() - temp &&
                 y <= anchors.get(AnchorManager.THREE).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点THREE上");
+
             return true;
         } else if (x >= anchors.get(AnchorManager.FOUR).getX() - temp &&
                 x <= anchors.get(AnchorManager.FOUR).getX() + temp &&
                 y >= anchors.get(AnchorManager.FOUR).getY() - temp &&
                 y <= anchors.get(AnchorManager.FOUR).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点FOUR上");
             return true;
+
         } else if (x >= anchors.get(AnchorManager.FIVE).getX() - temp &&
                 x <= anchors.get(AnchorManager.FIVE).getX() + temp &&
                 y >= anchors.get(AnchorManager.FIVE).getY() - temp &&
                 y <= anchors.get(AnchorManager.FIVE).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点FIVE上");
             return true;
+
         } else if (x >= anchors.get(AnchorManager.SIX).getX() - temp &&
                 x <= anchors.get(AnchorManager.SIX).getX() + temp &&
                 y >= anchors.get(AnchorManager.SIX).getY() - temp &&
                 y <= anchors.get(AnchorManager.SIX).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点SIX上");
             return true;
+
         } else if (x >= anchors.get(AnchorManager.SEVEN).getX() - temp &&
                 x <= anchors.get(AnchorManager.SEVEN).getX() + temp &&
                 y >= anchors.get(AnchorManager.SEVEN).getY() - temp &&
                 y <= anchors.get(AnchorManager.SEVEN).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点SEVEN上");
             return true;
+
         } else if (x >= anchors.get(AnchorManager.EIGHT).getX() - temp &&
                 x <= anchors.get(AnchorManager.EIGHT).getX() + temp &&
                 y >= anchors.get(AnchorManager.EIGHT).getY() - temp &&
                 y <= anchors.get(AnchorManager.EIGHT).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点EIGHT上");
             return true;
-        } else if (x >= anchors.get(AnchorManager.NINE).getX() - temp &&
+
+        } else return x >= anchors.get(AnchorManager.NINE).getX() - temp &&
                 x <= anchors.get(AnchorManager.NINE).getX() + temp &&
                 y >= anchors.get(AnchorManager.NINE).getY() - temp &&
-                y <= anchors.get(AnchorManager.NINE).getY() + temp) {
-//            Log.wtf(getClass().getSimpleName(), "用户点在了锚点NINE上");
-            return true;
-        } else {
-//            Log.wtf(getClass().getSimpleName(), "用户没有点在任何锚点上");
-            return false;
-        }
+                y <= anchors.get(AnchorManager.NINE).getY() + temp;
     }
 
-    /*
-    根据坐标返回锚点的key。
+    /**
+     * Identify the identity of anchor based on coordinates.
+     *
+     * @return key of the anchor.
      */
-    public String identifyAnchor(int x, int y) {
-        GameUtil gameUtil = GameUtil.getGameUtil();
-        int temp = gameUtil.getSurfaceSize() / 16;
+    public Anchor identifyAnchor(int x, int y) {
+        int temp = GameHelper.getGameHelper().getSurfaceSize() / 16;
+
         if (x >= anchors.get(ONE).getX() - temp && x <= anchors.get(ONE).getX() + temp &&
                 y >= anchors.get(ONE).getY() - temp && y <= anchors.get(ONE).getY() + temp) {
-            return ONE;
+            return anchors.get(ONE);
+
         } else if (x >= anchors.get(TWO).getX() - temp && x <= anchors.get(TWO).getX() + temp &&
                 y >= anchors.get(TWO).getY() - temp && y <= anchors.get(TWO).getY() + temp) {
-            return TWO;
+            return anchors.get(TWO);
+
         } else if (x >= anchors.get(THREE).getX() - temp && x <= anchors.get(THREE).getX() + temp &&
                 y >= anchors.get(THREE).getY() - temp && y <= anchors.get(THREE).getY() + temp) {
-            return THREE;
+            return anchors.get(THREE);
+
         } else if (x >= anchors.get(FOUR).getX() - temp && x <= anchors.get(FOUR).getX() + temp &&
                 y >= anchors.get(FOUR).getY() - temp && y <= anchors.get(FOUR).getY() + temp) {
-            return FOUR;
+            return anchors.get(FOUR);
+
         } else if (x >= anchors.get(FIVE).getX() - temp && x <= anchors.get(FIVE).getX() + temp &&
                 y >= anchors.get(FIVE).getY() - temp && y <= anchors.get(FIVE).getY() + temp) {
-            return FIVE;
+            return anchors.get(FIVE);
+
         } else if (x >= anchors.get(SIX).getX() - temp && x <= anchors.get(SIX).getX() + temp &&
                 y >= anchors.get(SIX).getY() - temp && y <= anchors.get(SIX).getY() + temp) {
-            return SIX;
+            return anchors.get(SIX);
+
         } else if (x >= anchors.get(SEVEN).getX() - temp && x <= anchors.get(SEVEN).getX() + temp &&
                 y >= anchors.get(SEVEN).getY() - temp && y <= anchors.get(SEVEN).getY() + temp) {
-            return SEVEN;
+            return anchors.get(SEVEN);
+
         } else if (x >= anchors.get(EIGHT).getX() - temp && x <= anchors.get(EIGHT).getX() + temp &&
                 y >= anchors.get(EIGHT).getY() - temp && y <= anchors.get(EIGHT).getY() + temp) {
-            return EIGHT;
+            return anchors.get(EIGHT);
+
         } else if (x >= anchors.get(NINE).getX() - temp && x <= anchors.get(NINE).getX() + temp &&
                 y >= anchors.get(NINE).getY() - temp && y <= anchors.get(NINE).getY() + temp) {
-            return NINE;
+            return anchors.get(NINE);
         }
-        return "";
+
+        return null;
     }
 
 }
