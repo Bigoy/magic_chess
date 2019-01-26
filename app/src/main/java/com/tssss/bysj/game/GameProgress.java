@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import com.tssss.bysj.user.role.GameRoleManager;
 
 /**
- * Game progress including game preparation, start and end of the three main stages.
+ * Game progress including game preparation, run and end of the three main stages.
  *
  * <P>In the game preparation, progress perform some methods, such as Checking network state,
  * showing battle players information, drawing game scene (chessboard and pieces), initialize
@@ -26,23 +26,23 @@ public class GameProgress {
     private Canvas mGameCanvas;
     private AnchorManager mAnchorManager;
     private PieceManager mPieceManager;
-    private GameRoleManager mGameRoleManager;
     private Chessboard mChessboard;
     private Umpire mUmpire;
-    private Mark mMark;
-    private Rule mRule;
     private GameHelper mGameHelper;
+    private GameResult mGameResult;
+    private GameRoleManager mRoleManager;
+
+    private boolean initialized;
 
 
     private GameProgress() {
         mAnchorManager = AnchorManager.getAnchorManager();
         mPieceManager = PieceManager.getChessmanManager();
-        mGameRoleManager = GameRoleManager.getGameRoleManager();
+        mRoleManager = GameRoleManager.getGameRoleManager();
         mGameHelper = GameHelper.getGameHelper();
         mChessboard = new SimpleChessboard();
+        mGameResult = new GameResult();
         mUmpire = new Umpire();
-        mMark = new Mark();
-        mRule = new Rule();
     }
 
     public static GameProgress getGameProgress() {
@@ -60,39 +60,53 @@ public class GameProgress {
     }
 
     /**
+     * Game initialization.
+     */
+    public void initialize() {
+        Log.wtf(getClass().getSimpleName(), "<------ game initialization ------>");
+
+        mAnchorManager.createAnchors(mGameHelper.getSurfaceSize());
+        mPieceManager.initPiecesPosition();
+    }
+
+    /**
      * Game preparation.
      */
     public void prepare() {
-        // Create anchors.
-        mAnchorManager.createAnchors(mGameHelper.getSurfaceSize());
-        // Initialize position of pieces.
-        mPieceManager.initPiecesPosition();
+        Log.wtf(getClass().getSimpleName(), "<------ game preparation ------>");
 
         if (!GameSurfaceView.canTouch)
             GameSurfaceView.canTouch = true;
 
         connectServer();
+        prepareMusic();
+    }
+
+    /**
+     * Play background music to create a game atmosphere.
+     */
+    private void prepareMusic() {
+        Log.wtf(getClass().getSimpleName(), "playing music");
     }
 
     /**
      * Connect server.
      */
     private void connectServer() {
+        Log.wtf(getClass().getSimpleName(), "connecting server...");
+        Log.wtf(getClass().getSimpleName(), "connected successfully");
     }
 
     /**
      * Start game.
      */
-    public void start() {
+    public void run() {
+//        Log.wtf(getClass().getSimpleName(), "<------ game running ------>");
+
         runSceneDrawing();
 
-        if (mPieceManager.whoChecked() != null)
-            mMark.mark(mGameCanvas, mPieceManager.whoChecked());
-
-        else
-            Log.wtf(getClass().getSimpleName(), "no piece selected");
-
-        mUmpire.umpire(mPieceManager, mGameRoleManager, mAnchorManager, this);
+        mUmpire.monitor(mPieceManager, mGameCanvas);
+        mUmpire.umpire(this);
     }
 
     /**
@@ -107,55 +121,55 @@ public class GameProgress {
      * Take over touch event handling.
      */
     public void doTouch(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                int x = (int) event.getX();
-                int y = (int) event.getY();
+        mUmpire.handleUserActions(event, mPieceManager, mAnchorManager);
+    }
 
-                if (mPieceManager.hasChessmanChecked()) {
-                    // User has selected a piece and ready to move.
-                    Log.wtf(getClass().getSimpleName(), "ready to move a piece");
-                    if (mRule.canMove(x, y)) {
-                        mPieceManager.update(mAnchorManager.identifyAnchor(x, y));
-                        mPieceManager.resetChessmenCheckedState();
-//                        mUmpire.lockPlayPermission();
-                    }
+    /**
+     * Pause game.
+     */
+    public void pauseGame() {
+        if (GameSurfaceView.canTouch)
+            GameSurfaceView.canTouch = false;
 
-                } else {
-                    // User ready to select a piece.
-                    if (mRule.canSelect(x, y)) {
-                        Log.wtf(getClass().getSimpleName(), "ready to select a piece");
-                        mPieceManager.checkChessman(x, y);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
+        Effect effect = new Effect();
+        effect.explosion(mGameCanvas);
+
+        mUmpire.settlement();
+
+        mGameResult.showGameResult(this);
+    }
+
+    /**
+     * Resume game.
+     */
+    public void resumeGame() {
+        if (!GameSurfaceView.canTouch)
+            GameSurfaceView.canTouch = true;
+
+        initialized = false;
+        mUmpire.setHaveResult(false);
+
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_A).getAnchor().getName());
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_B).getAnchor().getName());
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_C).getAnchor().getName());
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getName());
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getName());
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getName());
     }
 
     /**
      * End game.
      */
     public void endGame() {
-        stopMainDrawing();
+        mRoleManager.removeRole(GameRoleManager.RIVAL);
         clear();
-    }
-
-    /**
-     * Stop main drawing program.
-     */
-    private void stopMainDrawing() {
-        if (GameSurfaceView.isDrawing)
-            GameSurfaceView.isDrawing = false;
-
-        if (GameSurfaceView.canTouch)
-            GameSurfaceView.canTouch = false;
     }
 
     /**
      * Cleanup resource.
      */
     private void clear() {
+        Log.wtf(getClass().getSimpleName(), "clear up");
     }
+
 }

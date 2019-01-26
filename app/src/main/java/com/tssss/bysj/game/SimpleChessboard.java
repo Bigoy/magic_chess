@@ -1,8 +1,6 @@
 package com.tssss.bysj.game;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 
 /**
@@ -12,17 +10,24 @@ import android.graphics.Path;
  * @date 2019-1-24
  */
 public class SimpleChessboard extends Chessboard {
+
+    public SimpleChessboard() {
+        super();
+    }
+
     @Override
     public void drawChessboard(Canvas gameCanvas) {
+        Path path = new Path();
+
         AnchorManager am = AnchorManager.getAnchorManager();
 
         int radius = GameHelper.getGameHelper().getSurfaceSize() / 16;
 
-        Path path = new Path();
         path.moveTo(am.getAnchor(AnchorManager.SEVEN).getX(),
                 am.getAnchor(AnchorManager.SEVEN).getY() - radius);
         path.lineTo(am.getAnchor(AnchorManager.ONE).getX(),
                 am.getAnchor(AnchorManager.ONE).getY());
+
         path.lineTo(am.getAnchor(AnchorManager.THREE).getX(),
                 am.getAnchor(AnchorManager.THREE).getY());
         path.lineTo(am.getAnchor(AnchorManager.NINE).getX(),
@@ -38,23 +43,15 @@ public class SimpleChessboard extends Chessboard {
         path.lineTo(am.getAnchor(AnchorManager.SIX).getX(),
                 am.getAnchor(AnchorManager.SIX).getY());
 
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(15);
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-
         if (gameCanvas != null) {
-            gameCanvas.drawPath(path, paint);
+            gameCanvas.drawPath(path, getPaint());
 
             gameCanvas.drawCircle(am.getAnchor(AnchorManager.SEVEN).getX(),
-                    am.getAnchor(AnchorManager.SEVEN).getY(), radius, paint);
+                    am.getAnchor(AnchorManager.SEVEN).getY(), radius, getPaint());
             gameCanvas.drawCircle(am.getAnchor(AnchorManager.EIGHT).getX(),
-                    am.getAnchor(AnchorManager.EIGHT).getY(), radius, paint);
+                    am.getAnchor(AnchorManager.EIGHT).getY(), radius, getPaint());
             gameCanvas.drawCircle(am.getAnchor(AnchorManager.NINE).getX(),
-                    am.getAnchor(AnchorManager.NINE).getY(), radius, paint);
+                    am.getAnchor(AnchorManager.NINE).getY(), radius, getPaint());
         }
     }
 }

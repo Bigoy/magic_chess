@@ -15,7 +15,8 @@ public class JsonHttpResponse implements IHttpResponse {
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public JsonHttpResponse(IDataListener dataListener) {
-        this.mDataListener = dataListener;
+        if (dataListener != null)
+            this.mDataListener = dataListener;
     }
 
     @Override
@@ -35,7 +36,8 @@ public class JsonHttpResponse implements IHttpResponse {
 
         } catch (IOException e) {
             e.printStackTrace();
-            mDataListener.onFailure();
+            if (mDataListener != null)
+                mDataListener.onFailure();
         }
     }
 
@@ -44,10 +46,10 @@ public class JsonHttpResponse implements IHttpResponse {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mDataListener.onFailure();
+                if (mDataListener != null)
+                    mDataListener.onFailure();
             }
         });
     }
-
 
 }

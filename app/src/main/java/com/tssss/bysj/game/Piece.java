@@ -2,6 +2,8 @@ package com.tssss.bysj.game;
 
 import android.graphics.Canvas;
 
+import androidx.annotation.NonNull;
+
 /**
  * Piece
  *
@@ -30,8 +32,14 @@ public class Piece {
      */
     private boolean mChecked;
 
+    /**
+     * Name.
+     */
+    private String mName;
 
-    public Piece(String camp) {
+
+    public Piece(String name, String camp) {
+        this.mName = name;
         this.mCamp = camp;
     }
 
@@ -55,9 +63,24 @@ public class Piece {
         return mChecked;
     }
 
+    public String getName() {
+        return this.mName;
+    }
+
     /**
      * Draw piece.
      */
     public void draw(Canvas gameCanvas) {
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "camp = " + this.mCamp
+                + "\t"
+                + "anchor = " + this.mAnchor.getName()
+                + "\t"
+                + "checked = " + this.mChecked
+                + "\n";
     }
 }

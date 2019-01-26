@@ -42,15 +42,16 @@ public class FriendsModel implements IDataListener {
 
         JSONObject userJson = (JSONObject) data;
         JSONArray friendsJa = userJson.getJSONArray("friends");
-        for (int i = 0; i < friendsJa.size(); i++) {
-            String roleName = friendsJa.getJSONObject(i).getString("roleName");
-            String roleState = friendsJa.getJSONObject(i).getString("roleState");
 
-            friends.add(new GameRole.GameRoleBuilder()
-                    .setRoleName(roleName)
-                    .setRoleState(roleState)
-                    .build()
-            );
+        for (int i = 0; i < friendsJa.size(); i++) {
+            friends.add(new GameRole(
+                    friendsJa.getJSONObject(i).getString("roleName"),
+                    friendsJa.getJSONObject(i).getString("roleSex"),
+                    friendsJa.getJSONObject(i).getString("roleLevel"),
+                    friendsJa.getJSONObject(i).getString("roleState"),
+                    friendsJa.getJSONObject(i).getInteger("roleExperience"),
+                    friendsJa.getJSONObject(i).getString("roleHeadImg").getBytes()
+            ));
         }
 
         mListener.onComplete(friends);

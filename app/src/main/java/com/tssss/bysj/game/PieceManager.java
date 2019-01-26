@@ -2,6 +2,7 @@ package com.tssss.bysj.game;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,12 +46,12 @@ public class PieceManager {
     }
 
     private void initPieces() {
-        selfA = new GraphicPiece(Piece.PIECE_CAMP_SELF);
-        selfB = new GraphicPiece(Piece.PIECE_CAMP_SELF);
-        selfC = new GraphicPiece(Piece.PIECE_CAMP_SELF);
-        rivalA = new GraphicPiece(Piece.PIECE_CAMP_RIVAL);
-        rivalB = new GraphicPiece(Piece.PIECE_CAMP_RIVAL);
-        rivalC = new GraphicPiece(Piece.PIECE_CAMP_RIVAL);
+        selfA = new GraphicPiece(SELF_A, Piece.PIECE_CAMP_SELF);
+        selfB = new GraphicPiece(SELF_B, Piece.PIECE_CAMP_SELF);
+        selfC = new GraphicPiece(SELF_C, Piece.PIECE_CAMP_SELF);
+        rivalA = new GraphicPiece(RIVAL_A, Piece.PIECE_CAMP_RIVAL);
+        rivalB = new GraphicPiece(RIVAL_B, Piece.PIECE_CAMP_RIVAL);
+        rivalC = new GraphicPiece(RIVAL_C, Piece.PIECE_CAMP_RIVAL);
 
         pieces.put(SELF_A, selfA);
         pieces.put(SELF_B, selfB);
@@ -58,6 +59,8 @@ public class PieceManager {
         pieces.put(RIVAL_A, rivalA);
         pieces.put(RIVAL_B, rivalB);
         pieces.put(RIVAL_C, rivalC);
+
+        Log.wtf(getClass().getSimpleName(), "<------ pieces initialized ------>");
     }
 
     /**
@@ -71,6 +74,8 @@ public class PieceManager {
         rivalA.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.THREE));
         rivalB.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.SIX));
         rivalC.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.NINE));
+
+        Log.wtf(getClass().getSimpleName(), "<------ the position of pieces initialized ------>");
     }
 
     public Piece getPiece(String key) {
@@ -198,6 +203,13 @@ public class PieceManager {
         if (rule.canSelect(x, y)) {
             identify(am.identifyAnchor(x, y)).setChecked(true);
         }
+    }
+
+    /**
+     * Cancel selection.
+     */
+    public void cancelSelection() {
+        resetChessmenCheckedState();
     }
 
     /*

@@ -15,8 +15,10 @@ public class TaoHttpClient<T> {
     private IHttpRequest mHttpRequest;
     private IHttpResponse mHttpResponse;
 
+
     public TaoHttpClient(String url, T requestParam, IHttpRequest httpRequest,
                          IHttpResponse httpResponse) {
+
         this.mUrl = url;
         this.mRequestParam = requestParam;
         this.mHttpRequest = httpRequest;

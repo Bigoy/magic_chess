@@ -1,5 +1,7 @@
 package com.tssss.bysj.game;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -65,15 +67,15 @@ public class AnchorManager {
     }
 
     private void initAnchors() {
-        one = new Anchor();
-        two = new Anchor();
-        three = new Anchor();
-        four = new Anchor();
-        five = new Anchor();
-        six = new Anchor();
-        seven = new Anchor();
-        eight = new Anchor();
-        nine = new Anchor();
+        one = new Anchor(ONE);
+        two = new Anchor(TWO);
+        three = new Anchor(THREE);
+        four = new Anchor(FOUR);
+        five = new Anchor(FIVE);
+        six = new Anchor(SIX);
+        seven = new Anchor(SEVEN);
+        eight = new Anchor(EIGHT);
+        nine = new Anchor(NINE);
 
         anchors.put(ONE, one);
         anchors.put(TWO, two);
@@ -85,6 +87,7 @@ public class AnchorManager {
         anchors.put(EIGHT, eight);
         anchors.put(NINE, nine);
 
+        Log.wtf(getClass().getSimpleName(), "anchors initialized, total " + this.anchors.size());
     }
 
     public void initAnchorUseState() {
@@ -97,6 +100,8 @@ public class AnchorManager {
         anchors.get(SEVEN).setUsed(true);
         anchors.get(EIGHT).setUsed(false);
         anchors.get(NINE).setUsed(true);
+
+        Log.wtf(getClass().getSimpleName(), "anchors state initialized");
     }
 
     /**
@@ -125,6 +130,17 @@ public class AnchorManager {
         Objects.requireNonNull(anchors.get(EIGHT)).setY(temp * 3);
         Objects.requireNonNull(anchors.get(NINE)).setX(temp * 3);
         Objects.requireNonNull(anchors.get(NINE)).setY(temp * 3);
+
+        Log.wtf(getClass().getSimpleName(), "anchors data created");
+        Log.wtf(getClass().getSimpleName(), one.toString());
+        Log.wtf(getClass().getSimpleName(), two.toString());
+        Log.wtf(getClass().getSimpleName(), three.toString());
+        Log.wtf(getClass().getSimpleName(), four.toString());
+        Log.wtf(getClass().getSimpleName(), five.toString());
+        Log.wtf(getClass().getSimpleName(), six.toString());
+        Log.wtf(getClass().getSimpleName(), seven.toString());
+        Log.wtf(getClass().getSimpleName(), eight.toString());
+        Log.wtf(getClass().getSimpleName(), nine.toString());
     }
 
     /**

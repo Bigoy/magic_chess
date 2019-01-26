@@ -3,7 +3,6 @@ package com.tssss.bysj.game;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 /**
  * Graphic piece.
@@ -27,10 +26,10 @@ public class GraphicPiece extends Piece {
      */
     private int mRivalColor = Color.BLACK;
 
-
-    public GraphicPiece(String camp) {
-        super(camp);
+    public GraphicPiece(String name, String camp) {
+        super(name, camp);
     }
+
 
     public void setSelfColor(int selfColor) {
         mSelfColor = selfColor;
@@ -46,21 +45,17 @@ public class GraphicPiece extends Piece {
 
     @Override
     public void draw(Canvas gameCanvas) {
-        if (gameCanvas != null && getAnchor() != null) {
-            Paint piecePaint = new Paint();
-            piecePaint.setStyle(Paint.Style.FILL);
-            piecePaint.setAntiAlias(true);
-            piecePaint.setDither(true);
+        Paint piecePaint = new Paint();
+        piecePaint.setStyle(Paint.Style.FILL);
+        piecePaint.setAntiAlias(true);
+        piecePaint.setDither(true);
 
-            if (getCamp().equals(Piece.PIECE_CAMP_SELF))
-                piecePaint.setColor(mSelfColor);
+        if (getCamp().equals(Piece.PIECE_CAMP_SELF))
+            piecePaint.setColor(mSelfColor);
 
-            else if (getCamp().equals(Piece.PIECE_CAMP_RIVAL))
-                piecePaint.setColor(mRivalColor);
+        else if (getCamp().equals(Piece.PIECE_CAMP_RIVAL))
+            piecePaint.setColor(mRivalColor);
 
-            gameCanvas.drawCircle(getAnchor().getX(), getAnchor().getY(), mSize, piecePaint);
-
-        } else
-            Log.wtf(getClass().getSimpleName(), "gameCanvas or anchor is null");
+        gameCanvas.drawCircle(getAnchor().getX(), getAnchor().getY(), mSize, piecePaint);
     }
 }

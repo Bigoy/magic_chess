@@ -1,5 +1,6 @@
 package com.tssss.bysj.contract;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -24,11 +25,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View,
     private PresenterImp mPresenter;
     private ActivityManager mActivityManager;
     private MyApplication mApplication;
+    private Context mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mContext = this;
         setContentView(getLayoutId());
         findViews();
 
@@ -237,5 +240,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View,
         }
 
         return mApplication;
+    }
+
+    /**
+     * Get context of current activity.
+     */
+    protected Context getContext() {
+        if (mContext != null)
+            return mContext;
+
+        return getApplicationContext();
     }
 }

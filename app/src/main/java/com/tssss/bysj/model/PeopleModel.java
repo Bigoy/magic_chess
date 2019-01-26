@@ -38,14 +38,14 @@ public class PeopleModel implements IDataListener {
         JSONObject peopleJson = (JSONObject) data;
         JSONArray ja = peopleJson.getJSONArray("allPlayers");
         for (int i = 0; i < ja.size(); i++) {
-            allPlayers.add(new GameRole.GameRoleBuilder()
-                    .setRoleName(ja.getJSONObject(i).getString("roleName"))
-                    .setRoleLevel(ja.getJSONObject(i).getString("roleLevel"))
-                    .setRoleSex(ja.getJSONObject(i).getString("roleSex"))
-                    .setRoleExperience(ja.getJSONObject(i).getInteger("roleExperience"))
-                    .setRoleHeadImg(ja.getJSONObject(i).getBytes("roleHeadImg"))
-                    .setRoleState(ja.getJSONObject(i).getString("roleState"))
-                    .build());
+            allPlayers.add(new GameRole(
+                    ja.getJSONObject(i).getString("roleName"),
+                    ja.getJSONObject(i).getString("roleSex"),
+                    ja.getJSONObject(i).getString("roleLevel"),
+                    ja.getJSONObject(i).getString("roleState"),
+                    ja.getJSONObject(i).getInteger("roleExperience"),
+                    ja.getJSONObject(i).getString("roleHeadImg").getBytes()
+            ));
         }
 
         mListener.onComplete(allPlayers);

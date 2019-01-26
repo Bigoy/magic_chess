@@ -9,6 +9,8 @@ import com.tssss.bysj.activity.HallActivity;
 import com.tssss.bysj.contract.BaseActivity;
 import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.interfaces.OnGDialogListener;
+import com.tssss.bysj.user.role.GameRole;
+import com.tssss.bysj.user.role.GameRoleManager;
 import com.tssss.bysj.util.ToastUtil;
 import com.tssss.bysj.widget.GDialog;
 
@@ -82,7 +84,16 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
 
         // Test
         openActivity(HallActivity.class);
-        finish();
+        GameRole self = new GameRole(
+                "Tssss",
+                GameRole.ROLE_SEX_BOY,
+                GameRole.ROLE_LEVEL_INTERMEDIATE,
+                GameRole.ROLE_STATE_ONLINE,
+                300,
+                null
+        );
+
+        GameRoleManager.getGameRoleManager().addRole(GameRoleManager.SELF, self);
     }
 
     private void clearInputText() {

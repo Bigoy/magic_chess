@@ -1,5 +1,9 @@
 package com.tssss.bysj.user.role;
 
+import com.tssss.bysj.game.Rule;
+
+import androidx.annotation.Nullable;
+
 /**
  * Game role，one account can apply for multiple roles.
  * name,sex,level,experience
@@ -26,11 +30,14 @@ public class GameRole {
             mRoleSex,
             mRoleLevel,
             mRoleState;
-    private int mRoleExperience;
+    private int mRoleExperience = 0;
     private byte[] mRoleHeadImg;
+
+    private Rule mRule;
 
 
     public GameRole() {
+        this.mRule = new Rule();
     }
 
     public GameRole(String roleName,
@@ -46,6 +53,8 @@ public class GameRole {
         this.mRoleState = roleState;
         this.mRoleExperience = roleExperience;
         this.mRoleHeadImg = roleHeadImg;
+
+        this.mRule = new Rule();
     }
 
     public String getRoleName() {
@@ -77,7 +86,14 @@ public class GameRole {
     }
 
     public void setRoleExperience(int mRoleExperience) {
-        this.mRoleExperience = mRoleExperience;
+        int range = mRule.getExperienceRange(this);
+
+        if (this.mRoleExperience + mRoleExperience > range) {
+            // Upgrade and reset exp.
+            upgrade();
+            this.mRoleExperience = this.mRoleExperience + mRoleExperience - range;
+        }
+
     }
 
     public void setRoleHeadImg(byte[] img) {
@@ -96,53 +112,39 @@ public class GameRole {
         this.mRoleState = roleState;
     }
 
-    public static class GameRoleBuilder {
-        private String mRoleName,
-                mRoleSex,
-                mRoleLevel,
-                mRoleState;
-        private int mRoleExperience;
-        private byte[] mRoleHeadImg;
+    /**
+     * Upgrade level.
+     */
+    private void upgrade() {
+        if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_ROOKIE))
+            this.mRoleLevel = ROLE_LEVEL_POSITIVE;
 
+        else if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_POSITIVE))
+            this.mRoleLevel = ROLE_LEVEL_JUNIOR;
 
-        public GameRoleBuilder setRoleName(String roleName) {
-            this.mRoleName = roleName;
-            return this;
-        }
+        else if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_JUNIOR))
+            this.mRoleLevel = ROLE_LEVEL_INTERMEDIATE;
 
-        public GameRoleBuilder setRoleSex(String roleSex) {
-            this.mRoleSex = roleSex;
-            return this;
-        }
+        else if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_INTERMEDIATE))
+            this.mRoleLevel = ROLE_LEVEL_SENIOR;
 
-        public GameRoleBuilder setRoleLevel(String roleLevel) {
-            this.mRoleLevel = roleLevel;
-            return this;
-        }
+        else if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_SENIOR))
+            this.mRoleLevel = ROLE_LEVEL_MASTER;
 
-        public GameRoleBuilder setRoleState(String roleState) {
-            this.mRoleState = roleState;
-            return this;
-        }
+        else if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_MASTER))
+            this.mRoleLevel = ROLE_LEVEL_GURU;
 
-        public GameRoleBuilder setRoleExperience(int roleExperience) {
-            this.mRoleExperience = roleExperience;
-            return this;
-        }
-
-        public GameRoleBuilder setRoleHeadImg(byte[] roleHeadImg) {
-            this.mRoleHeadImg = roleHeadImg;
-            return this;
-        }
-
-        public GameRole build() {
-            return new GameRole(
-                    mRoleName,
-                    mRoleSex,
-                    mRoleLevel,
-                    mRoleState,
-                    mRoleExperience,
-                    mRoleHeadImg);
+        else if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_GURU)) {
+            this.mRoleLevel = ROLE_LEVEL_GURU;
         }
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof GameRole)
+            return ((GameRole) obj).getRoleName().equals(mRoleName);
+
+        return false;
+    }
+
 }

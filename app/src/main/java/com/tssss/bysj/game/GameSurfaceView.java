@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Xfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,14 +16,15 @@ import android.view.View;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable,
         View.OnTouchListener {
+
     public static boolean isDrawing;
     public static boolean canTouch;
 
     private Canvas gameCanvas;
     private SurfaceHolder gameHolder;
-    private int mSurfaceSize;
-
     private GameProgress mGameProgress;
+    private Thread mMainDrawingThread;
+
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -44,37 +46,37 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredSurfaceSize = MeasureSpec.getSize(widthMeasureSpec);
 
-        mSurfaceSize = measuredSurfaceSize;
-        GameHelper.getGameHelper().setSurfaceSize(mSurfaceSize);
+        GameHelper.getGameHelper().setSurfaceSize(measuredSurfaceSize);
         setMeasuredDimension(measuredSurfaceSize, measuredSurfaceSize);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        isDrawing = true;
+        Log.wtf(getClass().getSimpleName(), "surface created");
 
-        Thread drawThread = new Thread(this);
-        drawThread.setPriority(Thread.MAX_PRIORITY);
-        drawThread.start();
+        startup();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.wtf(getClass().getSimpleName(), "surface changed");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.wtf(getClass().getSimpleName(), "surface destroyed");
         isDrawing = false;
     }
 
     @Override
     public void run() {
+        mGameProgress.initialize();
         mGameProgress.prepare();
 
         while (isDrawing) {
             try {
                 draw();
-                Thread.sleep(40);
+                Thread.sleep(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -92,8 +94,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         setZOrderOnTop(true);
 
         mGameProgress = GameProgress.getGameProgress();
-
-        GameHelper.getGameHelper().setContext(getContext());
+        mMainDrawingThread = new Thread(this);
+        mMainDrawingThread.setPriority(Thread.MAX_PRIORITY);
     }
 
     /**
@@ -102,10 +104,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private void draw() {
         try {
             gameCanvas = gameHolder.lockCanvas();
-            clearGameCanvas(gameCanvas);
 
-            mGameProgress.setGameCanvas(gameCanvas);
-            mGameProgress.start();
+            if (gameCanvas != null) {
+                clearGameCanvas(gameCanvas);
+
+                mGameProgress.setGameCanvas(gameCanvas);
+                mGameProgress.run();
+            }
 
         } finally {
             if (gameCanvas != null) {
@@ -139,6 +144,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             doTouch(event);
 
         return true;
+    }
+
+    /**
+     * Start main drawing thread.
+     */
+    private void startup() {
+        isDrawing = true;
+        mMainDrawingThread.start();
     }
 }
 

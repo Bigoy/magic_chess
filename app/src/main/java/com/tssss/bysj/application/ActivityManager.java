@@ -1,7 +1,6 @@
 package com.tssss.bysj.application;
 
 import android.app.Activity;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +30,11 @@ public class ActivityManager {
         if (mActivities != null) {
             mActivities.add(activity);
 
-            if (mActivities.size() == 1) {
+            /*if (mActivities.size() == 1) {
                 Log.wtf(getClass().getSimpleName(), "1 activity");
             } else if (mActivities.size() > 1) {
                 Log.wtf(getClass().getSimpleName(), mActivities.size() + " activities");
-            }
+            }*/
         }
     }
 
@@ -51,6 +50,6 @@ public class ActivityManager {
             }
         }
 
-        Log.wtf(getClass().getSimpleName(), mActivities.size() + " activities");
+//        Log.wtf(getClass().getSimpleName(), mActivities.size() + " activities");
     }
 }

@@ -1,7 +1,7 @@
 package com.tssss.bysj.game;
 
-import android.util.Log;
-
+import com.tssss.bysj.user.role.GameRole;
+import com.tssss.bysj.user.role.GameRoleManager;
 import com.tssss.bysj.util.ToastUtil;
 
 
@@ -69,13 +69,12 @@ public class Rule {
                 int setY = Math.abs(pm.whoChecked().getAnchor().getY() - am.identifyAnchor(x, y).getY());
 
                 if (Math.sqrt(setX * setX + setY * setY) == gameHelper.getSurfaceSize() / 4) {
-                    if (canMoveToCircle(am.identifyAnchor(x, y),
+                    if (canMoveToCircle(pm.whoChecked().getAnchor(),
                             am.identifyAnchor(x, y))) {
                         return true;
 
                     } else {
                         pm.resetChessmenCheckedState();
-                        Log.wtf(getClass().getSimpleName(), MOVE_NOT_BETWEEN_CIRCLES);
                         ToastUtil.showToast(gameHelper.getContext(), MOVE_NOT_BETWEEN_CIRCLES,
                                 ToastUtil.TOAST_ERROR);
                     }
@@ -86,8 +85,8 @@ public class Rule {
                 }
 
             } else {
-                pm.resetChessmenCheckedState();
-                ToastUtil.showToast(gameHelper.getContext(), MOVE_POSITION_USED, ToastUtil.TOAST_ERROR);
+                pm.cancelSelection();
+//                ToastUtil.showToast(gameHelper.getContext(), MOVE_POSITION_USED, ToastUtil.TOAST_ERROR);
             }
 
         } else {
@@ -98,6 +97,9 @@ public class Rule {
         return false;
     }
 
+    /**
+     * Player can not go straight between the three circles at the bottom of chessboard.
+     */
     private boolean canMoveToCircle(Anchor old, Anchor current) {
         AnchorManager am = AnchorManager.getAnchorManager();
 
@@ -119,6 +121,42 @@ public class Rule {
     }
 
     /**
+     * Player wins when all pieces of the opponent forced to enter three circles  at
+     * the bottom of chessboard.
+     *
+     * @return winner
+     */
+    public GameRole result() {
+        AnchorManager anchorManager = AnchorManager.getAnchorManager();
+        PieceManager pieceManager = PieceManager.getChessmanManager();
+        GameRoleManager roleManager = GameRoleManager.getGameRoleManager();
+
+        int y1 = anchorManager.getAnchor(AnchorManager.FOUR).getY();
+        int y2 = anchorManager.getAnchor(AnchorManager.SEVEN).getY();
+
+        if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y1
+                && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y1
+                && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y1) {
+            if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y2
+                    && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y2
+                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y2)
+
+                return roleManager.getRole(GameRoleManager.SELF);
+
+        } else if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y2
+                && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y2
+                && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y2)
+
+            if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y1
+                    && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y1
+                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y1)
+
+                return roleManager.getRole(GameRoleManager.RIVAL);
+
+        return null;
+    }
+
+    /**
      * The experience of winner plus 50.
      */
     public int reward() {
@@ -129,6 +167,43 @@ public class Rule {
      * The experience of loser minus 30.
      */
     public int punish() {
-        return 30;
+        return -30;
+    }
+
+    /**
+     * Range of experience value.
+     *
+     * <P>ROOKIE 250</P>
+     * <P>POSITIVE 750</P>
+     * <P>JUNIOR 1250</P>
+     * <P>INTERMEDIATE 1750</P>
+     * <P>SENIOR 2250</P>
+     * <P>MASTER 2750</P>
+     * <P>GURU ∞</P>
+     */
+    public int getExperienceRange(GameRole gameRole) {
+
+        if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_ROOKIE))
+            return 250;
+
+        else if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_POSITIVE))
+            return 750;
+
+        else if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_JUNIOR))
+            return 1250;
+
+        else if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_INTERMEDIATE))
+            return 1750;
+
+        else if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_SENIOR))
+            return 2250;
+
+        else if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_MASTER))
+            return 2750;
+
+        else if (gameRole.getRoleLevel().equals(GameRole.ROLE_LEVEL_GURU))
+            return 1000000000;
+
+        return 0;
     }
 }

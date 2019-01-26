@@ -1,10 +1,14 @@
 package com.tssss.bysj.game;
 
-import android.os.Looper;
+import android.graphics.Canvas;
+import android.view.MotionEvent;
 
+import com.tssss.bysj.net.http.HttpConstant;
+import com.tssss.bysj.net.http.JsonHttpRequest;
+import com.tssss.bysj.net.http.JsonHttpResponse;
+import com.tssss.bysj.net.http.TaoHttpClient;
 import com.tssss.bysj.user.role.GameRole;
 import com.tssss.bysj.user.role.GameRoleManager;
-import com.tssss.bysj.util.ToastUtil;
 
 /**
  * Responsible for monitoring the state of the pieces on the chessboard, and judging the
@@ -14,70 +18,53 @@ import com.tssss.bysj.util.ToastUtil;
  * @date 2019-1-24
  */
 public class Umpire {
-    private GameRole winner;
     private Turn mTurn;
     private Rule mRule;
+    private GameRole mWinner;
+    private GameRole mLoser;
+    private Mark mMark;
+
+    private boolean haveResult;
 
 
     public Umpire() {
         mTurn = Turn.getInstance();
         mRule = new Rule();
+        mMark = new Mark();
     }
 
     /**
      * Judging game result.
      */
-    public void umpire(PieceManager pieceManager,
-                       GameRoleManager gameRoleManager,
-                       AnchorManager anchorManager,
-                       GameProgress gameProgress) {
+    public void umpire(GameProgress gameProgress) {
+        if (haveResult)
+            return;
 
-        int y1 = anchorManager.getAnchor(AnchorManager.FOUR).getY();
-        int y2 = anchorManager.getAnchor(AnchorManager.SEVEN).getY();
+        GameRoleManager roleManager = GameRoleManager.getGameRoleManager();
+        GameRole gameRole = mRule.result();
 
-        if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y1
-                && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y1
-                && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y1) {
+        if (gameRole == null)
+            noResult();
 
-            if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y2
-                    && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y2
-                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y2) {
+        else if (gameRole.equals(roleManager.getRole(GameRoleManager.SELF))) {
+            mWinner = roleManager.getRole(GameRoleManager.SELF);
+            mLoser = roleManager.getRole(GameRoleManager.RIVAL);
 
-//                announce(gameRoleManager.getRole(GameRoleManager.SELF));
-//                settle(gameRoleManager.getRole(GameRoleManager.SELF), gameRoleManager.getRole(GameRoleManager.OTHER));
-                gameProgress.endGame();
-                Looper.prepare();
-                ToastUtil.showToast(GameHelper.getGameHelper().getContext(), "You win", ToastUtil.TOAST_DEFAULT);
-                Looper.loop();
-            }
+            haveResult = true;
+            gameProgress.pauseGame();
 
-        } else if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y2
-                && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y2
-                && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y2) {
+        } else if (gameRole.equals(roleManager.getRole(GameRoleManager.RIVAL))) {
+            mWinner = roleManager.getRole(GameRoleManager.RIVAL);
+            mLoser = roleManager.getRole(GameRoleManager.SELF);
 
-            if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y1
-                    && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y1
-                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y1) {
-
-//                announce(gameRoleManager.getRole(GameRoleManager.OTHER));
-//                settle(gameRoleManager.getRole(GameRoleManager.OTHER), gameRoleManager.getRole(GameRoleManager.SELF));
-                gameProgress.endGame();
-                Looper.prepare();
-                ToastUtil.showToast(GameHelper.getGameHelper().getContext(), "You lose", ToastUtil.TOAST_DEFAULT);
-                Looper.loop();
-            }
+            haveResult = true;
+            gameProgress.pauseGame();
         }
+
     }
 
-    /**
-     * Announce game result.
-     */
-    private void announce(GameRole winner) {
-        this.winner = winner;
-    }
-
-    public GameRole getWinner() {
-        return winner;
+    public void setHaveResult(boolean haveResult) {
+        this.haveResult = haveResult;
     }
 
     /**
@@ -95,10 +82,68 @@ public class Umpire {
     }
 
     /**
-     * Settlement.
+     * Settlement result.
      */
-    private void settle(GameRole winner, GameRole loser) {
-        winner.setRoleExperience(mRule.reward());
-        loser.setRoleExperience(mRule.punish());
+    public void settlement() {
+        mWinner.setRoleExperience(mRule.reward());
+        mLoser.setRoleExperience(mRule.punish());
+
+        // Upload the newest data of winner and loser to data base via net.
+        TaoHttpClient client = new TaoHttpClient(
+                HttpConstant.BASE_URL,
+                mWinner,
+                new JsonHttpRequest(),
+                new JsonHttpResponse(null)
+        );
+        client.request();
+
+        TaoHttpClient client02 = new TaoHttpClient(
+                HttpConstant.BASE_URL,
+                mLoser,
+                new JsonHttpRequest(),
+                new JsonHttpResponse(null)
+        );
+        client02.request();
+
+    }
+
+    /**
+     * Monitor user behavior.
+     */
+    public void monitor(PieceManager pm, Canvas gameCanvas) {
+        if (pm.whoChecked() != null)
+            mMark.mark(gameCanvas, pm.whoChecked());
+    }
+
+    /**
+     * Handle user's actions according to specified rule.
+     */
+    public void handleUserActions(MotionEvent event, PieceManager pieceManager, AnchorManager anchorManager) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                if (pieceManager.hasChessmanChecked()) {
+                    // User has selected a piece and ready to move.
+                    if (mRule.canMove(x, y)) {
+                        pieceManager.update(anchorManager.identifyAnchor(x, y));
+                        pieceManager.resetChessmenCheckedState();
+//                        mUmpire.lockPlayPermission();
+                    }
+
+                } else {
+                    // User ready to select a piece.
+                    if (mRule.canSelect(x, y)) {
+                        pieceManager.checkChessman(x, y);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void noResult() {
     }
 }
