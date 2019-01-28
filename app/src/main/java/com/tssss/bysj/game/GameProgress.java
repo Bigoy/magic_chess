@@ -75,8 +75,8 @@ public class GameProgress {
     public void prepare() {
         Log.wtf(getClass().getSimpleName(), "<------ game preparation ------>");
 
-        if (!GameSurfaceView.canTouch)
-            GameSurfaceView.canTouch = true;
+        if (!GameScene.canTouch)
+            GameScene.canTouch = true;
 
         connectServer();
         prepareMusic();
@@ -128,8 +128,8 @@ public class GameProgress {
      * Pause game.
      */
     public void pauseGame() {
-        if (GameSurfaceView.canTouch)
-            GameSurfaceView.canTouch = false;
+        if (GameScene.canTouch)
+            GameScene.canTouch = false;
 
         Effect effect = new Effect();
         effect.explosion(mGameCanvas);
@@ -143,8 +143,8 @@ public class GameProgress {
      * Resume game.
      */
     public void resumeGame() {
-        if (!GameSurfaceView.canTouch)
-            GameSurfaceView.canTouch = true;
+        if (!GameScene.canTouch)
+            GameScene.canTouch = true;
 
         initialized = false;
         mUmpire.setHaveResult(false);

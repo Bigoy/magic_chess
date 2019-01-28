@@ -121,7 +121,7 @@ public class Rule {
     }
 
     /**
-     * Player wins when all pieces of the opponent forced to enter three circles  at
+     * Player wins when all pieces of the opponent forced to open_enter three circles  at
      * the bottom of chessboard.
      *
      * @return winner

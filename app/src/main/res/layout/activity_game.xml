@@ -89,7 +89,7 @@
         app:layout_constraintStart_toStartOf="@+id/game_role_02_sex_iv"
         app:layout_constraintTop_toBottomOf="@+id/game_role_02_sex_iv" />
 
-    <com.tssss.bysj.game.GameSurfaceView
+    <com.tssss.bysj.game.GameScene
         android:id="@+id/game_gsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

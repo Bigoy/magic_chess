@@ -14,7 +14,8 @@ import com.tssss.bysj.util.ToastUtil;
 
 public class RegisterActivity extends BaseActivity implements OnRegisterListener {
     private ImageButton mRegisterAccountIb;
-    private EditText mAccountEt, mPasswordEt;
+    private EditText mAccountEt,
+            mPasswordEt;
 
     private RegisterPresenter mPresenter;
 

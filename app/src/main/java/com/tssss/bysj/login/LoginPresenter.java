@@ -4,18 +4,35 @@ import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.role.GameRole;
 import com.tssss.bysj.user.role.GameRoleManager;
+import com.tssss.bysj.util.AccountUtil;
 
 public class LoginPresenter extends PresenterImp implements OnLoginDataListener {
     private LoginModel mModel;
     private OnLoginListener mLoginListener;
 
-    public LoginPresenter() {
+    LoginPresenter() {
         mModel = new LoginModel();
     }
 
-    public void requestLogin(User user, OnLoginListener listener) {
+    void requestLogin(User user, OnLoginListener listener) {
         mLoginListener = listener;
-        mModel.loadUserData(user, this);
+
+        if (!AccountUtil.validPhoneNumber(user.getUserId()))
+            mLoginListener.onInvalidPhoneNumber();
+
+        if (!AccountUtil.validPassword(user.getUserPassword()))
+            mLoginListener.onInvalidPassword();
+
+        if (AccountUtil.validPhoneNumber(user.getUserId()))
+            mLoginListener.onValidPhoneNumber();
+
+        if (AccountUtil.validPassword(user.getUserPassword()))
+            mLoginListener.onValidPassword();
+
+        if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
+            mLoginListener.onValidAccount();
+            mModel.loadUserData(user, this);
+        }
     }
 
     @Override

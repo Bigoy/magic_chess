@@ -14,7 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable,
+public class GameScene extends SurfaceView implements SurfaceHolder.Callback, Runnable,
         View.OnTouchListener {
 
     public static boolean isDrawing;
@@ -26,17 +26,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Thread mMainDrawingThread;
 
 
-    public GameSurfaceView(Context context) {
+    public GameScene(Context context) {
         super(context);
         init();
     }
 
-    public GameSurfaceView(Context context, AttributeSet attrs) {
+    public GameScene(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GameSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GameScene(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

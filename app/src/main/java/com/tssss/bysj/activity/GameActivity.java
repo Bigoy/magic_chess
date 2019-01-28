@@ -10,7 +10,7 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.contract.BaseActivity;
 import com.tssss.bysj.contract.PresenterImp;
 import com.tssss.bysj.game.GameHelper;
-import com.tssss.bysj.game.GameSurfaceView;
+import com.tssss.bysj.game.GameScene;
 import com.tssss.bysj.interfaces.OnGameListener;
 import com.tssss.bysj.presenter.GamePresenter;
 import com.tssss.bysj.user.role.GameRole;
@@ -20,7 +20,7 @@ import com.tssss.bysj.widget.GTextView;
 import androidx.annotation.Nullable;
 
 public class GameActivity extends BaseActivity implements View.OnTouchListener, OnGameListener {
-    private GameSurfaceView mGameSurfaceView;
+    private GameScene mGameScene;
     private ImageView mHeadImgIv,
             mHeadImg02Iv,
             mSexIv,
@@ -49,7 +49,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener, 
 
     @Override
     protected void findViews() {
-        mGameSurfaceView = findViewById(R.id.game_gsv);
+        mGameScene = findViewById(R.id.game_gsv);
         mHeadImgIv = findViewById(R.id.game_role_head_img_iv);
         mHeadImg02Iv = findViewById(R.id.game_role_02_head_img_iv);
         mSexIv = findViewById(R.id.game_role_sex_iv);
@@ -84,7 +84,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener, 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        mGameSurfaceView.doTouch(event);
+        mGameScene.doTouch(event);
         return false;
     }
 

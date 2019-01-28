@@ -1,5 +1,7 @@
 package com.tssss.bysj.net.http;
 
+import android.util.Log;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -59,16 +61,17 @@ class HttpThreadPool {
      *
      * @return instance of HttpThreadPool.
      */
-    public static HttpThreadPool getInstance() {
+    static HttpThreadPool getInstance() {
         return instance;
     }
 
     /**
      * Add HTTP request task
      */
-    public void addHttpTask(Runnable task) {
+    void addHttpTask(Runnable task) {
         try {
             mHttpTasks.put(task);
+            Log.i(getClass().getSimpleName(), "http thread count: " + mHttpTasks.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

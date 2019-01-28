@@ -8,4 +8,14 @@ public interface OnLoginListener {
     void onUserNotExit();
 
     void onUserPasswordError();
+
+    void onInvalidPhoneNumber();
+
+    void onInvalidPassword();
+
+    void onValidPhoneNumber();
+
+    void onValidPassword();
+
+    void onValidAccount();
 }

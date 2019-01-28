@@ -21,6 +21,10 @@ public class Anchor {
     private boolean used = false;
 
 
+    public Anchor() {
+    }
+
+
     public Anchor(String name) {
         this.name = name;
     }
