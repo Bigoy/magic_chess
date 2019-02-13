@@ -2,10 +2,10 @@ package com.tssss.bysj.game;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /*
  * 棋子管理者。
@@ -15,12 +15,12 @@ public class PieceManager {
     @SuppressLint("StaticFieldLeak")
     private static PieceManager pieceManager;
 
-    public static String SELF_A = "SELF_A";
-    public static String SELF_B = "SELF_B";
-    public static String SELF_C = "SELF_C";
-    public static String RIVAL_A = "RIVAL_A";
-    public static String RIVAL_B = "RIVAL_B";
-    public static String RIVAL_C = "RIVAL_C";
+    static String SELF_A = "SELF_A";
+    static String SELF_B = "SELF_B";
+    static String SELF_C = "SELF_C";
+    static String RIVAL_A = "RIVAL_A";
+    static String RIVAL_B = "RIVAL_B";
+    static String RIVAL_C = "RIVAL_C";
 
     private Piece selfA;
     private Piece selfB;
@@ -38,7 +38,7 @@ public class PieceManager {
         initPieces();
     }
 
-    public static PieceManager getChessmanManager() {
+    static PieceManager getChessmanManager() {
         if (pieceManager == null)
             pieceManager = new PieceManager();
 
@@ -60,13 +60,13 @@ public class PieceManager {
         pieces.put(RIVAL_B, rivalB);
         pieces.put(RIVAL_C, rivalC);
 
-        Log.wtf(getClass().getSimpleName(), "<------ pieces initialized ------>");
+//        Log.wtf(getClass().getSimpleName(), "<------ pieces initialized ------>");
     }
 
     /**
      * Initialize position of pieces.
      */
-    public void initPiecesPosition() {
+    void initPiecesPosition() {
         selfA.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.ONE));
         selfB.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.FOUR));
         selfC.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.SEVEN));
@@ -75,17 +75,17 @@ public class PieceManager {
         rivalB.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.SIX));
         rivalC.setAnchor(AnchorManager.getAnchorManager().getAnchor(AnchorManager.NINE));
 
-        Log.wtf(getClass().getSimpleName(), "<------ the position of pieces initialized ------>");
+//        Log.wtf(getClass().getSimpleName(), "<------ the position of pieces initialized ------>");
     }
 
-    public Piece getPiece(String key) {
+    Piece getPiece(String key) {
         return pieces.get(key);
     }
 
     /*
     Drawing pieces uniformly.
      */
-    public void drawPieces(Canvas gameCanvas) {
+    void drawPieces(Canvas gameCanvas) {
         selfA.draw(gameCanvas);
         selfB.draw(gameCanvas);
         selfC.draw(gameCanvas);
@@ -95,7 +95,7 @@ public class PieceManager {
         rivalC.draw(gameCanvas);
     }
 
-    public Piece identify(Anchor anchor) {
+    private Piece identify(Anchor anchor) {
         if (selfA.getAnchor().equals(anchor)) {
 
             return selfA;
@@ -128,7 +128,7 @@ public class PieceManager {
     /**
      * Update position of pieces.
      */
-    public void update(Anchor newAnchor) {
+    void update(Anchor newAnchor) {
         whoChecked().getAnchor().setUsed(false);
         whoChecked().setAnchor(newAnchor);
 
@@ -148,7 +148,7 @@ public class PieceManager {
     /*
     Determine if any chessman have been selected.
      */
-    public boolean hasChessmanChecked() {
+    boolean hasChessmanChecked() {
         if (selfA.getCheckedState()) {
             return true;
 
@@ -171,7 +171,7 @@ public class PieceManager {
     /**
      * Return the key of checked chessman.
      */
-    public Piece whoChecked() {
+    Piece whoChecked() {
         if (selfA.getCheckedState())
             return selfA;
 
@@ -196,26 +196,26 @@ public class PieceManager {
     /*
     选中一个棋子。
      */
-    public void checkChessman(int x, int y) {
+    void checkChessman(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
         Rule rule = new Rule();
 
         if (rule.canSelect(x, y)) {
-            identify(am.identifyAnchor(x, y)).setChecked(true);
+            Objects.requireNonNull(identify(am.identifyAnchor(x, y))).setChecked(true);
         }
     }
 
     /**
      * Cancel selection.
      */
-    public void cancelSelection() {
+    void cancelSelection() {
         resetChessmenCheckedState();
     }
 
     /*
     重置所有棋子的选中状态为false。
      */
-    public void resetChessmenCheckedState() {
+    void resetChessmenCheckedState() {
         selfA.setChecked(false);
         selfB.setChecked(false);
         selfC.setChecked(false);

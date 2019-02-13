@@ -3,7 +3,7 @@ package com.tssss.bysj.activity;
 import android.os.Bundle;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.contract.BaseActivity;
+import com.tssss.bysj.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -29,6 +29,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected void afterBindView() {
+
     }
 
     @Override

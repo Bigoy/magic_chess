@@ -19,6 +19,7 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     public static boolean isDrawing;
     public static boolean canTouch;
+    private boolean threadStarted;
 
     private Canvas gameCanvas;
     private SurfaceHolder gameHolder;
@@ -66,6 +67,16 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback, Ru
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.wtf(getClass().getSimpleName(), "surface destroyed");
         isDrawing = false;
+
+        /*if (threadStarted) {
+            try {
+                mMainDrawingThread.join();
+                threadStarted = false;
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 
     @Override
@@ -151,7 +162,13 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback, Ru
      */
     private void startup() {
         isDrawing = true;
-        mMainDrawingThread.start();
+
+        Log.wtf(getClass().getSimpleName(), mMainDrawingThread.getState().name());
+
+        if (!threadStarted) {
+            mMainDrawingThread.start();
+            threadStarted = true;
+        }
     }
 }
 

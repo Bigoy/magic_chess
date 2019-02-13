@@ -67,7 +67,7 @@ public class TimeUtil {
     /**
      * 开启计时器
      */
-    public void startTimer(final Handler handler){
+    public void startTimer(final Handler handler) {
         setCount(0);
         setIsPlaying(true);
         new Thread(new Runnable() {
@@ -91,9 +91,17 @@ public class TimeUtil {
     /**
      * 关掉计时器
      */
-    public void stopTimer(){
+    public void stopTimer() {
         setCount(-1);
         setIsPlaying(false);
     }
 
+    public static void pause(long millisecond) {
+        long startTime = System.currentTimeMillis();
+
+        do {
+            Log.wtf("TimeUtil", "pausing");
+
+        } while (System.currentTimeMillis() - startTime == millisecond);
+    }
 }

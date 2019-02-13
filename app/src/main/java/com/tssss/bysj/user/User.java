@@ -1,7 +1,5 @@
 package com.tssss.bysj.user;
 
-import android.widget.SimpleCursorTreeAdapter;
-
 public class User {
 
     /*
@@ -10,8 +8,20 @@ public class User {
     private long userId;
     private String userPassword;
 
+
+    public User() {
+    }
+
     public User(long userId, String userPassword) {
         this.userId = userId;
+        this.userPassword = userPassword;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
 

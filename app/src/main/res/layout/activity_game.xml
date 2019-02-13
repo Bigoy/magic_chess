@@ -7,94 +7,205 @@
     android:background="@drawable/bg_common"
     tools:context=".activity.GameActivity">
 
+
     <ImageView
-        android:id="@+id/game_role_head_img_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:id="@+id/game_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <com.tssss.bysj.widget.GTextView
-        android:id="@+id/game_role_name_gtv"
+        android:id="@+id/game_timer_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_timer"
+        android:gravity="center"
+        android:text="30"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_size_24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/game_role_level_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_level_intermidate"
+        app:layout_constraintEnd_toStartOf="@+id/game_timer_gtv"
+        app:layout_constraintTop_toBottomOf="@+id/game_timer_gtv"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.CircleImageView
+        android:id="@+id/game_role_head_img_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/head_img_test"
+        app:layout_constraintEnd_toEndOf="@+id/game_role_level_iv"
+        app:layout_constraintStart_toStartOf="@+id/game_role_level_iv"
+        app:layout_constraintTop_toBottomOf="@+id/game_role_level_iv"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/game_role_name_self_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:text="A"
         app:layout_constraintEnd_toEndOf="@+id/game_role_head_img_iv"
         app:layout_constraintStart_toStartOf="@+id/game_role_head_img_iv"
         app:layout_constraintTop_toBottomOf="@+id/game_role_head_img_iv" />
 
     <ImageView
-        android:id="@+id/game_role_sex_iv"
+        android:id="@+id/game_role_rival_level_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/game_role_name_gtv"
-        app:layout_constraintStart_toStartOf="@+id/game_role_name_gtv"
-        app:layout_constraintTop_toBottomOf="@+id/game_role_name_gtv"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/ic_level_intermidate"
+        app:layout_constraintStart_toEndOf="@+id/game_timer_gtv"
+        app:layout_constraintTop_toBottomOf="@+id/game_timer_gtv"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.CircleImageView
+        android:id="@+id/game_role_rival_head_img_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/head_img_test"
+        app:layout_constraintEnd_toEndOf="@+id/game_role_rival_level_iv"
+        app:layout_constraintStart_toStartOf="@+id/game_role_rival_level_iv"
+        app:layout_constraintTop_toBottomOf="@+id/game_role_rival_level_iv"
         tools:ignore="ContentDescription" />
 
     <com.tssss.bysj.widget.GTextView
-        android:id="@+id/game_role_level_gtv"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textColor="@color/white_ffffff"
-        android:textSize="@dimen/font_size_12sp"
-        app:layout_constraintEnd_toEndOf="@+id/game_role_sex_iv"
-        app:layout_constraintStart_toStartOf="@+id/game_role_sex_iv"
-        app:layout_constraintTop_toBottomOf="@+id/game_role_sex_iv" />
-
-    <ImageView
-        android:id="@+id/game_role_02_head_img_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <com.tssss.bysj.widget.GTextView
-        android:id="@+id/game_role_02_name_gtv"
+        android:id="@+id/game_role_rival_name_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/game_role_02_head_img_iv"
-        app:layout_constraintStart_toStartOf="@+id/game_role_02_head_img_iv"
-        app:layout_constraintTop_toBottomOf="@+id/game_role_02_head_img_iv" />
+        android:text="b"
+        app:layout_constraintEnd_toEndOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintStart_toStartOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintTop_toBottomOf="@+id/game_role_rival_head_img_iv" />
 
     <ImageView
-        android:id="@+id/game_role_02_sex_iv"
+        android:id="@+id/game_blood_strip_self_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/game_role_02_name_gtv"
-        app:layout_constraintStart_toStartOf="@+id/game_role_02_name_gtv"
-        app:layout_constraintTop_toBottomOf="@+id/game_role_02_name_gtv"
+        android:src="@drawable/blood_strip_01"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintEnd_toStartOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintStart_toEndOf="@+id/game_role_head_img_iv"
+        app:layout_constraintTop_toTopOf="@+id/game_role_rival_head_img_iv"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/game_blood_strip_rival_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/blood_strip_02"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintEnd_toStartOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintStart_toEndOf="@+id/game_role_head_img_iv"
+        app:layout_constraintTop_toTopOf="@+id/game_role_rival_head_img_iv"
         tools:ignore="ContentDescription" />
 
     <com.tssss.bysj.widget.GTextView
-        android:id="@+id/game_role_02_level_gtv"
+        android:id="@+id/game_pk_gtv"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textColor="@color/white_ffffff"
-        android:textSize="@dimen/font_size_12sp"
-        app:layout_constraintEnd_toEndOf="@+id/game_role_02_sex_iv"
-        app:layout_constraintStart_toStartOf="@+id/game_role_02_sex_iv"
-        app:layout_constraintTop_toBottomOf="@+id/game_role_02_sex_iv" />
+        android:layout_height="wrap_content"
+        android:text="@string/game_pk"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_size_28sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintEnd_toStartOf="@+id/game_role_rival_head_img_iv"
+        app:layout_constraintStart_toEndOf="@+id/game_role_head_img_iv"
+        app:layout_constraintTop_toTopOf="@+id/game_role_rival_head_img_iv" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/game_turn_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/game_turn"
+        android:textColor="@color/green_56ce4d"
+        android:textSize="@dimen/font_size_24sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_role_name_self_gtv" />
 
     <com.tssss.bysj.game.GameScene
         android:id="@+id/game_gsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_role_name_self_gtv" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/game_result_title_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:textSize="@dimen/font_size_48sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_role_name_self_gtv" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/game_result_content_exp_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/game_result_exp"
+        android:textColor="#2E2E2E"
+        android:textSize="@dimen/font_size_24sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_result_title_gtv" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/game_result_content_exp_count_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/font_size_24sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_result_content_exp_gtv" />
+
+    <ImageView
+        android:id="@+id/game_result_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_result_content_exp_count_gtv"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

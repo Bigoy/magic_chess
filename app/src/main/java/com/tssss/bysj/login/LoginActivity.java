@@ -7,17 +7,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.activity.HallActivity;
-import com.tssss.bysj.activity.RegisterActivity;
-import com.tssss.bysj.contract.BaseActivity;
-import com.tssss.bysj.contract.PresenterImp;
+import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.interfaces.OnGDialogListener;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.ToastUtil;
 import com.tssss.bysj.widget.GDialog;
 import com.tssss.bysj.widget.GTextView;
 
-public class LoginActivity extends BaseActivity implements OnLoginListener {
+public class LoginActivity extends BaseActivity implements ILoginActivityContract.IView {
     private EditText mAccountEt, mPasswordEt;
     private ImageButton mLoginIb;
     private GTextView mLoggingGtv,
@@ -25,21 +22,31 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
             mPasswordGtv,
             mAccountErrorGtv,
             mPasswordErrorGtv,
-            mLoginGtv;
+            mLoginGtv,
+            mReconnectGtv;
 
+    private User loginUser;
+    private ILoginActivityContract.IPresenter mPresenter;
+    private int loginCount;
 
-    private LoginPresenter mPresenter;
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        loginUser = new User();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         clearInputText();
-    }
-
-    @Override
-    protected PresenterImp attachPresenter() {
-        mPresenter = new LoginPresenter();
-        return mPresenter;
+        loginCount = 0;
     }
 
     @Override
@@ -53,6 +60,7 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
         mAccountErrorGtv = findViewById(R.id.login_account_error_gtv);
         mPasswordErrorGtv = findViewById(R.id.login_password_error_gtv);
         mLoginGtv = findViewById(R.id.login_gtv);
+        mReconnectGtv = findViewById(R.id.login_reconnect_gtv);
     }
 
     @Override
@@ -63,6 +71,11 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
+    }
+
+    @Override
+    protected void afterBindView() {
+        mPresenter = new LoginPresenter(this);
     }
 
     @Override
@@ -86,17 +99,14 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
      */
     private void login() {
         try {
-            User user = new User(Long.parseLong(mAccountEt.getText().toString()),
-                    mPasswordEt.getText().toString());
-            mPresenter.requestLogin(user, this);
+            loginUser.setUserId(Long.parseLong(mAccountEt.getText().toString()));
 
         } catch (NumberFormatException e) {
-
-            if (mAccountErrorGtv.getVisibility() == View.VISIBLE)
-                switchView(mAccountErrorGtv, mAccountErrorGtv);
-            else
-                switchView(mAccountGtv, mAccountErrorGtv);
+            loginUser.setUserId(-1L);
         }
+
+        loginUser.setUserPassword(mPasswordEt.getText().toString());
+        mPresenter.identifyAccount(loginUser);
     }
 
     private void clearInputText() {
@@ -117,16 +127,29 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
 
     @Override
     public void onLoginSuccess() {
-        openActivity(HallActivity.class);
+        loginCount = 0;
+//        openActivity(HallActivity.class);
     }
 
     @Override
     public void onLoginError() {
-        ToastUtil.showToast(this, getString(R.string.error),
-                ToastUtil.TOAST_ERROR);
-        showView(mLoginGtv);
-        unlockInput();
-        switchView(mLoggingGtv, mLoginIb);
+        loginCount++;
+
+        if (loginCount == 6) {
+
+            if (mReconnectGtv.getVisibility() == View.VISIBLE) {
+
+                showView(mLoginGtv);
+                switchView(mReconnectGtv, mLoginIb);
+                unlockViews();
+                ToastUtil.showToast(this, getString(R.string.error), ToastUtil.TOAST_ERROR);
+                loginCount = 0;
+            }
+
+        }
+
+        if (loginCount >= 1 && loginCount < 6)
+            reconnect();
     }
 
     @Override
@@ -137,8 +160,8 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
     @Override
     public void onUserPasswordError() {
         mPasswordEt.setText("");
-        unlockInput();
         switchView(mLoggingGtv, mLoginIb);
+        unlockViews();
     }
 
     @Override
@@ -175,9 +198,24 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
 
     @Override
     public void onValidAccount() {
-        lockInput();
-        hideView(mLoginGtv);
-        switchView(mLoginIb, mLoggingGtv);
+        if (loginCount == 0) {
+            hideView(mLoginGtv);
+            switchView(mLoginIb, mLoggingGtv);
+            lockViews();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1000);
+                        mPresenter.login();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
     }
 
     private void hideView(View hideView) {
@@ -190,14 +228,26 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
         showView.startAnimation(AnimationUtils.loadAnimation(this, R.anim.alpha_in));
     }
 
-    private void lockInput() {
+    private void lockViews() {
         mAccountEt.setEnabled(false);
         mPasswordEt.setEnabled(false);
+        mLoginIb.setEnabled(false);
     }
 
-    private void unlockInput() {
+    private void unlockViews() {
         mAccountEt.setEnabled(true);
         mPasswordEt.setEnabled(true);
+        mLoginIb.setEnabled(true);
+    }
+
+    private void reconnect() {
+        if (mReconnectGtv.getVisibility() == View.VISIBLE)
+            switchView(mReconnectGtv, mReconnectGtv);
+
+        if (mReconnectGtv.getVisibility() == View.GONE)
+            switchView(mLoggingGtv, mReconnectGtv);
+
+        mPresenter.login();
     }
 
     /**
@@ -215,10 +265,11 @@ public class LoginActivity extends BaseActivity implements OnLoginListener {
 
             @Override
             public void onPositive() {
-                openActivity(RegisterActivity.class);
+//                openActivity(RegisterActivity.class);
             }
         });
         gDialog.show();
     }
+
 
 }

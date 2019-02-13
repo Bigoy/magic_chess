@@ -1,11 +1,8 @@
 package com.tssss.bysj.login;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tssss.bysj.net.http.HttpConstant;
+import com.tssss.bysj.game.GameTest;
 import com.tssss.bysj.net.http.IDataListener;
-import com.tssss.bysj.net.http.JsonHttpRequest;
-import com.tssss.bysj.net.http.JsonHttpResponse;
-import com.tssss.bysj.net.http.TaoHttpClient;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.role.GameRole;
 
@@ -24,9 +21,13 @@ public class LoginModel implements IDataListener {
     void loadUserData(User user, OnLoginDataListener listener) {
         this.mListener = listener;
 
-        TaoHttpClient taoHttpClient = new TaoHttpClient(HttpConstant.BASE_URL, user,
+        /*TaoHttpClient taoHttpClient = new TaoHttpClient(HttpConstant.BASE_URL, user,
                 new JsonHttpRequest(), new JsonHttpResponse(this));
-        taoHttpClient.request();
+        taoHttpClient.request();*/
+
+        // Test
+        GameTest test = new GameTest();
+        mListener.onLoadDataCompleted(test.getSelf());
     }
 
     /**

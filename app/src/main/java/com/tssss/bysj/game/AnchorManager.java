@@ -23,19 +23,18 @@ import java.util.Objects;
  * @author Tssss
  * @date 2019-1-24
  */
-public class AnchorManager {
+class AnchorManager {
     private static AnchorManager mAnchorManager;
 
-    public static String ONE = "one";
-    public static String TWO = "two";
-    public static String THREE = "three";
-    public static String FOUR = "four";
-    public static String FIVE = "five";
-    public static String SIX = "six";
-    public static String SEVEN = "seven";
-    public static String EIGHT = "eight";
-    public static String NINE = "nine";
-    public static String UNKNOWN = "unknown";
+    static String ONE = "one";
+    static String TWO = "two";
+    static String THREE = "three";
+    static String FOUR = "four";
+    private static String FIVE = "five";
+    static String SIX = "six";
+    static String SEVEN = "seven";
+    static String EIGHT = "eight";
+    static String NINE = "nine";
 
     private Anchor one;
     private Anchor two;
@@ -55,14 +54,14 @@ public class AnchorManager {
         initAnchorUseState();
     }
 
-    public static AnchorManager getAnchorManager() {
+    static AnchorManager getAnchorManager() {
         if (mAnchorManager == null) {
             mAnchorManager = new AnchorManager();
         }
         return mAnchorManager;
     }
 
-    public Anchor getAnchor(String position) {
+    Anchor getAnchor(String position) {
         return anchors.get(position);
     }
 
@@ -90,16 +89,16 @@ public class AnchorManager {
         Log.wtf(getClass().getSimpleName(), "anchors initialized, total " + this.anchors.size());
     }
 
-    public void initAnchorUseState() {
-        anchors.get(ONE).setUsed(true);
-        anchors.get(TWO).setUsed(false);
-        anchors.get(THREE).setUsed(true);
-        anchors.get(FOUR).setUsed(true);
-        anchors.get(FIVE).setUsed(false);
-        anchors.get(SIX).setUsed(true);
-        anchors.get(SEVEN).setUsed(true);
-        anchors.get(EIGHT).setUsed(false);
-        anchors.get(NINE).setUsed(true);
+    private void initAnchorUseState() {
+        Objects.requireNonNull(anchors.get(ONE)).setUsed(true);
+        Objects.requireNonNull(anchors.get(TWO)).setUsed(false);
+        Objects.requireNonNull(anchors.get(THREE)).setUsed(true);
+        Objects.requireNonNull(anchors.get(FOUR)).setUsed(true);
+        Objects.requireNonNull(anchors.get(FIVE)).setUsed(false);
+        Objects.requireNonNull(anchors.get(SIX)).setUsed(true);
+        Objects.requireNonNull(anchors.get(SEVEN)).setUsed(true);
+        Objects.requireNonNull(anchors.get(EIGHT)).setUsed(false);
+        Objects.requireNonNull(anchors.get(NINE)).setUsed(true);
 
         Log.wtf(getClass().getSimpleName(), "anchors state initialized");
     }
@@ -107,7 +106,7 @@ public class AnchorManager {
     /**
      * Create nine anchor points based on the size of game surface view.
      */
-    public void createAnchors(int chessboardSize) {
+    void createAnchors(int chessboardSize) {
         int temp = chessboardSize / 4;
 
         Objects.requireNonNull(anchors.get(ONE)).setX(temp);
@@ -131,7 +130,7 @@ public class AnchorManager {
         Objects.requireNonNull(anchors.get(NINE)).setX(temp * 3);
         Objects.requireNonNull(anchors.get(NINE)).setY(temp * 3);
 
-        Log.wtf(getClass().getSimpleName(), "anchors data created");
+        /*Log.wtf(getClass().getSimpleName(), "anchors data created");
         Log.wtf(getClass().getSimpleName(), one.toString());
         Log.wtf(getClass().getSimpleName(), two.toString());
         Log.wtf(getClass().getSimpleName(), three.toString());
@@ -140,67 +139,67 @@ public class AnchorManager {
         Log.wtf(getClass().getSimpleName(), six.toString());
         Log.wtf(getClass().getSimpleName(), seven.toString());
         Log.wtf(getClass().getSimpleName(), eight.toString());
-        Log.wtf(getClass().getSimpleName(), nine.toString());
+        Log.wtf(getClass().getSimpleName(), nine.toString());*/
     }
 
     /**
      * Judge if the user's click position is within an anchor point.
      */
-    public boolean inRange(int x, int y) {
+    boolean inRange(int x, int y) {
         int temp = GameHelper.getGameHelper().getSurfaceSize() / 16;
 
-        if (x >= anchors.get(AnchorManager.ONE).getX() - temp &&
-                x <= anchors.get(AnchorManager.ONE).getX() + temp &&
-                y >= anchors.get(AnchorManager.ONE).getY() - temp &&
-                y <= anchors.get(AnchorManager.ONE).getY() + temp) {
+        if (x >= Objects.requireNonNull(anchors.get(AnchorManager.ONE)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.ONE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.ONE)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.ONE)).getY() + temp) {
             return true;
 
-        } else if (x >= anchors.get(AnchorManager.TWO).getX() - temp &&
-                x <= anchors.get(AnchorManager.TWO).getX() + temp &&
-                y >= anchors.get(AnchorManager.TWO).getY() - temp &&
-                y <= anchors.get(AnchorManager.TWO).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.TWO)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.TWO)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.TWO)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.TWO)).getY() + temp) {
             return true;
 
-        } else if (x >= anchors.get(AnchorManager.THREE).getX() - temp &&
-                x <= anchors.get(AnchorManager.THREE).getX() + temp &&
-                y >= anchors.get(AnchorManager.THREE).getY() - temp &&
-                y <= anchors.get(AnchorManager.THREE).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.THREE)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.THREE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.THREE)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.THREE)).getY() + temp) {
 
             return true;
-        } else if (x >= anchors.get(AnchorManager.FOUR).getX() - temp &&
-                x <= anchors.get(AnchorManager.FOUR).getX() + temp &&
-                y >= anchors.get(AnchorManager.FOUR).getY() - temp &&
-                y <= anchors.get(AnchorManager.FOUR).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.FOUR)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.FOUR)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.FOUR)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.FOUR)).getY() + temp) {
             return true;
 
-        } else if (x >= anchors.get(AnchorManager.FIVE).getX() - temp &&
-                x <= anchors.get(AnchorManager.FIVE).getX() + temp &&
-                y >= anchors.get(AnchorManager.FIVE).getY() - temp &&
-                y <= anchors.get(AnchorManager.FIVE).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.FIVE)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.FIVE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.FIVE)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.FIVE)).getY() + temp) {
             return true;
 
-        } else if (x >= anchors.get(AnchorManager.SIX).getX() - temp &&
-                x <= anchors.get(AnchorManager.SIX).getX() + temp &&
-                y >= anchors.get(AnchorManager.SIX).getY() - temp &&
-                y <= anchors.get(AnchorManager.SIX).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.SIX)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.SIX)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.SIX)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.SIX)).getY() + temp) {
             return true;
 
-        } else if (x >= anchors.get(AnchorManager.SEVEN).getX() - temp &&
-                x <= anchors.get(AnchorManager.SEVEN).getX() + temp &&
-                y >= anchors.get(AnchorManager.SEVEN).getY() - temp &&
-                y <= anchors.get(AnchorManager.SEVEN).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.SEVEN)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.SEVEN)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.SEVEN)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.SEVEN)).getY() + temp) {
             return true;
 
-        } else if (x >= anchors.get(AnchorManager.EIGHT).getX() - temp &&
-                x <= anchors.get(AnchorManager.EIGHT).getX() + temp &&
-                y >= anchors.get(AnchorManager.EIGHT).getY() - temp &&
-                y <= anchors.get(AnchorManager.EIGHT).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(AnchorManager.EIGHT)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.EIGHT)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.EIGHT)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.EIGHT)).getY() + temp) {
             return true;
 
-        } else return x >= anchors.get(AnchorManager.NINE).getX() - temp &&
-                x <= anchors.get(AnchorManager.NINE).getX() + temp &&
-                y >= anchors.get(AnchorManager.NINE).getY() - temp &&
-                y <= anchors.get(AnchorManager.NINE).getY() + temp;
+        } else return x >= Objects.requireNonNull(anchors.get(AnchorManager.NINE)).getX() - temp &&
+                x <= Objects.requireNonNull(anchors.get(AnchorManager.NINE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(AnchorManager.NINE)).getY() - temp &&
+                y <= Objects.requireNonNull(anchors.get(AnchorManager.NINE)).getY() + temp;
     }
 
     /**
@@ -208,43 +207,43 @@ public class AnchorManager {
      *
      * @return key of the anchor.
      */
-    public Anchor identifyAnchor(int x, int y) {
+    Anchor identifyAnchor(int x, int y) {
         int temp = GameHelper.getGameHelper().getSurfaceSize() / 16;
 
-        if (x >= anchors.get(ONE).getX() - temp && x <= anchors.get(ONE).getX() + temp &&
-                y >= anchors.get(ONE).getY() - temp && y <= anchors.get(ONE).getY() + temp) {
+        if (x >= Objects.requireNonNull(anchors.get(ONE)).getX() - temp && x <= Objects.requireNonNull(anchors.get(ONE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(ONE)).getY() - temp && y <= Objects.requireNonNull(anchors.get(ONE)).getY() + temp) {
             return anchors.get(ONE);
 
-        } else if (x >= anchors.get(TWO).getX() - temp && x <= anchors.get(TWO).getX() + temp &&
-                y >= anchors.get(TWO).getY() - temp && y <= anchors.get(TWO).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(TWO)).getX() - temp && x <= Objects.requireNonNull(anchors.get(TWO)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(TWO)).getY() - temp && y <= Objects.requireNonNull(anchors.get(TWO)).getY() + temp) {
             return anchors.get(TWO);
 
-        } else if (x >= anchors.get(THREE).getX() - temp && x <= anchors.get(THREE).getX() + temp &&
-                y >= anchors.get(THREE).getY() - temp && y <= anchors.get(THREE).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(THREE)).getX() - temp && x <= Objects.requireNonNull(anchors.get(THREE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(THREE)).getY() - temp && y <= Objects.requireNonNull(anchors.get(THREE)).getY() + temp) {
             return anchors.get(THREE);
 
-        } else if (x >= anchors.get(FOUR).getX() - temp && x <= anchors.get(FOUR).getX() + temp &&
-                y >= anchors.get(FOUR).getY() - temp && y <= anchors.get(FOUR).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(FOUR)).getX() - temp && x <= Objects.requireNonNull(anchors.get(FOUR)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(FOUR)).getY() - temp && y <= Objects.requireNonNull(anchors.get(FOUR)).getY() + temp) {
             return anchors.get(FOUR);
 
-        } else if (x >= anchors.get(FIVE).getX() - temp && x <= anchors.get(FIVE).getX() + temp &&
-                y >= anchors.get(FIVE).getY() - temp && y <= anchors.get(FIVE).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(FIVE)).getX() - temp && x <= Objects.requireNonNull(anchors.get(FIVE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(FIVE)).getY() - temp && y <= Objects.requireNonNull(anchors.get(FIVE)).getY() + temp) {
             return anchors.get(FIVE);
 
-        } else if (x >= anchors.get(SIX).getX() - temp && x <= anchors.get(SIX).getX() + temp &&
-                y >= anchors.get(SIX).getY() - temp && y <= anchors.get(SIX).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(SIX)).getX() - temp && x <= Objects.requireNonNull(anchors.get(SIX)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(SIX)).getY() - temp && y <= Objects.requireNonNull(anchors.get(SIX)).getY() + temp) {
             return anchors.get(SIX);
 
-        } else if (x >= anchors.get(SEVEN).getX() - temp && x <= anchors.get(SEVEN).getX() + temp &&
-                y >= anchors.get(SEVEN).getY() - temp && y <= anchors.get(SEVEN).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(SEVEN)).getX() - temp && x <= Objects.requireNonNull(anchors.get(SEVEN)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(SEVEN)).getY() - temp && y <= Objects.requireNonNull(anchors.get(SEVEN)).getY() + temp) {
             return anchors.get(SEVEN);
 
-        } else if (x >= anchors.get(EIGHT).getX() - temp && x <= anchors.get(EIGHT).getX() + temp &&
-                y >= anchors.get(EIGHT).getY() - temp && y <= anchors.get(EIGHT).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(EIGHT)).getX() - temp && x <= Objects.requireNonNull(anchors.get(EIGHT)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(EIGHT)).getY() - temp && y <= Objects.requireNonNull(anchors.get(EIGHT)).getY() + temp) {
             return anchors.get(EIGHT);
 
-        } else if (x >= anchors.get(NINE).getX() - temp && x <= anchors.get(NINE).getX() + temp &&
-                y >= anchors.get(NINE).getY() - temp && y <= anchors.get(NINE).getY() + temp) {
+        } else if (x >= Objects.requireNonNull(anchors.get(NINE)).getX() - temp && x <= Objects.requireNonNull(anchors.get(NINE)).getX() + temp &&
+                y >= Objects.requireNonNull(anchors.get(NINE)).getY() - temp && y <= Objects.requireNonNull(anchors.get(NINE)).getY() + temp) {
             return anchors.get(NINE);
         }
 

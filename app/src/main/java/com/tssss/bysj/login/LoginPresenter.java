@@ -1,60 +1,32 @@
 package com.tssss.bysj.login;
 
-import com.tssss.bysj.contract.PresenterImp;
+import com.tssss.bysj.mvp.IMvpView;
+import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.user.User;
-import com.tssss.bysj.user.role.GameRole;
-import com.tssss.bysj.user.role.GameRoleManager;
 import com.tssss.bysj.util.AccountUtil;
 
-public class LoginPresenter extends PresenterImp implements OnLoginDataListener {
-    private LoginModel mModel;
-    private OnLoginListener mLoginListener;
+public class LoginPresenter extends BaseMvpPresenter<ILoginActivityContract.IView> implements ILoginActivityContract.IPresenter {
 
-    LoginPresenter() {
-        mModel = new LoginModel();
+    public LoginPresenter(ILoginActivityContract.IView view) {
+        super(view);
     }
 
-    void requestLogin(User user, OnLoginListener listener) {
-        mLoginListener = listener;
-
-        if (!AccountUtil.validPhoneNumber(user.getUserId()))
-            mLoginListener.onInvalidPhoneNumber();
-
-        if (!AccountUtil.validPassword(user.getUserPassword()))
-            mLoginListener.onInvalidPassword();
-
-        if (AccountUtil.validPhoneNumber(user.getUserId()))
-            mLoginListener.onValidPhoneNumber();
-
-        if (AccountUtil.validPassword(user.getUserPassword()))
-            mLoginListener.onValidPassword();
-
-        if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
-            mLoginListener.onValidAccount();
-            mModel.loadUserData(user, this);
+    @Override
+    public void identifyAccount(User user) {
+        if (!AccountUtil.validPhoneNumber(user.getUserId())) {
+            if (getView() instanceof LoginActivity) {
+                ((LoginActivity) getView()).onInvalidPhoneNumber();
+            }
         }
     }
 
     @Override
-    public void onLoadDataCompleted(GameRole gameRole) {
-        GameRoleManager roleManager = GameRoleManager.getGameRoleManager();
-        roleManager.addRole(GameRoleManager.SELF, gameRole);
+    public void login() {
 
-        mLoginListener.onLoginSuccess();
     }
 
     @Override
-    public void onUserNotExit() {
-        mLoginListener.onUserNotExit();
-    }
-
-    @Override
-    public void onUserPasswordError() {
-        mLoginListener.onUserPasswordError();
-    }
-
-    @Override
-    public void onFailure() {
-        mLoginListener.onLoginError();
+    protected IMvpView getEmptyView() {
+        return ILoginActivityContract.emptyView;
     }
 }

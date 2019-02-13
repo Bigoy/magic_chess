@@ -1,5 +1,6 @@
 package com.tssss.bysj.game;
 
+import com.tssss.bysj.R;
 import com.tssss.bysj.user.role.GameRole;
 import com.tssss.bysj.user.role.GameRoleManager;
 import com.tssss.bysj.util.ToastUtil;
@@ -12,7 +13,7 @@ public class Rule {
             ANCHOR_NOT_IN_RANGE = "请点在棋盘网格的相交处。";
 
 
-    public boolean canSelect(int x, int y) {
+    boolean canSelect(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
         PieceManager pm = PieceManager.getChessmanManager();
 
@@ -58,7 +59,7 @@ public class Rule {
     d 新位置是一个锚点；
     e 两个圆圈之间不能直接走棋。
      */
-    public boolean canMove(int x, int y) {
+    boolean canMove(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
         PieceManager pm = PieceManager.getChessmanManager();
         GameHelper gameHelper = GameHelper.getGameHelper();
@@ -126,10 +127,11 @@ public class Rule {
      *
      * @return winner
      */
-    public GameRole result() {
+    GameResult result() {
         AnchorManager anchorManager = AnchorManager.getAnchorManager();
         PieceManager pieceManager = PieceManager.getChessmanManager();
         GameRoleManager roleManager = GameRoleManager.getGameRoleManager();
+        GameResult gameResult = null;
 
         int y1 = anchorManager.getAnchor(AnchorManager.FOUR).getY();
         int y2 = anchorManager.getAnchor(AnchorManager.SEVEN).getY();
@@ -137,11 +139,18 @@ public class Rule {
         if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y1
                 && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y1
                 && pieceManager.getPiece(PieceManager.SELF_C).getAnchor().getY() == y1) {
+
             if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y2
                     && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y2
-                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y2)
+                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y2) {
 
-                return roleManager.getRole(GameRoleManager.SELF);
+                gameResult = new GameResult();
+                gameResult.setWinnerName(roleManager.getRole(GameRoleManager.SELF).getRoleName());
+                gameResult.setResultDescription(GameHelper.getGameHelper().getContext()
+                        .getString(R.string.game_result_win));
+                gameResult.setExpSettlement(String.valueOf(reward()));
+            }
+
 
         } else if (pieceManager.getPiece(PieceManager.SELF_A).getAnchor().getY() == y2
                 && pieceManager.getPiece(PieceManager.SELF_B).getAnchor().getY() == y2
@@ -149,24 +158,29 @@ public class Rule {
 
             if (pieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getY() == y1
                     && pieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getY() == y1
-                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y1)
+                    && pieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getY() == y1) {
 
-                return roleManager.getRole(GameRoleManager.RIVAL);
+                gameResult = new GameResult();
+                gameResult.setWinnerName(roleManager.getRole(GameRoleManager.RIVAL).getRoleName());
+                gameResult.setResultDescription(GameHelper.getGameHelper().getContext()
+                        .getString(R.string.game_result_lose));
+                gameResult.setExpSettlement(String.valueOf(punish()));
+            }
 
-        return null;
+        return gameResult;
     }
 
     /**
      * The experience of winner plus 50.
      */
-    public int reward() {
+    private int reward() {
         return 50;
     }
 
     /**
      * The experience of loser minus 30.
      */
-    public int punish() {
+    private int punish() {
         return -30;
     }
 

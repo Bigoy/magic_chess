@@ -1,4 +1,4 @@
-package com.tssss.bysj.contract;
+package com.tssss.bysj.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,18 +11,19 @@ import android.widget.LinearLayout;
 import com.tssss.bysj.R;
 import com.tssss.bysj.application.ActivityManager;
 import com.tssss.bysj.application.MyApplication;
+import com.tssss.bysj.mvp.base.BaseMvpPresenter;
+import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements View,
+public abstract class BaseActivity extends LifeCircleMvpActivity implements
         android.view.View.OnClickListener {
 
     private ImageButton mLeftBtn, mRightBtn;
     private ImageView mCenterIv;
 
-    private PresenterImp mPresenter;
+    private BaseMvpPresenter mPresenter;
     private ActivityManager mActivityManager;
     private MyApplication mApplication;
     private Context mContext;
@@ -34,13 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View,
         mContext = this;
         setContentView(getLayoutId());
         findViews();
-
-        // attach mPresenter
-        if (attachPresenter() != null) {
-            mPresenter = attachPresenter();
-            mPresenter.attachView(this);
-        }
-
+        afterBindView();
         getActivityManager().addActivityInstance(this);
     }
 
@@ -48,24 +43,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View,
     protected void onStart() {
         super.onStart();
         setEventListeners();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (mPresenter != null) {
-            mPresenter.detachView();
-        }
-    }
-
-    /**
-     * Subclass selects specific Presenter (extends PresenterImp)
-     *
-     * @return mPresenter
-     */
-    protected PresenterImp attachPresenter() {
-        return null;
     }
 
     /**
@@ -172,6 +149,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View,
      * Set layout id
      */
     protected abstract int getLayoutId();
+
+    protected abstract void afterBindView();
 
     /**
      * Open activity without data

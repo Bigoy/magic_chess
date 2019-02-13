@@ -1,13 +1,15 @@
 package com.tssss.bysj.game;
 
 import android.graphics.Canvas;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.tssss.bysj.net.http.HttpConstant;
 import com.tssss.bysj.net.http.JsonHttpRequest;
 import com.tssss.bysj.net.http.JsonHttpResponse;
 import com.tssss.bysj.net.http.TaoHttpClient;
-import com.tssss.bysj.user.role.GameRole;
 import com.tssss.bysj.user.role.GameRoleManager;
 
 /**
@@ -18,54 +20,59 @@ import com.tssss.bysj.user.role.GameRoleManager;
  * @date 2019-1-24
  */
 public class Umpire {
+    private static Umpire umpire;
+
     private Turn mTurn;
     private Rule mRule;
-    private GameRole mWinner;
-    private GameRole mLoser;
     private Mark mMark;
+    private Handler mHandler;
+    private Message mMsg;
+    private GameResult mResult;
 
-    private boolean haveResult;
+    private boolean umpireCompleted;
 
 
-    public Umpire() {
+    private Umpire() {
         mTurn = Turn.getInstance();
         mRule = new Rule();
         mMark = new Mark();
+        mMsg = Message.obtain();
+    }
+
+    public static synchronized Umpire getUmpire() {
+        if (umpire == null)
+            umpire = new Umpire();
+
+        return umpire;
+    }
+
+    public void setHandler(Handler handler) {
+        this.mHandler = handler;
     }
 
     /**
      * Judging game result.
      */
-    public void umpire(GameProgress gameProgress) {
-        if (haveResult)
-            return;
+    void umpire(GameProgress gameProgress, PieceManager pm, Canvas canvas) {
+        if (!umpireCompleted) {
+            monitor(pm, canvas);
 
-        GameRoleManager roleManager = GameRoleManager.getGameRoleManager();
-        GameRole gameRole = mRule.result();
+            mResult = mRule.result();
 
-        if (gameRole == null)
-            noResult();
+            if (mResult == null)
+                noResult();
 
-        else if (gameRole.equals(roleManager.getRole(GameRoleManager.SELF))) {
-            mWinner = roleManager.getRole(GameRoleManager.SELF);
-            mLoser = roleManager.getRole(GameRoleManager.RIVAL);
+            if (mResult != null) {
+                mMsg.obj = mResult;
+                gameProgress.pauseGame();
 
-            haveResult = true;
-            gameProgress.pauseGame();
-
-        } else if (gameRole.equals(roleManager.getRole(GameRoleManager.RIVAL))) {
-            mWinner = roleManager.getRole(GameRoleManager.RIVAL);
-            mLoser = roleManager.getRole(GameRoleManager.SELF);
-
-            haveResult = true;
-            gameProgress.pauseGame();
+                Log.wtf(getClass().getSimpleName(), mResult.getResultDescription());
+                Log.wtf(getClass().getSimpleName(), mResult.getWinnerName());
+            }
         }
 
     }
 
-    public void setHaveResult(boolean haveResult) {
-        this.haveResult = haveResult;
-    }
 
     /**
      * Lock permission of playing.
@@ -84,41 +91,39 @@ public class Umpire {
     /**
      * Settlement result.
      */
-    public void settlement() {
-        mWinner.setRoleExperience(mRule.reward());
-        mLoser.setRoleExperience(mRule.punish());
+    private void settlement() {
+        if (mResult != null)
+            try {
+                GameRoleManager.getGameRoleManager().getRole(GameRoleManager.SELF)
+                        .setRoleExperience(Integer.parseInt(mResult.getExpSettlement()));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
 
-        // Upload the newest data of winner and loser to data base via net.
+        // Upload the newest data of user.
         TaoHttpClient client = new TaoHttpClient(
                 HttpConstant.BASE_URL,
-                mWinner,
+                GameRoleManager.getGameRoleManager().getRole(GameRoleManager.SELF),
                 new JsonHttpRequest(),
                 new JsonHttpResponse(null)
         );
         client.request();
-
-        TaoHttpClient client02 = new TaoHttpClient(
-                HttpConstant.BASE_URL,
-                mLoser,
-                new JsonHttpRequest(),
-                new JsonHttpResponse(null)
-        );
-        client02.request();
-
     }
 
     /**
      * Monitor user behavior.
      */
-    public void monitor(PieceManager pm, Canvas gameCanvas) {
-        if (pm.whoChecked() != null)
-            mMark.mark(gameCanvas, pm.whoChecked());
+    private void monitor(PieceManager pm, Canvas gameCanvas) {
+        if (!umpireCompleted) {
+            if (pm.whoChecked() != null)
+                mMark.mark(gameCanvas, pm.whoChecked());
+        }
     }
 
     /**
      * Handle user's actions according to specified rule.
      */
-    public void handleUserActions(MotionEvent event, PieceManager pieceManager, AnchorManager anchorManager) {
+    void handleUserActions(MotionEvent event, PieceManager pieceManager, AnchorManager anchorManager) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 int x = (int) event.getX();
@@ -145,5 +150,18 @@ public class Umpire {
     }
 
     private void noResult() {
+    }
+
+    void startToUmpire() {
+        this.umpireCompleted = false;
+    }
+
+    void stopToUmpire() {
+        this.umpireCompleted = true;
+
+        settlement();
+
+        if (mHandler != null)
+            mHandler.sendMessage(mMsg);
     }
 }

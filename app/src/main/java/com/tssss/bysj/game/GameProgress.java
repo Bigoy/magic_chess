@@ -20,7 +20,7 @@ import com.tssss.bysj.user.role.GameRoleManager;
  *
  * <p>At the end of game, some resource cleanup and recycle operations will be performed.</p>
  */
-public class GameProgress {
+class GameProgress {
     private static GameProgress gameProgress;
 
     private Canvas mGameCanvas;
@@ -42,10 +42,10 @@ public class GameProgress {
         mGameHelper = GameHelper.getGameHelper();
         mChessboard = new SimpleChessboard();
         mGameResult = new GameResult();
-        mUmpire = new Umpire();
+        mUmpire = Umpire.getUmpire();
     }
 
-    public static GameProgress getGameProgress() {
+    static GameProgress getGameProgress() {
         if (gameProgress == null)
             gameProgress = new GameProgress();
 
@@ -55,14 +55,14 @@ public class GameProgress {
     /**
      * Get game canvas.
      */
-    public void setGameCanvas(Canvas gameCanvas) {
+    void setGameCanvas(Canvas gameCanvas) {
         mGameCanvas = gameCanvas;
     }
 
     /**
      * Game initialization.
      */
-    public void initialize() {
+    void initialize() {
         Log.wtf(getClass().getSimpleName(), "<------ game initialization ------>");
 
         mAnchorManager.createAnchors(mGameHelper.getSurfaceSize());
@@ -72,7 +72,7 @@ public class GameProgress {
     /**
      * Game preparation.
      */
-    public void prepare() {
+    void prepare() {
         Log.wtf(getClass().getSimpleName(), "<------ game preparation ------>");
 
         if (!GameScene.canTouch)
@@ -80,6 +80,7 @@ public class GameProgress {
 
         connectServer();
         prepareMusic();
+        mUmpire.startToUmpire();
     }
 
     /**
@@ -100,19 +101,17 @@ public class GameProgress {
     /**
      * Start game.
      */
-    public void run() {
+    void run() {
 //        Log.wtf(getClass().getSimpleName(), "<------ game running ------>");
 
-        runSceneDrawing();
-
-        mUmpire.monitor(mPieceManager, mGameCanvas);
-        mUmpire.umpire(this);
+        drawScene();
+        mUmpire.umpire(this, mPieceManager, mGameCanvas);
     }
 
     /**
      * Running game scene drawing program.
      */
-    private void runSceneDrawing() {
+    private void drawScene() {
         mChessboard.drawChessboard(mGameCanvas);
         mPieceManager.drawPieces(mGameCanvas);
     }
@@ -120,47 +119,44 @@ public class GameProgress {
     /**
      * Take over touch event handling.
      */
-    public void doTouch(MotionEvent event) {
+    void doTouch(MotionEvent event) {
         mUmpire.handleUserActions(event, mPieceManager, mAnchorManager);
     }
 
     /**
      * Pause game.
      */
-    public void pauseGame() {
+    void pauseGame() {
         if (GameScene.canTouch)
             GameScene.canTouch = false;
 
         Effect effect = new Effect();
         effect.explosion(mGameCanvas);
 
-        mUmpire.settlement();
-
-        mGameResult.showGameResult(this);
+        mUmpire.stopToUmpire();
     }
 
     /**
      * Resume game.
      */
-    public void resumeGame() {
+    void resumeGame() {
         if (!GameScene.canTouch)
             GameScene.canTouch = true;
 
         initialized = false;
-        mUmpire.setHaveResult(false);
 
-        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_A).getAnchor().getName());
+        /*Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_A).getAnchor().getName());
         Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_B).getAnchor().getName());
         Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.SELF_C).getAnchor().getName());
         Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_A).getAnchor().getName());
         Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_B).getAnchor().getName());
-        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getName());
+        Log.wtf(getClass().getSimpleName(), mPieceManager.getPiece(PieceManager.RIVAL_C).getAnchor().getName());*/
     }
 
     /**
      * End game.
      */
-    public void endGame() {
+    void endGame() {
         mRoleManager.removeRole(GameRoleManager.RIVAL);
         clear();
     }

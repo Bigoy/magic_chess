@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.contract.BaseActivity;
+import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.login.LoginActivity;
 
 public class StartActivity extends BaseActivity {
@@ -27,6 +27,11 @@ public class StartActivity extends BaseActivity {
         return R.layout.activity_start;
     }
 
+    @Override
+    protected void afterBindView() {
+
+    }
+
 
     @Override
     protected boolean isFullScreen() {
@@ -40,7 +45,7 @@ public class StartActivity extends BaseActivity {
                 openActivity(LoginActivity.class);
                 break;
             case R.id.start_register_ib:
-                openActivity(RegisterActivity.class);
+//                openActivity(RegisterActivity.class);
                 break;
         }
     }
