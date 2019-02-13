@@ -1,11 +1,11 @@
-package com.tssss.bysj.mvp.view;
+package com.tssss.mvp.view;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.tssss.bysj.mvp.IMvpView;
-import com.tssss.bysj.mvp.MvpController;
+import com.tssss.mvp.IMvpView;
+import com.tssss.mvp.MvpController;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -1,10 +1,10 @@
-package com.tssss.bysj.mvp.presenter;
+package com.tssss.mvp.presenter;
 
 import android.util.Log;
 
-import com.tssss.bysj.mvp.ILifeCircle;
-import com.tssss.bysj.mvp.IMvpView;
-import com.tssss.bysj.mvp.MvpController;
+import com.tssss.mvp.ILifeCircle;
+import com.tssss.mvp.IMvpView;
+import com.tssss.mvp.MvpController;
 
 import java.lang.ref.WeakReference;
 

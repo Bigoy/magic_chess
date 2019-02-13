@@ -1,10 +1,10 @@
-package com.tssss.bysj.mvp.base;
+package com.tssss.mvp.base;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.tssss.bysj.mvp.IMvpView;
-import com.tssss.bysj.mvp.presenter.LifeCircleMvpPresenter;
+import com.tssss.mvp.IMvpView;
+import com.tssss.mvp.presenter.LifeCircleMvpPresenter;
 
 /**
  * Created by tssss on 2019/2/13.

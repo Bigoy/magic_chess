@@ -271,5 +271,4 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
         gDialog.show();
     }
 
-
 }

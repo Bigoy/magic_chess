@@ -1,9 +1,9 @@
 package com.tssss.bysj.login;
 
-import com.tssss.bysj.mvp.ILifeCircle;
-import com.tssss.bysj.mvp.IMvpView;
-import com.tssss.bysj.mvp.MvpController;
 import com.tssss.bysj.user.User;
+import com.tssss.mvp.ILifeCircle;
+import com.tssss.mvp.IMvpView;
+import com.tssss.mvp.MvpController;
 
 public interface ILoginActivityContract {
     interface IView extends IMvpView {

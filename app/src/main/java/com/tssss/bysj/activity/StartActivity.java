@@ -29,9 +29,7 @@ public class StartActivity extends BaseActivity {
 
     @Override
     protected void afterBindView() {
-
     }
-
 
     @Override
     protected boolean isFullScreen() {

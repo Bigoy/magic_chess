@@ -2,9 +2,9 @@ package com.tssss.bysj.login;
 
 import android.util.Log;
 
-import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.AccountUtil;
+import com.tssss.mvp.base.BaseMvpPresenter;
 
 public class LoginPresenter extends BaseMvpPresenter<ILoginActivityContract.IView> implements ILoginActivityContract.IPresenter {
 
