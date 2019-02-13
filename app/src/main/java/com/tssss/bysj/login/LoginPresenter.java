@@ -1,6 +1,7 @@
 package com.tssss.bysj.login;
 
-import com.tssss.bysj.mvp.IMvpView;
+import android.util.Log;
+
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.AccountUtil;
@@ -13,20 +14,31 @@ public class LoginPresenter extends BaseMvpPresenter<ILoginActivityContract.IVie
 
     @Override
     public void identifyAccount(User user) {
-        if (!AccountUtil.validPhoneNumber(user.getUserId())) {
-            if (getView() instanceof LoginActivity) {
-                ((LoginActivity) getView()).onInvalidPhoneNumber();
-            }
+        if (!AccountUtil.validPhoneNumber(user.getUserId()))
+            getView().onInvalidPhoneNumber();
+
+        if (!AccountUtil.validPassword(user.getUserPassword()))
+            getView().onInvalidPassword();
+
+        if (AccountUtil.validPhoneNumber(user.getUserId()))
+            getView().onValidPhoneNumber();
+
+        if (AccountUtil.validPassword(user.getUserPassword()))
+            getView().onValidPassword();
+
+        if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
+            getView().onValidAccount();
+            login();
         }
     }
 
     @Override
     public void login() {
-
+        Log.wtf(getClass().getSimpleName(), "正在登录...");
     }
 
     @Override
-    protected IMvpView getEmptyView() {
+    protected ILoginActivityContract.IView getEmptyView() {
         return ILoginActivityContract.emptyView;
     }
 }
