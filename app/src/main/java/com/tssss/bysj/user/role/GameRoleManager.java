@@ -1,3 +1,4 @@
+/*
 package com.tssss.bysj.user.role;
 
 import android.util.Log;
@@ -7,13 +8,15 @@ import com.alibaba.fastjson.JSON;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Manage the roles that will be used on the current client, usually only two roles
- * GameRole self and GameRole army
- *
- * @author Tssss
+*/
+/*
+  Manage the roles that will be used on the current client, usually only two roles
+  GameRole self and GameRole army
+
+  @author Tssss
  * @date updated January 7, 2019
- */
+ *//*
+
 public class GameRoleManager {
     private static GameRoleManager gameRoleManager;
 
@@ -33,12 +36,14 @@ public class GameRoleManager {
         return gameRoleManager;
     }
 
-    /**
-     * Add a gameRole
-     *
-     * @param key      identity of the gameRole
-     * @param gameRole instance of GameRole
-     */
+    */
+/*
+  Add a gameRole
+
+  @param key      identity of the gameRole
+ * @param gameRole instance of GameRole
+ *//*
+
     public void addRole(String key, GameRole gameRole) {
         if (getRole(key) == null) {
             roles.put(key, gameRole);
@@ -46,11 +51,13 @@ public class GameRoleManager {
         }
     }
 
-    /**
-     * Remove a role but not self
-     *
-     * @param key identity of the player
-     */
+    */
+/*
+  Remove a role but not self
+
+  @param key identity of the player
+ *//*
+
     public void removeRole(String key) {
         roles.remove(key);
 
@@ -58,13 +65,16 @@ public class GameRoleManager {
             Log.wtf(getClass().getSimpleName(), key + " removed");
     }
 
-    /**
-     * Get a role object according to key (GameRole.SELF and GameRole.RIVAL)
-     *
-     * @param key key
-     * @return role object
-     */
+    */
+/*
+  Get a role object according to key (GameRole.SELF and GameRole.RIVAL)
+
+  @param key key
+ * @return role object
+ *//*
+
     public GameRole getRole(String key) {
         return roles.get(key);
     }
 }
+*/

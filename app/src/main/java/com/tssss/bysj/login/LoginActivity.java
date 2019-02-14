@@ -8,10 +8,9 @@ import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
-import com.tssss.bysj.interfaces.OnGDialogListener;
+import com.tssss.bysj.login.presenter.LoginPresenter;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.ToastUtil;
-import com.tssss.bysj.widget.GDialog;
 import com.tssss.bysj.widget.GTextView;
 
 public class LoginActivity extends BaseActivity implements ILoginActivityContract.IView {
@@ -154,7 +153,7 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
 
     @Override
     public void onUserNotExit() {
-        remindUserRegister();
+//        remindUserRegister();
     }
 
     @Override
@@ -203,16 +202,13 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
             switchView(mLoginIb, mLoggingGtv);
             lockViews();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1000);
-                        mPresenter.login();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    mPresenter.login();
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
@@ -250,25 +246,25 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
         mPresenter.login();
     }
 
-    /**
-     * Remind user to register game account
+    /*
+      Remind user to register game account
      */
-    private void remindUserRegister() {
-        final GDialog gDialog = new GDialog(this, getString(R.string.register_dialog_title),
-                getString(R.string.register_dialog_content));
-        gDialog.setOnGDialogListener(new OnGDialogListener() {
-            @Override
-            public void onPassive() {
-                gDialog.dismiss();
-                finish();
-            }
-
-            @Override
-            public void onPositive() {
-//                openActivity(RegisterActivity.class);
-            }
-        });
-        gDialog.show();
-    }
+//    private void remindUserRegister() {
+//        final GDialog gDialog = new GDialog(this, getString(R.string.register_dialog_title),
+//                getString(R.string.register_dialog_content));
+//        gDialog.setOnGDialogListener(new OnGDialogListener() {
+//            @Override
+//            public void onPassive() {
+//                gDialog.dismiss();
+//                finish();
+//            }
+//
+//            @Override
+//            public void onPositive() {
+////                openActivity(RegisterActivity.class);
+//            }
+//        });
+//        gDialog.show();
+//    }
 
 }

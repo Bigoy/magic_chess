@@ -1,3 +1,4 @@
+/*
 package com.tssss.bysj.login;
 
 import com.alibaba.fastjson.JSONObject;
@@ -13,26 +14,32 @@ public class LoginModel implements IDataListener {
 
     private OnLoginDataListener mListener;
 
-    /**
-     * Create http task, request login state
-     *
-     * @param listener callback listener
-     */
+    */
+/*
+  Create http task, request login state
+
+  @param listener callback listener
+ *//*
+
     void loadUserData(User user, OnLoginDataListener listener) {
         this.mListener = listener;
 
-        /*TaoHttpClient taoHttpClient = new TaoHttpClient(HttpConstant.BASE_URL, user,
+        */
+/*TaoHttpClient taoHttpClient = new TaoHttpClient(HttpConstant.BASE_URL, user,
                 new JsonHttpRequest(), new JsonHttpResponse(this));
-        taoHttpClient.request();*/
+        taoHttpClient.request();*//*
+
 
         // Test
         GameTest test = new GameTest();
         mListener.onLoadDataCompleted(test.getSelf());
     }
 
-    /**
-     * @param data json object (game role)
-     */
+    */
+/*
+  @param data json object (game role)
+ *//*
+
     @Override
     public void onSuccess(Object data) {
         JSONObject userJson = (JSONObject) data;
@@ -59,3 +66,4 @@ public class LoginModel implements IDataListener {
         mListener.onFailure();
     }
 }
+*/

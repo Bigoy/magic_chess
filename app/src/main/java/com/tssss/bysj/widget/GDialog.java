@@ -1,3 +1,4 @@
+/*
 package com.tssss.bysj.widget;
 
 import android.app.Dialog;
@@ -12,13 +13,15 @@ import com.tssss.bysj.interfaces.OnGDialogListener;
 
 import androidx.annotation.NonNull;
 
+*/
 /*
 简易的自定义弹窗。
 使用步骤：
 GDialog gDialog = new GDialog(context, mContent);
 gDialog.setOnGDialogListener(listener);
 gDialog.showToast();
- */
+ *//*
+
 public class GDialog extends Dialog {
     private Context context;
     private OnGDialogListener onGDialogListener;
@@ -57,24 +60,30 @@ public class GDialog extends Dialog {
         }
     }
 
-    /*
+    */
+/*
     按钮点击时间监听器。
-     */
+     *//*
+
     public void setOnGDialogListener(OnGDialogListener onGDialogListener) {
         this.onGDialogListener = onGDialogListener;
     }
 
-    /*
+    */
+/*
     显示弹窗。
-     */
+     *//*
+
     @Override
     public void show() {
         super.show();
     }
 
-    /*
+    */
+/*
     取消弹窗。
-     */
+     *//*
+
     @Override
     public void dismiss() {
         super.dismiss();
@@ -97,3 +106,4 @@ public class GDialog extends Dialog {
     }
 }
 
+*/

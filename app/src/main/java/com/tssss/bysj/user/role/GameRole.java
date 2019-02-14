@@ -1,16 +1,19 @@
+/*
 package com.tssss.bysj.user.role;
 
 import com.tssss.bysj.game.Rule;
 
 import androidx.annotation.Nullable;
 
-/**
- * Game role，one account can apply for multiple roles.
- * name,sex,level,experience
- *
- * @author Tssss
+*/
+/*
+  Game role，one account can apply for multiple roles.
+  name,sex,level,experience
+
+  @author Tssss
  * @date 2019-01-16
- */
+ *//*
+
 public class GameRole {
     public static String ROLE_SEX_BOY = "♂";
     public static String ROLE_SEX_GIRL = "♀";
@@ -112,9 +115,11 @@ public class GameRole {
         this.mRoleState = roleState;
     }
 
-    /**
-     * Upgrade level.
-     */
+    */
+/*
+  Upgrade level.
+ *//*
+
     private void upgrade() {
         if (this.mRoleLevel.equals(GameRole.ROLE_LEVEL_ROOKIE))
             this.mRoleLevel = ROLE_LEVEL_POSITIVE;
@@ -148,3 +153,4 @@ public class GameRole {
     }
 
 }
+*/
