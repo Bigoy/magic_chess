@@ -1,7 +1,5 @@
 package com.tssss.mvp.presenter;
 
-import android.util.Log;
-
 import com.tssss.mvp.ILifeCircle;
 import com.tssss.mvp.IMvpView;
 import com.tssss.mvp.MvpController;
@@ -43,9 +41,6 @@ public abstract class LifeCircleMvpPresenter<T extends IMvpView> implements ILif
     public void onDestroy() {
         // View 层生命周期结束时，回收其对象，解决由 View 层对象没有及时回收导致的 OOM
         weakReference.clear();
-        weakReference = null;
-
-        Log.wtf(getClass().getSimpleName(), "当前绑定的 View 层被摧毁了");
     }
 
     // 返回 Presenter 层所持有的 View 层的引用

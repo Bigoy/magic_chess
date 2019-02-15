@@ -81,7 +81,6 @@ public class TimeUtil {
                     time[1] = getS();
                     msg.obj = time;
                     handler.sendMessage(msg);
-                    msg = null;
                 }
 
             }
@@ -101,7 +100,6 @@ public class TimeUtil {
 
         do {
             Log.wtf("TimeUtil", "pausing");
-
         } while (System.currentTimeMillis() - startTime == millisecond);
     }
 }

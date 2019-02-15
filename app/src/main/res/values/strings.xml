@@ -11,7 +11,7 @@
     <string name="dialog_title">提示</string>
 
 
-    <!-- LoginActivity -->
+    <!-- LoginFragment -->
     <string name="login_btn_login">最后，点击登录。</string>
     <string name="login_logging">登录中</string>
     <string name="login_reconnect">尝试重新连接</string>

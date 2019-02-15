@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatTextView;
 
 public class GTextView extends AppCompatTextView {
-    private Context mContext;
+    private final Context mContext;
 
     public GTextView(Context context) {
         super(context);

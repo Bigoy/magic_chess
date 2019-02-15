@@ -9,8 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.application.ActivityManager;
-import com.tssss.bysj.application.MyApplication;
+import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.mvp.base.BaseMvpPresenter;
 import com.tssss.mvp.view.LifeCircleMvpActivity;
 
@@ -24,71 +23,72 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     private ImageView mCenterIv;
 
     private BaseMvpPresenter mPresenter;
-    private ActivityManager mActivityManager;
-    private MyApplication mApplication;
-    private Context mContext;
+    private BaseApplication mApplication;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
-        setContentView(getLayoutId());
-        findViews();
-        afterBindView();
-        getActivityManager().addActivityInstance(this);
+        ViewInject viewInject = this.getClass().getAnnotation(ViewInject.class);
+        if (viewInject != null) {
+            int layoutId = viewInject.layoutId();
+            if (layoutId > 0) {
+                setContentView(layoutId);
+                findViews();
+                setEventListeners();
+            } else {
+                throw new RuntimeException("layoutId < 0");
+            }
+        } else {
+            throw new RuntimeException("no annotation");
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setEventListeners();
+        afterBindView();
     }
 
     /**
-     * Lock back key
-     */
-    @Override
-    public void onBackPressed() {
-    }
-
-    /**
-     * Handle the top bar click events uniformly.
-     * <p>If you override this method, be sure that call {@code super.onClick().}</p>
+     * 统一处理 Activity 的 TopBar 点击事件
+     * 如非隐藏 TopBar 的界面，子类重写 onClick 方法时必须调用 super.onClick() 方法
      */
     @Override
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.top_bar_left:
-                clickLeft();
+                clickTopBarLeft();
                 break;
             case R.id.top_bar_center:
-                clickCenter();
+                clickTopBarCenter();
                 break;
             case R.id.top_bar_right:
-                clickRight();
+                clickTopBarRight();
                 break;
         }
     }
 
     @Override
     public void setContentView(int layoutResID) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         LinearLayout root = new LinearLayout(this);
         root.setBackgroundResource(getBackgroundResId());
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
+        root.setLayoutParams(lp);
         ViewGroup viewGroup = findViewById(android.R.id.content);
         viewGroup.removeAllViews();
         viewGroup.addView(root);
-
-        if (!isFullScreen()) {
+        if (!isFullScreenActivity()) {
             getLayoutInflater().inflate(getTopBarId(), root, true);
             setTopBar();
         }
-
         getLayoutInflater().inflate(layoutResID, root, true);
+        /*// 隐藏底部导航栏
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);*/
     }
 
     /**
@@ -108,30 +108,30 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     }
 
     /**
-     * Set src of the left ImageButton
+     * 设置 TopBar 左边的 View 显示样式 一般为返回按钮
      */
-    protected int getLeftBtnStyle() {
+    protected int getTopBarLeftViewStyle() {
         return R.drawable.ic_btn_back;
     }
 
     /**
-     * Set src of the center ImageView (title of current activity)
+     * 设置 TopBar 中间的 View 显示样式
      */
-    protected int getCenterIvStyle() {
+    protected int getTopBarCenterViewStyle() {
         return 0;
     }
 
     /**
-     * Set src of the right ImageButton
+     * 设置 TopBar 右边的 View 显示样式
      */
-    protected int getRightIbStyle() {
+    protected int getTopBarRightViewStyle() {
         return 0;
     }
 
     /**
      * Set activity to full screen
      */
-    protected boolean isFullScreen() {
+    protected boolean isFullScreenActivity() {
         return false;
     }
 
@@ -144,11 +144,6 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
      * SetXXListener
      */
     protected abstract void setEventListeners();
-
-    /**
-     * Set layout id
-     */
-    protected abstract int getLayoutId();
 
     protected abstract void afterBindView();
 
@@ -172,16 +167,16 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         mCenterIv.setOnClickListener(this);
         mRightBtn.setOnClickListener(this);
 
-        mLeftBtn.setImageResource(getLeftBtnStyle());
-        mCenterIv.setImageResource(getCenterIvStyle());
-        mRightBtn.setImageResource(getRightIbStyle());
+        mLeftBtn.setImageResource(getTopBarLeftViewStyle());
+        mCenterIv.setImageResource(getTopBarCenterViewStyle());
+        mRightBtn.setImageResource(getTopBarRightViewStyle());
     }
 
     /**
      * Handle event generated by the user clicking the left
      * view of top bar, the default is back.
      */
-    protected void clickLeft() {
+    protected void clickTopBarLeft() {
         this.finish();
     }
 
@@ -189,45 +184,20 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
      * Handle event generated by the user clicking the center
      * view of top bar.
      */
-    protected void clickCenter() {
+    protected void clickTopBarCenter() {
     }
 
     /**
      * Handle event generated by the user clicking the right
      * view of top bar.
      */
-    protected void clickRight() {
-    }
-
-    /**
-     * Return mActivityManager.
-     */
-    protected ActivityManager getActivityManager() {
-        if (mActivityManager == null) {
-            mActivityManager = ActivityManager.getActivityManager();
-        }
-
-        return mActivityManager;
-    }
-
-    /**
-     * Return mMyApplication.
-     */
-    protected MyApplication getMyApplication() {
-        if (mApplication == null) {
-            mApplication = MyApplication.getMyApplication();
-        }
-
-        return mApplication;
+    protected void clickTopBarRight() {
     }
 
     /**
      * Get context of current activity.
      */
     protected Context getContext() {
-        if (mContext != null)
-            return mContext;
-
         return getApplicationContext();
     }
 }

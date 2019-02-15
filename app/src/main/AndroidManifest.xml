@@ -18,7 +18,7 @@
             android:value="640" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".splash.SplashActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -28,43 +28,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".main.MainActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.StartActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.NewRoleActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.HallActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.NewsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.DistributeNewsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.FriendActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MatchActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.PeopleActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.GameActivity"
-            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

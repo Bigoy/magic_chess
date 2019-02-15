@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class MvpController implements ILifeCircle {
     // 保存所有的 Presenter 实例，使用集合是防止 Presenter 的实例对象重复
-    private Set<ILifeCircle> lifeCircles = new HashSet<>();
+    private final Set<ILifeCircle> lifeCircles = new HashSet<>();
 
     public void savePresenter(ILifeCircle lifeCircle) {
         this.lifeCircles.add(lifeCircle);

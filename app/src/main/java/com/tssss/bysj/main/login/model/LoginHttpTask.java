@@ -1,4 +1,4 @@
-package com.tssss.bysj.login.model;
+package com.tssss.bysj.main.login.model;
 
 import com.tssss.http.HttpServer;
 import com.tssss.http.result.IResult;

@@ -1,11 +1,11 @@
-package com.tssss.bysj.login;
+package com.tssss.bysj.main.login;
 
 import com.tssss.bysj.user.User;
 import com.tssss.mvp.ILifeCircle;
 import com.tssss.mvp.IMvpView;
 import com.tssss.mvp.MvpController;
 
-public interface ILoginActivityContract {
+public interface ILoginFmContract {
     interface IView extends IMvpView {
         void onLoginSuccess();
 

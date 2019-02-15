@@ -3,6 +3,7 @@ package com.tssss.bysj.util;
 import android.content.Context;
 import android.view.WindowManager;
 
+@SuppressWarnings("deprecation")
 public class SystemUtil {
 
     /**
@@ -12,6 +13,7 @@ public class SystemUtil {
      * @param context context
      * @return result
      */
+    @SuppressWarnings("deprecation")
     public static int[] getScreenSize(Context context) {
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);

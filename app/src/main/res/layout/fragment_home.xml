@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_fl"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.StartActivity">
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/start_app_name_iv"
+        android:id="@+id/fm_home_app_name_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
@@ -20,7 +19,7 @@
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/start_app_chess_iv"
+        android:id="@+id/fm_home_app_chess_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -28,25 +27,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_app_name_iv"
+        app:layout_constraintTop_toBottomOf="@+id/fm_home_app_name_iv"
         tools:ignore="ContentDescription" />
 
     <ImageButton
-        android:id="@+id/start_play_ib"
+        android:id="@+id/fm_home_login_ib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
         android:src="@drawable/ic_btn_start"
-        app:layout_constraintBottom_toTopOf="@id/start_register_ib"
+        app:layout_constraintBottom_toTopOf="@id/fm_home_register_ib"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_app_chess_iv"
+        app:layout_constraintTop_toBottomOf="@+id/fm_home_app_chess_iv"
         app:layout_constraintVertical_chainStyle="packed"
         tools:ignore="ContentDescription" />
 
     <ImageButton
-        android:id="@+id/start_register_ib"
+        android:id="@+id/fm_home_register_ib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_24dp"
@@ -56,6 +55,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/start_play_ib"
+        app:layout_constraintTop_toBottomOf="@id/fm_home_login_ib"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

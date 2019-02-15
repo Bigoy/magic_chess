@@ -1,4 +1,5 @@
-package com.tssss.bysj.login;
+/*
+package com.tssss.bysj.main.login;
 
 import android.view.View;
 import android.view.animation.Animation;
@@ -7,13 +8,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.base.BaseActivity;
-import com.tssss.bysj.login.presenter.LoginPresenter;
+import com.tssss.bysj.base.BaseFragment;
+import com.tssss.bysj.main.login.presenter.LoginPresenter;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.ToastUtil;
 import com.tssss.bysj.widget.GTextView;
 
-public class LoginActivity extends BaseActivity implements ILoginActivityContract.IView {
+public class LoginFragment extends BaseFragment implements ILoginFmContract.IView {
     private EditText mAccountEt, mPasswordEt;
     private ImageButton mLoginIb;
     private GTextView mLoggingGtv,
@@ -25,7 +26,7 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
             mReconnectGtv;
 
     private User loginUser;
-    private ILoginActivityContract.IPresenter mPresenter;
+    private ILoginFmContract.IPresenter mPresenter;
     private int loginCount;
 
     @Override
@@ -50,7 +51,8 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
 
     @Override
     protected void findViews() {
-        mAccountEt = findViewById(R.id.login_account_et);
+       */
+/* mAccountEt = findViewById(R.id.login_account_et);
         mPasswordEt = findViewById(R.id.login_key_et);
         mLoginIb = findViewById(R.id.login_ib);
         mLoggingGtv = findViewById(R.id.login_logging_gtv);
@@ -59,7 +61,8 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
         mAccountErrorGtv = findViewById(R.id.login_account_error_gtv);
         mPasswordErrorGtv = findViewById(R.id.login_password_error_gtv);
         mLoginGtv = findViewById(R.id.login_gtv);
-        mReconnectGtv = findViewById(R.id.login_reconnect_gtv);
+        mReconnectGtv = findViewById(R.id.login_reconnect_gtv);*//*
+
     }
 
     @Override
@@ -69,7 +72,7 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_login;
+        return R.layout.fragment_login;
     }
 
     @Override
@@ -78,7 +81,7 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
     }
 
     @Override
-    protected int getCenterIvStyle() {
+    protected int getTopBarCenterViewStyle() {
         return R.drawable.login_title;
     }
 
@@ -93,9 +96,11 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
         }
     }
 
-    /**
+    */
+/**
      * Login
-     */
+ *//*
+
     private void login() {
         try {
             loginUser.setUserId(Long.parseLong(mAccountEt.getText().toString()));
@@ -246,9 +251,11 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
         mPresenter.login();
     }
 
-    /*
+    */
+/*
       Remind user to register game account
-     */
+     *//*
+
 //    private void remindUserRegister() {
 //        final GDialog gDialog = new GDialog(this, getString(R.string.register_dialog_title),
 //                getString(R.string.register_dialog_content));
@@ -268,3 +275,4 @@ public class LoginActivity extends BaseActivity implements ILoginActivityContrac
 //    }
 
 }
+*/

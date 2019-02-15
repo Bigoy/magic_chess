@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatButton;
 
 public class GButton extends AppCompatButton {
-    private Context mContext;
+    private final Context mContext;
 
     public GButton(Context context) {
         super(context);

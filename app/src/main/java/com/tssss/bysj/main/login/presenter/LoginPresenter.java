@@ -1,15 +1,15 @@
-package com.tssss.bysj.login.presenter;
+package com.tssss.bysj.main.login.presenter;
 
-import com.tssss.bysj.login.ILoginActivityContract;
-import com.tssss.bysj.login.model.LoginHttpTask;
+import com.tssss.bysj.main.login.ILoginFmContract;
+import com.tssss.bysj.main.login.model.LoginHttpTask;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.AccountUtil;
 import com.tssss.http.result.IResult;
 import com.tssss.mvp.base.BaseMvpPresenter;
 
-public class LoginPresenter extends BaseMvpPresenter<ILoginActivityContract.IView> implements ILoginActivityContract.IPresenter {
+public class LoginPresenter extends BaseMvpPresenter<ILoginFmContract.IView> implements ILoginFmContract.IPresenter {
 
-    public LoginPresenter(ILoginActivityContract.IView view) {
+    public LoginPresenter(ILoginFmContract.IView view) {
         super(view);
     }
 
@@ -41,7 +41,8 @@ public class LoginPresenter extends BaseMvpPresenter<ILoginActivityContract.IVie
     }
 
     @Override
-    protected ILoginActivityContract.IView getEmptyView() {
-        return ILoginActivityContract.emptyView;
+    protected ILoginFmContract.IView getEmptyView() {
+        return ILoginFmContract.emptyView;
     }
+
 }

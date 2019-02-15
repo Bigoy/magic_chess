@@ -1,4 +1,4 @@
-package com.tssss.bysj.login.model;
+package com.tssss.bysj.main.login.model;
 
 import com.tssss.bysj.base.BaiduRequest;
 import com.tssss.http.annoation.RequestMethod;
