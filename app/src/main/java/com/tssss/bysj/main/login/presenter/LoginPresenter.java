@@ -1,5 +1,7 @@
 package com.tssss.bysj.main.login.presenter;
 
+import android.util.Log;
+
 import com.tssss.bysj.main.login.ILoginFmContract;
 import com.tssss.bysj.main.login.model.LoginHttpTask;
 import com.tssss.bysj.user.User;
@@ -37,6 +39,7 @@ public class LoginPresenter extends BaseMvpPresenter<ILoginFmContract.IView> imp
     public void login() {
         new Thread(() -> {
             IResult result = new LoginHttpTask<>().test();
+            Log.i(getClass().getSimpleName(), result.data().toString());
         }).start();
     }
 

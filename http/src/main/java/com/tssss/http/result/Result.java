@@ -12,7 +12,6 @@ public class Result<T> implements IResult<T> {
     protected int code;
     protected String msg;
 
-
     @Override
     public boolean isSuccess() {
         return isSuccess;
@@ -42,4 +41,6 @@ public class Result<T> implements IResult<T> {
         result.isSuccess = false;
         return result;
     }
+
+
 }

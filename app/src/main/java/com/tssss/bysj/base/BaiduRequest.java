@@ -1,7 +1,7 @@
 package com.tssss.bysj.base;
 
 import com.tssss.http.annoation.RequestMethod;
-import com.tssss.http.parser.DefaultParser;
+import com.tssss.http.parser.JsonParser;
 import com.tssss.http.request.IRequest;
 import com.tssss.http.request.Request;
 
@@ -14,7 +14,7 @@ public class BaiduRequest extends Request {
         request.host = HostManager.baiduHost;
         request.path = path;
         request.requestMethod = requestMethod;
-        request.parser = DefaultParser.getInstance();
+        request.parser = JsonParser.getInstance();
         return request;
     }
 }
