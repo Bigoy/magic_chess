@@ -1,7 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/login_account_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="@string/input_account"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_size_20sp"
+        app:layout_constraintStart_toStartOf="@+id/login_account_et"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/login_account_error_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="@string/login_invalid_account"
+        android:textColor="@color/red_9e4b5a"
+        android:textSize="@dimen/font_size_20sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/login_account_et"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <EditText
+        android:id="@+id/login_account_et"
+        style="@style/GEditText"
+        android:layout_marginTop="116dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="Autofill,LabelFor" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/login_password_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:text="@string/input_password"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_size_20sp"
+        app:layout_constraintStart_toStartOf="@+id/login_key_et"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/login_password_error_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="@string/login_invalid_password"
+        android:textColor="@color/red_9e4b5a"
+        android:textSize="@dimen/font_size_20sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/login_key_et"
+        app:layout_constraintTop_toBottomOf="@+id/login_account_et"
+        tools:ignore="ContentDescription" />
+
+    <EditText
+        android:id="@+id/login_key_et"
+        style="@style/GEditText"
+        android:layout_marginTop="264dp"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="Autofill,LabelFor" />
+
+    <ImageButton
+        android:id="@+id/login_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="124dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_logging_gtv"
+        app:srcCompat="@drawable/ic_btn_login"
+        tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/login_logging_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="124dp"
+        android:gravity="center"
+        android:text="@string/login_logging"
+        android:textColor="#B1782D"
+        android:textSize="@dimen/font_size_48sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_key_et" />
+
+    <com.tssss.bysj.widget.GTextView
+        android:id="@+id/login_gtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="@string/login_btn_login"
+        android:textColor="@color/green_56ce4d"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/login_key_et"
+        app:layout_constraintTop_toBottomOf="@+id/login_logging_gtv"
+        tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

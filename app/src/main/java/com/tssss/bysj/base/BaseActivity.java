@@ -3,7 +3,10 @@ package com.tssss.bysj.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -69,6 +72,17 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         }
     }
 
+    /**
+     * 通用 view 点击动画
+     */
+    protected void doViewClicked(View v) {
+        Animation out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
+        Animation in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
+        v.clearAnimation();
+        v.startAnimation(out);
+        v.startAnimation(in);
+    }
+
     @Override
     public void setContentView(int layoutResID) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -80,7 +94,7 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         ViewGroup viewGroup = findViewById(android.R.id.content);
         viewGroup.removeAllViews();
         viewGroup.addView(root);
-        if (!isFullScreenActivity()) {
+        if (!requestFullScreen()) {
             getLayoutInflater().inflate(getTopBarId(), root, true);
             setTopBar();
         }
@@ -131,7 +145,7 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     /**
      * Set activity to full screen
      */
-    protected boolean isFullScreenActivity() {
+    protected boolean requestFullScreen() {
         return false;
     }
 
@@ -153,6 +167,16 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     protected void openActivity(Class clazz) {
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
+    }
+
+    /**
+     * 打开一个 activity 并且摧毁自身
+     * @param clazz clazz
+     */
+    protected void openActivityAndFinishSelf(Class clazz) {
+        Intent intent = new Intent(this, clazz);
+        startActivity(intent);
+        this.finish();
     }
 
     /**

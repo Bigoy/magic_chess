@@ -9,13 +9,21 @@
     <string name="input_password">然后，填写16位密码。</string>
     <string name="exit_app">退出游戏吗？</string>
     <string name="dialog_title">提示</string>
+    <string name="account_invalid_id">账户无效，请重新输入</string>
+    <string name="account_invalid_password">密码须为16位数字、字母或符号</string>
+    <string name="account_not_found">账户未注册</string>
+    <string name="account_error_password">账户与密码不一致</string>
+
+    <!-- 网络 -->
+    <string name="net_no_usable">请打开网络连接</string>
+    <string name="net_can_not_connect_server">连接服务器失败，请稍后尝试</string>
 
 
     <!-- LoginFragment -->
     <string name="login_btn_login">最后，点击登录。</string>
     <string name="login_logging">登录中</string>
     <string name="login_wrong_password">密码与账户不一致。</string>
-    <string name="login_invalid_phone">号码无效，请重新输入。</string>
+    <string name="login_invalid_account">号码无效，请重新输入。</string>
     <string name="login_invalid_password">密码为16位数字、字母或符号。</string>
 
 
