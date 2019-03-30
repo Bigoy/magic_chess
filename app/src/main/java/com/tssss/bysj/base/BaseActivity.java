@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.annoation.ViewInject;
-import com.tssss.mvp.base.BaseMvpPresenter;
-import com.tssss.mvp.view.LifeCircleMvpActivity;
+import com.tssss.bysj.mvp.base.BaseMvpPresenter;
+import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
 
 import androidx.annotation.Nullable;
 

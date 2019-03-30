@@ -49,6 +49,5 @@ public class SplashActivity extends BaseActivity implements ISplashContract.IVie
     @Override
     public void skipAd() {
         openActivity(MainActivity.class);
-        finish();
     }
 }

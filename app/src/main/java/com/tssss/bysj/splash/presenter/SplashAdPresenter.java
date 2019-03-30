@@ -1,7 +1,7 @@
 package com.tssss.bysj.splash.presenter;
 
+import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.splash.ISplashContract;
-import com.tssss.mvp.base.BaseMvpPresenter;
 
 public class SplashAdPresenter extends BaseMvpPresenter<ISplashContract.IView> implements ISplashContract.IPresenter {
 

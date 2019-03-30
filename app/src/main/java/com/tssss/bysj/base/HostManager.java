@@ -1,6 +1,6 @@
 package com.tssss.bysj.base;
 
-import com.tssss.http.request.host.IHost;
+import com.tssss.bysj.http.request.host.IHost;
 
 /**
  * Created by tssss on 2019/2/14

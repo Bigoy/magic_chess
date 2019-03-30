@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tssss.bysj.base.annoation.ViewInject;
-import com.tssss.mvp.view.LifeCircleMvpFragment;
+import com.tssss.bysj.mvp.view.LifeCircleMvpFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

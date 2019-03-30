@@ -1,8 +1,9 @@
 package com.tssss.bysj.splash;
 
-import com.tssss.mvp.ILifeCircle;
-import com.tssss.mvp.IMvpView;
-import com.tssss.mvp.MvpController;
+
+import com.tssss.bysj.mvp.ILifeCircle;
+import com.tssss.bysj.mvp.IMvpView;
+import com.tssss.bysj.mvp.MvpController;
 
 public interface ISplashContract {
     interface IView extends IMvpView {
