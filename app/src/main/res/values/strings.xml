@@ -2,14 +2,13 @@
     <!-- Common -->
     <string name="app_name_cn">神奇的棋</string>
     <string name="app_name_en">magic_chess</string>
-    <string name="account_invalid">手机号或密码无效</string>
     <string name="error">发生错误，请稍后再试。</string>
     <string name="success">成功</string>
     <string name="input_account">首先，填写手机号。</string>
     <string name="input_password">然后，填写16位密码。</string>
     <string name="exit_app">退出游戏吗？</string>
     <string name="dialog_title">提示</string>
-    <string name="account_invalid_id">账户无效，请重新输入</string>
+    <string name="account_invalid">账户无效，请重新输入</string>
     <string name="account_invalid_password">密码须为16位数字、字母或符号</string>
     <string name="account_not_found">账户未注册</string>
     <string name="account_error_password">账户与密码不一致</string>
@@ -17,6 +16,7 @@
     <!-- 网络 -->
     <string name="net_no_usable">请打开网络连接</string>
     <string name="net_can_not_connect_server">连接服务器失败，请稍后尝试</string>
+    <string name="net_reconnect">重新连接中</string>
 
 
     <!-- LoginFragment -->

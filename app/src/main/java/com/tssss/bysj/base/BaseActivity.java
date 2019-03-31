@@ -16,6 +16,7 @@ import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
@@ -171,6 +172,7 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
 
     /**
      * 打开一个 activity 并且摧毁自身
+     *
      * @param clazz clazz
      */
     protected void openActivityAndFinishSelf(Class clazz) {
@@ -223,5 +225,32 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
      */
     protected Context getContext() {
         return getApplicationContext();
+    }
+
+    /**
+     * Flip view
+     *
+     * @param v1 hide
+     * @param v2 show
+     */
+    protected void flipView(@NonNull View v1, @NonNull View v2) {
+        flipView(v1, v2, R.anim.alpha_slide_in, R.anim.alpha_slide_out);
+    }
+
+    /**
+     * Flip view
+     *
+     * @param v1      hide
+     * @param v2      show
+     * @param animIn  animation in
+     * @param animOut animation out
+     */
+    protected void flipView(@NonNull View v1, @NonNull View v2, int animIn, int animOut) {
+        Animation alphaIn = AnimationUtils.loadAnimation(this, animIn);
+        Animation alphaOut = AnimationUtils.loadAnimation(this, animOut);
+        v1.startAnimation(alphaOut);
+        v1.setVisibility(View.GONE);
+        v2.setVisibility(View.VISIBLE);
+        v2.startAnimation(alphaIn);
     }
 }

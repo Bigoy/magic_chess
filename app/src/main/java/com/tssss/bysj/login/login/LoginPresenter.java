@@ -1,7 +1,14 @@
 package com.tssss.bysj.login.login;
 
+import android.util.Log;
+
+import com.tssss.bysj.http.annoation.RequestMethod;
+import com.tssss.bysj.http.okhttp.OkHttpScheduler;
+import com.tssss.bysj.http.request.BaiduRequest;
+import com.tssss.bysj.http.response.IResponse;
 import com.tssss.bysj.login.IAccountContract;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
+import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.AccountUtil;
 
@@ -18,16 +25,32 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
     public void verifyAccountFormat(@NonNull User user) {
         if (!AccountUtil.validPhoneNumber(user.getUserId())) {
             getView().onAccountFormatError();
-        }else if (!AccountUtil.validPassword(user.getUserPassword())) {
+        }
+        if (!AccountUtil.validPassword(user.getUserPassword())) {
             getView().onPasswordFormatError();
-        }else {
-            confirmAccountOperation();
+        }
+        if (AccountUtil.validPhoneNumber(user.getUserId())) {
+            getView().onValidAccount();
+        }
+        if (AccountUtil.validPassword(user.getUserPassword())) {
+            getView().onValidPassword();
+        }
+        if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
+            getView().onProcess();
         }
     }
 
     @Override
     public void confirmAccountOperation() {
-        getView().onProcess();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpScheduler okHttpScheduler = new OkHttpScheduler();
+                IResponse response = okHttpScheduler.newCall(BaiduRequest.sendHttp("",
+                        RequestMethod.GET)).execute();
+                Log.wtf("result", response.getBodyString());
+            }
+        }).start();
     }
 
     @Override

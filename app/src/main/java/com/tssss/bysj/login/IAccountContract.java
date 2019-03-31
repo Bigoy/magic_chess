@@ -18,6 +18,16 @@ public interface IAccountContract {
         void onPasswordFormatError();
 
         /**
+         * 用户输入的账户格式正确
+         */
+        void onValidAccount();
+
+        /**
+         * 用户输入的密码格式正确
+         */
+        void onValidPassword();
+
+        /**
          * 当前输入的账户不存在
          */
         void onAccountNotFound();
@@ -78,6 +88,16 @@ public interface IAccountContract {
 
         @Override
         public void onPasswordFormatError() {
+
+        }
+
+        @Override
+        public void onValidAccount() {
+
+        }
+
+        @Override
+        public void onValidPassword() {
 
         }
 
