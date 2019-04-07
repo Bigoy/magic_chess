@@ -5,6 +5,8 @@ import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
 import com.tssss.bysj.user.User;
 
+import androidx.annotation.NonNull;
+
 public interface IAccountContract {
     interface IView extends IMvpView{
         /**
@@ -36,6 +38,7 @@ public interface IAccountContract {
          * 账户与密码不一致，密码不一致
          */
         void onPasswordError();
+
 
         /**
          * 账户操作进行中
@@ -74,7 +77,7 @@ public interface IAccountContract {
         /**
          * 返回用户基本信息
          */
-        void returnUser(User user);
+        void returnUser(@NonNull User user);
     }
 
     /**

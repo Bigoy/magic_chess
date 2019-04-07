@@ -18,7 +18,7 @@
             android:value="640" />
 
         <activity
-            android:name=".splash.SplashActivity"
+            android:name=".game.splash.SplashActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -28,10 +28,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name=".game.main.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".login.login.LoginActivity" />
-        <activity android:name=".login.register.RegisterActivity" />
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".game.hall.HallActivity" />
+        <activity android:name=".game.friend.FriendsActivity" />
+        <activity android:name=".game.news.NewsActivity" />
+        <activity android:name=".game.PeopleActivity" />
+        <activity android:name=".game.UserInfoActivity" />
 
     </application>
 

@@ -100,10 +100,16 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
             setTopBar();
         }
         getLayoutInflater().inflate(layoutResID, root, true);
-        /*// 隐藏底部导航栏
+        // 隐藏底部导航栏
+        hideNavigationBar();
+    }
+
+    protected void hideNavigationBar() {
         getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN);*/
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
     }
 
     /**
@@ -227,30 +233,4 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         return getApplicationContext();
     }
 
-    /**
-     * Flip view
-     *
-     * @param v1 hide
-     * @param v2 show
-     */
-    protected void flipView(@NonNull View v1, @NonNull View v2) {
-        flipView(v1, v2, R.anim.alpha_slide_in, R.anim.alpha_slide_out);
-    }
-
-    /**
-     * Flip view
-     *
-     * @param v1      hide
-     * @param v2      show
-     * @param animIn  animation in
-     * @param animOut animation out
-     */
-    protected void flipView(@NonNull View v1, @NonNull View v2, int animIn, int animOut) {
-        Animation alphaIn = AnimationUtils.loadAnimation(this, animIn);
-        Animation alphaOut = AnimationUtils.loadAnimation(this, animOut);
-        v1.startAnimation(alphaOut);
-        v1.setVisibility(View.GONE);
-        v2.setVisibility(View.VISIBLE);
-        v2.startAnimation(alphaIn);
-    }
 }

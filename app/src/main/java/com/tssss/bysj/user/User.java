@@ -10,6 +10,8 @@ public class User {
 
 
     public User() {
+        this.userId = "null";
+        this.userPassword = "null";
     }
 
     public User(String userId, String userPassword) {
