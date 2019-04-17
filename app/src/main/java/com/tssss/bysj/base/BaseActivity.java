@@ -2,11 +2,10 @@ package com.tssss.bysj.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +15,6 @@ import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
@@ -46,6 +44,8 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         } else {
             throw new RuntimeException("no annotation");
         }
+
+        hideStatusBarAndNavigationBar();
     }
 
     @Override
@@ -73,17 +73,6 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         }
     }
 
-    /**
-     * 通用 view 点击动画
-     */
-    protected void doViewClicked(View v) {
-        Animation out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-        Animation in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        v.clearAnimation();
-        v.startAnimation(out);
-        v.startAnimation(in);
-    }
-
     @Override
     public void setContentView(int layoutResID) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -97,19 +86,30 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         viewGroup.addView(root);
         if (!requestFullScreen()) {
             getLayoutInflater().inflate(getTopBarId(), root, true);
-            setTopBar();
+            initTopBar();
         }
         getLayoutInflater().inflate(layoutResID, root, true);
-        // 隐藏底部导航栏
-        hideNavigationBar();
     }
 
-    protected void hideNavigationBar() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        hideStatusBarAndNavigationBar();
+    }
+
+    /**
+     * 隐藏状态栏和导航栏，实现全屏
+     */
+    protected void hideStatusBarAndNavigationBar() {
+        int option = View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        getWindow().getDecorView().setSystemUiVisibility(option);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
 
     /**
@@ -190,18 +190,42 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     /**
      * Initialize views of top bar.
      */
-    private void setTopBar() {
+    private void initTopBar() {
+        if (!requestFullScreen()) {
+            setTopBarLeft();
+            setTopBarCenter();
+            setTopBarRight();
+        }
+    }
+
+    private void setTopBarLeft() {
         mLeftBtn = findViewById(R.id.top_bar_left);
+        if (getTopBarLeftViewStyle() == 0) {
+            mLeftBtn.setVisibility(View.INVISIBLE);
+        } else {
+            mLeftBtn.setImageResource(getTopBarLeftViewStyle());
+            mLeftBtn.setOnClickListener(this);
+        }
+    }
+
+    private void setTopBarCenter() {
         mCenterIv = findViewById(R.id.top_bar_center);
+        if (getTopBarCenterViewStyle() == 0) {
+            mCenterIv.setVisibility(View.INVISIBLE);
+        } else {
+            mCenterIv.setImageResource(getTopBarCenterViewStyle());
+            mCenterIv.setOnClickListener(this);
+        }
+    }
+
+    private void setTopBarRight() {
         mRightBtn = findViewById(R.id.top_bar_right);
-
-        mLeftBtn.setOnClickListener(this);
-        mCenterIv.setOnClickListener(this);
-        mRightBtn.setOnClickListener(this);
-
-        mLeftBtn.setImageResource(getTopBarLeftViewStyle());
-        mCenterIv.setImageResource(getTopBarCenterViewStyle());
-        mRightBtn.setImageResource(getTopBarRightViewStyle());
+        if (getTopBarRightViewStyle() == 0) {
+            mRightBtn.setVisibility(View.INVISIBLE);
+        } else {
+            mRightBtn.setImageResource(getTopBarRightViewStyle());
+            mRightBtn.setOnClickListener(this);
+        }
     }
 
     /**

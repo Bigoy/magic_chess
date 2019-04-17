@@ -1,5 +1,7 @@
 package com.tssss.bysj.login;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +13,7 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.game.hall.HallActivity;
+import com.tssss.bysj.http.HttpClient;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.AnimationUtil;
@@ -21,7 +24,7 @@ import com.tssss.bysj.widget.GTextView;
 import androidx.annotation.Nullable;
 
 @ViewInject(layoutId = R.layout.activity_login)
-public class LoginActivity extends BaseActivity implements IAccountContract.IView{
+public class LoginActivity extends BaseActivity implements IAccountContract.IView {
     private EditText account_et;
     private EditText password_et;
     private ImageButton login_ib;
@@ -41,8 +44,8 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        account_et.setText(UserDataCache.readAccount(this,UserDataCache.ACCOUNT));
-        password_et.setText(UserDataCache.readAccount(this,UserDataCache.PASSWORD));
+        account_et.setText(UserDataCache.readAccount(this, UserDataCache.ACCOUNT));
+        password_et.setText(UserDataCache.readAccount(this, UserDataCache.PASSWORD));
     }
 
     @Override
@@ -82,7 +85,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     protected void afterBindView() {
         mHandler = new Handler();
-        mLoginPresenter = new LoginPresenter(this,this);
+        mLoginPresenter = new LoginPresenter(this, this);
         mLoginUser = new User();
     }
 
@@ -94,9 +97,9 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     public void onAccountFormatError() {
         if (account_error_gtv.getVisibility() == View.VISIBLE) {
-            AnimationUtil.flipView(this,account_error_gtv, account_error_gtv);
+            AnimationUtil.flipView(this, account_error_gtv, account_error_gtv);
         } else {
-            AnimationUtil.flipView(this,account_gtv, account_error_gtv);
+            AnimationUtil.flipView(this, account_gtv, account_error_gtv);
         }
         account_et.setText("");
     }
@@ -104,9 +107,9 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     public void onPasswordFormatError() {
         if (password_error_gtv.getVisibility() == View.VISIBLE) {
-            AnimationUtil.flipView(this,password_error_gtv, password_error_gtv);
+            AnimationUtil.flipView(this, password_error_gtv, password_error_gtv);
         } else {
-            AnimationUtil.flipView(this,password_gtv, password_error_gtv);
+            AnimationUtil.flipView(this, password_gtv, password_error_gtv);
         }
         password_et.setText("");
     }
@@ -114,14 +117,14 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     public void onValidAccount() {
         if (account_error_gtv.getVisibility() == View.VISIBLE) {
-            AnimationUtil.flipView(this,account_error_gtv, account_gtv);
+            AnimationUtil.flipView(this, account_error_gtv, account_gtv);
         }
     }
 
     @Override
     public void onValidPassword() {
         if (password_error_gtv.getVisibility() == View.VISIBLE) {
-            AnimationUtil.flipView(this,password_error_gtv, password_gtv);
+            AnimationUtil.flipView(this, password_error_gtv, password_gtv);
         }
     }
 
@@ -134,7 +137,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     public void onPasswordError() {
         password_error_gtv.setText(getString(R.string.account_error_password));
-        AnimationUtil.flipView(this,password_gtv, password_error_gtv);
+        AnimationUtil.flipView(this, password_gtv, password_error_gtv);
         password_et.setText("");
     }
 
@@ -144,14 +147,8 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
             lockViews();
             // 保存用户当前输入的账户信息，此时无需验证账户与密码的一致性
             UserDataCache.saveAccount(this, mLoginUser);
-            AnimationUtil.flipView(this,login_ib, logging_gtv);
-            // 延时一秒执行登录操作，登录中提示不显示
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mLoginPresenter.confirmAccountOperation();
-                }
-            }, 350);
+            AnimationUtil.flipView(this, login_ib, logging_gtv);
+            mLoginPresenter.confirmAccountOperation();
         }
     }
 
@@ -160,14 +157,14 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         if (Constant.NET_CODE_OK != code) {
             logging_gtv.clearAnimation();
             connect_failure_gtv.setText("连接失败");
-            AnimationUtil.flipView(this,logging_gtv, connect_failure_gtv);
+            AnimationUtil.flipView(this, logging_gtv, connect_failure_gtv);
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    AnimationUtil.flipView(LoginActivity.this,connect_failure_gtv,login_ib);
+                    AnimationUtil.flipView(LoginActivity.this, connect_failure_gtv, login_ib);
                     unlockViews();
                 }
-            },1500);
+            }, 1500);
         }
     }
 
@@ -182,7 +179,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 
     /**
      * 锁定输入和登录按钮
-     *
+     * <p>
      * 处于正在登录状态时不允许用户执行操作
      */
     protected void lockViews() {
@@ -199,5 +196,6 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         account_et.setEnabled(true);
         password_et.setEnabled(true);
     }
+
 
 }
