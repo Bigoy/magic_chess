@@ -8,76 +8,58 @@
     tools:context=".game.hall.HallActivity">
 
     <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/bg_hall_world_message"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            android:src="@drawable/ic_horn" />
-
-        <TextView
-            android:id="@+id/hall_world_msg"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:maxLength="10"
-            android:paddingStart="6dp"
-            android:text="好消息！！！新功能上..."
-            android:textColor="#FFFFFF"
-            android:textSize="12dp"
-            tools:ignore="RtlSymmetry,SpUsage" />
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <ImageButton
+            android:id="@+id/hall_game_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@null"
-            android:src="@drawable/ic_btn_news" />
+            android:src="@drawable/ic_btn_news"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
+            android:id="@+id/hall_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@null"
-            android:src="@drawable/ic_btn_friends" />
+            android:src="@drawable/ic_btn_friends"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
+            android:id="@+id/hall_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@null"
-            android:src="@drawable/ic_btn_message" />
+            android:src="@drawable/ic_btn_message"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
+            android:id="@+id/hall_game_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@null"
-            android:src="@drawable/ic_btn_setting" />
+            android:src="@drawable/ic_btn_setting"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
+            android:id="@+id/hall_match_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:layout_marginTop="100dp"
             android:background="@null"
-            android:src="@drawable/ic_btn_match_game" />
+            android:src="@drawable/ic_btn_match_game"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </LinearLayout>

@@ -56,7 +56,8 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
 
     /**
      * 统一处理 Activity 的 TopBar 点击事件
-     * 如非隐藏 TopBar 的界面，子类重写 onClick 方法时必须调用 super.onClick() 方法
+     *
+     * 如非全屏界面，子类重写 onClick 方法时必须调用 super.onClick() 方法
      */
     @Override
     public void onClick(android.view.View v) {
