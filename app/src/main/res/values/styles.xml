@@ -29,6 +29,16 @@
         <item name="android:textColor">@color/brown_00D4C49A</item>
     </style>
 
+    <style name="GEditTextNoBg">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">@dimen/padding_16dp</item>
+        <item name="android:paddingRight">@dimen/padding_16dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
     <!-- Standard tips text on input box -->
     <style name="GInputPrompt">
         <item name="android:layout_width">wrap_content</item>

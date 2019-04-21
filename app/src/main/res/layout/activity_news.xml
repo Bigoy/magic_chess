@@ -4,36 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_common"
-    tools:context=".activity.NewsActivity">
+    android:orientation="vertical"
+    tools:context=".game.news.NewsActivity">
 
-    <ImageView
-        android:id="@+id/news_null_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/null_news"
-        tools:ignore="ContentDescription" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_rv"
+    <LinearLayout
+        android:id="@+id/news_category_ll"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/padding_32dp"
-        android:layout_marginTop="@dimen/padding_32dp"
-        android:layout_marginEnd="@dimen/padding_32dp"
-        android:padding="@dimen/padding_4dp"
-        android:visibility="gone"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/category_tab"
+        android:divider="@drawable/divider"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/news_category_recommend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/news_category_recommend"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/news_category_attention"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/news_category_attention"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/news_category_other"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/news_category_other"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/news_category_newest"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/news_category_newest"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            tools:ignore="RtlHardcoded,SpUsage" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/news_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1" />
+        app:layout_constraintTop_toBottomOf="@id/news_category_ll">
+
+
+    </LinearLayout>
+
+    <!--  <ImageView
+          android:id="@+id/news_null_iv"
+          android:layout_width="wrap_content"
+          android:layout_height="0dp"
+          android:layout_gravity="center"
+          android:layout_weight="1"
+          android:visibility="visible"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.5"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/null_news"
+          tools:ignore="ContentDescription" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

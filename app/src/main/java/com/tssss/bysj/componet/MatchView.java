@@ -1,4 +1,4 @@
-package com.tssss.bysj.widget;
+package com.tssss.bysj.componet;
 
 import android.content.Context;
 import android.graphics.Canvas;

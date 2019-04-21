@@ -1,7 +1,5 @@
 package com.tssss.bysj.login;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,14 +10,13 @@ import android.widget.ImageButton;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.game.hall.HallActivity;
-import com.tssss.bysj.http.HttpClient;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
-import com.tssss.bysj.util.UserDataCache;
-import com.tssss.bysj.widget.GTextView;
 
 import androidx.annotation.Nullable;
 
@@ -79,6 +76,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
                 mLoginUser.setUserPassword(password);
                 mLoginPresenter.verifyAccountFormat(mLoginUser);
                 break;
+            default:
         }
     }
 

@@ -1,4 +1,4 @@
-package com.tssss.bysj.widget;
+package com.tssss.bysj.componet;
 
 /**
  * 一个标准弹窗需要的数据

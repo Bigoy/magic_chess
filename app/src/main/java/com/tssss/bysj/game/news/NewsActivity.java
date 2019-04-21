@@ -1,92 +1,133 @@
 package com.tssss.bysj.game.news;
 
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
+import android.view.View;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.componet.menu.Menu;
+import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
+import com.tssss.bysj.util.AnimationUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ViewInject(layoutId = R.layout.activity_news)
-public class NewsActivity extends BaseActivity {
+public class NewsActivity extends BaseActivity implements OnMenuItemClickListener {
+    private GTextView categoryRecommend;
+    private GTextView categoryAttention;
+    private GTextView categoryOther;
+    private GTextView categoryNewest;
+    private RecommendFragment recommendFragment;
+    private AttentionFragment attentionFragment;
+    private OtherFragment otherFragment;
+    private NewestFragment newestFragment;
+
+    private Menu menu;
+
     @Override
     protected void findViews() {
-
+        categoryRecommend = findViewById(R.id.news_category_recommend);
+        categoryAttention = findViewById(R.id.news_category_attention);
+        categoryOther = findViewById(R.id.news_category_other);
+        categoryNewest = findViewById(R.id.news_category_newest);
     }
 
     @Override
     protected void setEventListeners() {
-
+        categoryRecommend.setOnClickListener(this);
+        categoryAttention.setOnClickListener(this);
+        categoryOther.setOnClickListener(this);
+        categoryNewest.setOnClickListener(this);
     }
 
     @Override
     protected void afterBindView() {
-
-    }
-    /*private ImageButton mBackIb, mAddNewsIb;
-    private ImageView mNullIv;
-    private RecyclerView mNewsRv;
-
-    private NewsPresenter mPresenter;
-
-    @Override
-    protected void findViews() {
-        mBackIb = findViewById(R.id.news_back_ib);
-        mAddNewsIb = findViewById(R.id.news_add_ib);
-        mNullIv = findViewById(R.id.news_null_iv);
-        mNewsRv = findViewById(R.id.news_rv);
+        recommendFragment = new RecommendFragment();
+        attentionFragment = new AttentionFragment();
+        otherFragment = new OtherFragment();
+        newestFragment = new NewestFragment();
     }
 
     @Override
-    protected void setEventListeners() {
-        mBackIb.setOnClickListener(this);
-        mAddNewsIb.setOnClickListener(this);
+    protected int getTopBarCenterViewStyle() {
+        return R.drawable.news_title;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPresenter.requestNewsData(this, this);
+    protected int getTopBarRightViewStyle() {
+        return R.drawable.ic_btn_more;
     }
 
     @Override
-    protected PresenterImp attachPresenter() {
-        mPresenter = new NewsPresenter();
-        return mPresenter;
+    protected void clickTopBarRight() {
+        super.clickTopBarRight();
+        List<String> items = new ArrayList<>();
+        items.add("我关注的");
+        items.add("屏蔽内容");
+        menu = new Menu.Builder(this, this)
+                .items(items)
+                .build();
+        menu.display();
     }
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
-            case R.id.news_back_ib:
-                finish();
+            case R.id.news_category_recommend:
+                startColorAnimation(categoryRecommend);
+                replaceFragment(R.id.news_fragment_container, recommendFragment);
                 break;
-            case R.id.news_add_ib:
-                addNews();
+            case R.id.news_category_attention:
+                startColorAnimation(categoryAttention);
+                replaceFragment(R.id.news_fragment_container, attentionFragment);
                 break;
+            case R.id.news_category_other:
+                startColorAnimation(categoryOther);
+                replaceFragment(R.id.news_fragment_container, otherFragment);
+                break;
+            case R.id.news_category_newest:
+                startColorAnimation(categoryNewest);
+                replaceFragment(R.id.news_fragment_container, newestFragment);
+                break;
+            default:
         }
     }
 
+    private void startColorAnimation(GTextView view) {
+        initCategoryTabState();
+        AnimationUtil.startBackgroundColorAnimator(view);
+    }
 
-    @Override
-    public void onComplete(List<News> newsList) {
-        NewsAdapter adapter = new NewsAdapter(this, newsList);
-
-        mNullIv.setVisibility(View.GONE);
-
-        mNewsRv.setVisibility(View.VISIBLE);
-        mNewsRv.setLayoutManager(new LinearLayoutManager(this));
-        mNewsRv.setAdapter(adapter);
+    private void initCategoryTabState() {
+        categoryRecommend.setTextColor(0xFF7E561B);
+        categoryAttention.setTextColor(0xFF7E561B);
+        categoryOther.setTextColor(0xFF7E561B);
+        categoryNewest.setTextColor(0xFF7E561B);
+        categoryRecommend.setBackgroundColor(0x00ffffff);
+        categoryAttention.setBackgroundColor(0x00ffffff);
+        categoryOther.setBackgroundColor(0x00ffffff);
+        categoryNewest.setBackgroundColor(0x00ffffff);
     }
 
     @Override
-    public void onFail() {
-        ToastUtil.showToast(this, "load news error", ToastUtil.TOAST_ERROR);
-    }
+    public void onMenuItemClick(View v, int position) {
+        switch (position) {
+            case 0:
+                menu.dismiss();
+                break;
+            case 1:
+                menu.dismiss();
+                break;
+            default:
 
-    @Override
-    public void onNullNews() {
-        mNullIv.setVisibility(View.VISIBLE);
+        }
     }
-
-    private void addNews() {
-    }*/
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".game.setting.AccountActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <com.tssss.bysj.componet.GTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="32dp"
+            android:text="@string/setting_group_security"
+            android:textColor="@color/colorPrimary"
+            android:textSize="28dp"
+            tools:ignore="SpUsage" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="152dp"
+            android:layout_marginTop="16dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:divider="@drawable/divider_setting"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:id="@+id/setting_security"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="16dp"
+                    android:text="@string/setting_security"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="28dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
+
+                <com.tssss.bysj.componet.GTextView
+                    android:id="@+id/setting_alter_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="16dp"
+                    android:text="@string/setting_alter_phone"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="28dp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/category_setting" />
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

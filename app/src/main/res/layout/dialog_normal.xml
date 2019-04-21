@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_panel"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical">
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/dialog_desc"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:textColor="#684E29"
+            android:textSize="20dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/dialog_sub_desc"
+            android:layout_width="match_parent"
+            android:layout_height="124dp"
+            android:gravity="center_horizontal"
+            android:textSize="18dp"
+            tools:ignore="SpUsage" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/dialog_operation_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:divider="@drawable/divider_dialog"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/dialog_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/divider_dialog"
+            android:visibility="gone" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/dialog_ok"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="@string/dialog_ok"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22dp"
+            android:visibility="gone"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/dialog_no"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/dialog_no"
+            android:textSize="22dp"
+            android:visibility="gone"
+            tools:ignore="SpUsage" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

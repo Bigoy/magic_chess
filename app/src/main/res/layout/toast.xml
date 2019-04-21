@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/padding_8dp"
     android:paddingRight="@dimen/padding_8dp">
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/toast_gtv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

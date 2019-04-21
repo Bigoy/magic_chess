@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="32dp"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/setting_group_person"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="28dp"
+                    tools:ignore="SpUsage" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:divider="@drawable/divider_setting"
+                        android:orientation="vertical"
+                        android:showDividers="middle">
+
+                        <com.tssss.bysj.componet.GTextView
+                            android:id="@+id/setting_account"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/setting_person_account"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="28dp"
+                            tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
+
+                        <com.tssss.bysj.componet.GTextView
+                            android:id="@+id/setting_alter_psd"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/setting_person_alter_psd"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="28dp"
+                            tools:ignore="SpUsage" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/category_setting" />
+
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="vertical">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/setting_group_notification"
+                    android:textColor="@color/colorPrimary"
+
+                    android:textSize="28dp"
+                    tools:ignore="SpUsage" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:divider="@drawable/divider_setting"
+                        android:orientation="vertical"
+                        android:showDividers="middle">
+
+                        <LinearLayout
+                            android:id="@+id/setting_group_notify_voice"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:orientation="vertical">
+
+                                <com.tssss.bysj.componet.GTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/setting_notify_voice"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="20dp"
+                                    tools:ignore="SpUsage" />
+
+                                <com.tssss.bysj.componet.GTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/setting_notify_voice_detail"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="16dp"
+                                    tools:ignore="SpUsage" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/setting_voice_iv"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_switch_on"
+                                    tools:ignore="ContentDescription" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/setting_group_notify_verbose"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:orientation="vertical">
+
+                                <com.tssss.bysj.componet.GTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/setting_notify_verbose"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="20dp"
+                                    tools:ignore="SpUsage" />
+
+                                <com.tssss.bysj.componet.GTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/setting_notify_verbose_detail"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="16dp"
+                                    tools:ignore="SpUsage" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/setting_verbose_iv"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_switch_on"
+                                    tools:ignore="ContentDescription" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/category_setting" />
+
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:orientation="vertical">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/setting_group_version"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="28dp"
+                    tools:ignore="SpUsage" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:divider="@drawable/divider_setting"
+                        android:orientation="vertical"
+                        android:showDividers="middle">
+
+                        <com.tssss.bysj.componet.GTextView
+                            android:id="@+id/setting_version"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/setting_version"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="28dp"
+                            tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
+
+                        <com.tssss.bysj.componet.GTextView
+                            android:id="@+id/setting_version_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/setting_version_detail"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="28dp"
+                            tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
+
+
+                        <com.tssss.bysj.componet.GTextView
+                            android:id="@+id/setting_about_game"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/setting_about_game"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="28dp"
+                            tools:ignore="RtlSymmetry,SpUsage" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/category_setting" />
+
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

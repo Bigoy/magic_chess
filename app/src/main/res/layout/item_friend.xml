@@ -6,7 +6,7 @@
     android:background="@drawable/bg_item_friend"
     android:padding="@dimen/padding_24dp">
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/item_friend_rank_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/item_friend_name_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/item_friend_rank_gtv"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/item_friend_state_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

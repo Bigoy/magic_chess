@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="@+id/distribute_news_title_gtv"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/distribute_news_title_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

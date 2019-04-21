@@ -1,25 +1,23 @@
-package com.tssss.bysj.widget;
+package com.tssss.bysj.componet;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
-public class GButton extends AppCompatButton {
+public class GTextView extends AppCompatTextView {
     private final Context mContext;
 
-    public GButton(Context context) {
+    public GTextView(Context context) {
         super(context);
-
         mContext = context;
         setFont();
     }
 
-    public GButton(Context context, AttributeSet attrs) {
+    public GTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         mContext = context;
         setFont();
     }

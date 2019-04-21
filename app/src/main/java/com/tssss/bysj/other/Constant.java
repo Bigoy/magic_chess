@@ -26,4 +26,10 @@ public class Constant {
     public static final String ACCOUNT_FOUND = "ACCOUNT_FOUND";
     public static final String ACCOUNT_ACCESSIBLE_DENY = "ACCESSIBLE_DENY";
     public static final String ACCOUNT_ACCESSIBLE_GRANT = "ACCESSIBLE_GRANT";
+
+    /**
+     * 数据持久化 KEY
+     */
+    public static final String SETTING_NOTIFY_VOICE = "SETTING_NOTIFY_VOICE";
+    public static final String SETTING_NOTIFY_VERBOSE = "SETTING_NOTIFY_VERBOSE";
 }

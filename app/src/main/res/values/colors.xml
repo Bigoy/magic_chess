@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#7e561b</color>
-    <color name="colorPrimaryDark">#7e561b</color>
+    <color name="colorPrimary">#A57C3E</color>
+    <color name="colorPrimaryDark">#7E561B</color>
     <color name="colorAccent">#cacaca</color>
 
     <!-- 白色系 -->

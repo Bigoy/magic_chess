@@ -1,93 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_common"
-    tools:context=".activity.NewRoleActivity">
+    android:paddingTop="20dp"
+    tools:context=".game.NewRoleActivity">
 
-    <com.tssss.bysj.widget.GTextView
-        android:id="@+id/new_role_name_gtv"
-        style="@style/GInputPrompt"
-        android:layout_height="31dp"
-        android:layout_marginTop="72dp"
-        android:text="@string/new_role_input_name"
-        app:layout_constraintStart_toStartOf="@+id/new_role_name_et"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
-    <EditText
-        android:id="@+id/new_role_name_et"
-        style="@style/GEditText"
-        android:layout_marginTop="16dp"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_name_gtv"
-        tools:ignore="Autofill,LabelFor" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <com.tssss.bysj.widget.GTextView
-        android:id="@+id/new_role_sex_gtv"
-        style="@style/GInputPrompt"
-        android:layout_marginTop="48dp"
-        android:text="@string/new_role_sex"
-        app:layout_constraintStart_toStartOf="@+id/new_role_name_et"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_name_et" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp">
 
-    <ImageButton
-        android:id="@+id/new_role_sex_girl_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:src="@drawable/sex_girl"
-        app:layout_constraintStart_toStartOf="@+id/new_role_sex_gtv"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_sex_gtv"
-        tools:ignore="ContentDescription" />
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="72dp"
+                    android:gravity="left"
+                    android:text="@string/new_role_head_img"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    tools:ignore="RtlHardcoded,SpUsage" />
 
-    <ImageButton
-        android:id="@+id/new_role_sex_boy_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:src="@drawable/sex_boy"
-        app:layout_constraintStart_toEndOf="@+id/new_role_sex_girl_ib"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_sex_gtv"
-        tools:ignore="ContentDescription" />
+            </LinearLayout>
 
-    <com.tssss.bysj.widget.GTextView
-        android:id="@+id/new_role_head_img_gtv"
-        style="@style/GInputPrompt"
-        android:layout_marginTop="48dp"
-        android:text="@string/new_role_head_img"
-        app:layout_constraintStart_toStartOf="@+id/new_role_sex_girl_ib"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_sex_girl_ib" />
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:rowCount="2">
 
-    <ImageButton
-        android:id="@+id/new_role_add_imgs_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:src="@drawable/ic_add_imgs"
-        app:layout_constraintStart_toStartOf="@+id/new_role_head_img_gtv"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_head_img_gtv"
-        tools:ignore="ContentDescription" />
+                <ImageView
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/head_img_test"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
 
-    <ImageButton
-        android:id="@+id/new_role_create_role_ib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:background="@null"
-        android:src="@drawable/ic_btn_create_role"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_role_add_imgs_ib"
-        tools:ignore="ContentDescription" />
+                <ImageView
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/head_img_test"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/head_img_test"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <ImageView
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="left|top"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/head_img_test"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+            </GridLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="72dp"
+                    android:gravity="left"
+                    android:text="@string/new_role_input_name"
+                    android:textColor="@color/blue_86a1d1"
+                    android:textSize="20sp"
+                    tools:ignore="RtlHardcoded,SpUsage" />
+
+                <EditText
+                    style="@style/GEditTextNoBg"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_input_blue"
+                    android:hint="@string/input_hint"
+                    android:inputType="text"
+                    android:textColor="#4A5D80"
+                    tools:ignore="Autofill,RtlSymmetry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="72dp"
+                    android:gravity="left"
+                    android:text="@string/new_role_sex"
+                    android:textColor="#009688"
+                    android:textSize="20sp"
+                    tools:ignore="RtlHardcoded,SpUsage" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="72dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/sex"
+                        android:gravity="center"
+                        android:text="@string/sex_man"
+                        android:textColor="@color/white_ffffff"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="72dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/sex"
+                        android:gravity="center"
+                        android:text="@string/sex_woman"
+                        android:textColor="@color/white_ffffff"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:ignore="SpUsage" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <com.tssss.bysj.componet.GTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="72dp"
+                    android:gravity="left"
+                    android:text="@string/new_role_tag"
+                    android:textColor="#FF5722"
+                    android:textSize="20sp"
+                    tools:ignore="RtlHardcoded,SpUsage" />
+
+                <EditText
+                    style="@style/GEditTextNoBg"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_input_orig"
+                    android:hint="@string/input_hint"
+                    android:inputType="text"
+                    android:paddingStart="32dp"
+                    android:textColor="#FF5722"
+                    tools:ignore="Autofill,RtlSymmetry" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

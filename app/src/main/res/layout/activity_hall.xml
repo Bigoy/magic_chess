@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_common"
-    android:orientation="vertical"
     tools:context=".game.hall.HallActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/hall_match_game"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UselessParent">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/hall_game_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +23,7 @@
             android:src="@drawable/ic_btn_news"
             tools:ignore="ContentDescription" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/hall_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +32,7 @@
             android:src="@drawable/ic_btn_friends"
             tools:ignore="ContentDescription" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/hall_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +41,7 @@
             android:src="@drawable/ic_btn_message"
             tools:ignore="ContentDescription" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/hall_game_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,15 +50,20 @@
             android:src="@drawable/ic_btn_setting"
             tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/hall_match_game"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginTop="100dp"
-            android:background="@null"
-            android:src="@drawable/ic_btn_match_game"
-            tools:ignore="ContentDescription" />
+
     </LinearLayout>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/hall_match_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="@null"
+        android:src="@drawable/ic_btn_match_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

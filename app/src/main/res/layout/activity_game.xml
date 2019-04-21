@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_timer_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_timer_gtv"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.CircleImageView
+    <com.tssss.bysj.componet.CircleImageView
         android:id="@+id/game_role_head_img_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_role_level_iv"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_role_name_self_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_timer_gtv"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.CircleImageView
+    <com.tssss.bysj.componet.CircleImageView
         android:id="@+id/game_role_rival_head_img_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_role_rival_level_iv"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_role_rival_name_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
         app:layout_constraintTop_toTopOf="@+id/game_role_rival_head_img_iv"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_pk_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
         app:layout_constraintStart_toEndOf="@+id/game_role_head_img_iv"
         app:layout_constraintTop_toTopOf="@+id/game_role_rival_head_img_iv" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_turn_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/game_role_name_self_gtv" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_result_title_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/game_role_name_self_gtv" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_result_content_exp_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/game_result_title_gtv" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/game_result_content_exp_count_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.tssss.bysj.widget;
+package com.tssss.bysj.componet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -81,7 +81,7 @@ public class CircleImageView extends ImageView {
         matrix = new Matrix();
     }
 
-    private BitmapShader getShader(BitmapDrawable drawable) {
+    protected BitmapShader getShader(BitmapDrawable drawable) {
         Bitmap bitmap = drawable.getBitmap();
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = Math.max(width / bitmap.getWidth(), height / bitmap.getHeight());

@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,8 +16,10 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
+import com.tssss.bysj.util.AnimationUtil;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 
 public abstract class BaseActivity extends LifeCircleMvpActivity implements
@@ -26,6 +30,8 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
 
     private BaseMvpPresenter mPresenter;
     private BaseApplication mApplication;
+
+    private Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,15 +58,29 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     protected void onStart() {
         super.onStart();
         afterBindView();
+        handler = new Handler();
     }
 
     /**
      * 统一处理 Activity 的 TopBar 点击事件
-     *
+     * <p>
      * 如非全屏界面，子类重写 onClick 方法时必须调用 super.onClick() 方法
      */
     @Override
     public void onClick(android.view.View v) {
+        if (v instanceof ImageButton) {
+            AnimationUtil.flipView(this, v);
+        }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, 300);
+        topBarClick(v);
+    }
+
+    protected void topBarClick(View v) {
         switch (v.getId()) {
             case R.id.top_bar_left:
                 clickTopBarLeft();
@@ -71,7 +91,9 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
             case R.id.top_bar_right:
                 clickTopBarRight();
                 break;
+            default:
         }
+
     }
 
     @Override
@@ -188,6 +210,15 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         this.finish();
     }
 
+    protected void openActivityDelay(Class clazz, long ms) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                openActivity(clazz);
+            }
+        }, ms);
+    }
+
     /**
      * Initialize views of top bar.
      */
@@ -258,4 +289,24 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         return getApplicationContext();
     }
 
+    protected void replaceFragment(int containerID, Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out)
+                .replace(containerID, fragment)
+                .commit();
+    }
+
+    protected void addFragment(int containerID, Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().add(containerID, fragment);
+    }
+
+    protected void removeFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().remove(fragment);
+    }
+
+    protected void backLauncher() {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
+    }
 }

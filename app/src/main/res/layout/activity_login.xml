@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_account_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_account_error_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="Autofill,LabelFor" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_password_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_password_error_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
         app:srcCompat="@drawable/ic_btn_login"
         tools:ignore="ContentDescription" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_logging_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_key_et" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_connect_failure_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_key_et" />
 
-    <com.tssss.bysj.widget.GTextView
+    <com.tssss.bysj.componet.GTextView
         android:id="@+id/login_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

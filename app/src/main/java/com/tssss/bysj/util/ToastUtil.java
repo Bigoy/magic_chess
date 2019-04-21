@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.widget.GTextView;
+import com.tssss.bysj.componet.GTextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 

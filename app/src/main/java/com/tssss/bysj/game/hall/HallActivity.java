@@ -3,64 +3,49 @@ package com.tssss.bysj.game.hall;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
+import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.componet.dialog.AlertDialog;
+import com.tssss.bysj.componet.menu.Menu;
+import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.friend.FriendsActivity;
-import com.tssss.bysj.util.DialogUtil;
-import com.tssss.bysj.widget.AlertDialog;
-import com.tssss.bysj.widget.DialogModel;
+import com.tssss.bysj.game.im.ChatActivity;
+import com.tssss.bysj.game.news.NewsActivity;
+import com.tssss.bysj.game.setting.SettingActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ViewInject(layoutId = R.layout.activity_hall)
-public class HallActivity extends BaseActivity {
-    private ImageButton game_news;
-    private ImageButton my_friends;
-    private ImageButton msg;
-    private ImageButton game_setting;
-    private ImageButton match_game;
+public class HallActivity extends BaseActivity implements OnMenuItemClickListener {
+    private ImageView gameNews;
+    private ImageView myFriends;
+    private ImageView msg;
+    private ImageView gameSetting;
+    private ImageButton matchGame;
+
+    private Menu menu;
 
     @Override
     protected void findViews() {
-        game_news = findViewById(R.id.hall_game_news);
-        my_friends = findViewById(R.id.hall_friends);
+        gameNews = findViewById(R.id.hall_game_news);
+        myFriends = findViewById(R.id.hall_friends);
         msg = findViewById(R.id.hall_msg);
-        game_setting = findViewById(R.id.hall_game_setting);
-        match_game = findViewById(R.id.hall_match_game);
+        gameSetting = findViewById(R.id.hall_game_setting);
+        matchGame = findViewById(R.id.hall_match_game);
     }
 
     @Override
     protected void setEventListeners() {
-        game_news.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                openActivity(GameNewsActivity.class);
-            }
-        });
-        my_friends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity(FriendsActivity.class);
-            }
-        });
-        msg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                openActivity(ChatActivity.class);
-            }
-        });
-        game_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                openActivity(SettingActivity.class);
-            }
-        });
-        match_game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                matchGame();
-            }
-        });
+        gameNews.setOnClickListener(this);
+        myFriends.setOnClickListener(this);
+        msg.setOnClickListener(this);
+        gameSetting.setOnClickListener(this);
+        matchGame.setOnClickListener(this);
     }
 
     /**
@@ -83,6 +68,24 @@ public class HallActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        switch (v.getId()) {
+            case R.id.hall_game_news:
+                openActivity(NewsActivity.class);
+                break;
+            case R.id.hall_friends:
+                openActivity(FriendsActivity.class);
+                break;
+            case R.id.hall_msg:
+                openActivity(ChatActivity.class);
+                break;
+            case R.id.hall_game_setting:
+                openActivity(SettingActivity.class);
+                break;
+            case R.id.hall_match_game:
+                matchGame();
+                break;
+            default:
+        }
     }
 
     @Override
@@ -102,15 +105,50 @@ public class HallActivity extends BaseActivity {
 
     @Override
     protected void clickTopBarRight() {
-        DialogModel dialogModel = new DialogModel.Builder()
-                .setTitle("更多")
-                .setTime("2019-04-18")
-                .setContent("测试内容")
+        List<String> items = new ArrayList<>();
+        items.add("退出游戏");
+        items.add("我的信息");
+        items.add("游戏帮助");
+        menu = new Menu.Builder(this, this)
+                .items(items)
                 .build();
-        DialogUtil.showAlertDialog(this, dialogModel, new AlertDialog.OnOperationBarClickListener() {
-            @Override
-            public void clickOperationBar(int index) {
-            }
-        }, null);
+        menu.display();
+
+    }
+
+    @Override
+    public void onMenuItemClick(View v, int position) {
+        switch (position) {
+            case 0:
+                menu.dismiss();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .operationType(AlertDialog.OPERATION_TYPE_NORMAL)
+                        .desc("退出游戏")
+                        .subDesc("真的不多玩一会儿吗？")
+                        .okDesc("不玩了！")
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                backLauncher();
+                                BaseApplication.exitApp();
+                            }
+
+                            @Override
+                            public void no() {
+
+                            }
+                        });
+                builder.display();
+                break;
+            case 1:
+                Log.i("Menu", "item = " + position);
+                menu.dismiss();
+                break;
+            case 2:
+                Log.i("Menu", "item = " + position);
+                menu.dismiss();
+                break;
+            default:
+        }
     }
 }
