@@ -1,7 +1,11 @@
 package com.tssss.bysj.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.WindowManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressWarnings("deprecation")
 public class SystemUtil {
@@ -25,5 +29,19 @@ public class SystemUtil {
         size[1] = height;
 
         return size;
+    }
+
+    /**
+     * 获取系统当前时间
+     * 格式为 xxxx-xx-xx-xx
+     */
+    public static String getCurrentTime(String format) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
+    }
+
+    public static String getCurrentTime() {
+        return getCurrentTime("MM月dd日 HH:mm");
     }
 }

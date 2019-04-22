@@ -1,7 +1,6 @@
 package com.tssss.bysj.componet.menu;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,7 +60,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         }
 
         @Override
-        protected void fillData(String data) {
+        public void fillData(String data) {
             menuItem.setText(data);
             Log.i("MenuViewHolder", "data = " + data);
         }

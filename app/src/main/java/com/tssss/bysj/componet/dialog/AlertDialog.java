@@ -79,32 +79,34 @@ public class AlertDialog extends BaseDialog {
     @Override
     protected void setListeners() {
         dialog_ok.setOnClickListener(v -> {
-            if (null != operationListener) {
-                if (supportAnimation) {
-                    AnimationUtil.startBackgroundColorAnimator(dialog_ok);
-                }
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            if (supportAnimation) {
+                AnimationUtil.startBackgroundColorAnimator(dialog_ok);
+            }
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (null != operationListener) {
                         operationListener.ok();
                         dismiss();
                     }
-                }, 110);
-            }
+                    dismiss();
+                }
+            }, 110);
         });
         dialog_no.setOnClickListener(v -> {
-            if (null != operationListener) {
-                if (supportAnimation) {
-                    AnimationUtil.startBackgroundColorAnimator(dialog_no);
-                }
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            if (supportAnimation) {
+                AnimationUtil.startBackgroundColorAnimator(dialog_no);
+            }
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (null != operationListener) {
                         operationListener.no();
                         dismiss();
                     }
-                }, 110);
-            }
+                    dismiss();
+                }
+            }, 110);
         });
     }
 

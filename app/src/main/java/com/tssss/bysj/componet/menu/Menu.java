@@ -29,6 +29,7 @@ public class Menu extends BaseDialog {
     private Handler handler;
     private List<String> menuItems;
     private OnMenuItemClickListener listener;
+    private OnMenuItemLongClickListener longClickListener;
     private MenuAdapter adapter;
 
     public Menu(@NonNull Context context, OnMenuItemClickListener listener) {
@@ -47,7 +48,6 @@ public class Menu extends BaseDialog {
         super(context, cancelable, cancelListener);
         this.context = context;
         this.listener = listener;
-
     }
 
     @Override

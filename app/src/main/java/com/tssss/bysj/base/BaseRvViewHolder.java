@@ -21,7 +21,7 @@ public abstract class BaseRvViewHolder<T> extends RecyclerView.ViewHolder {
 
     protected abstract void instantiateObject();
 
-    protected abstract void fillData(T data);
+    public abstract void fillData(T data);
 
     protected abstract void findViews();
 

@@ -20,11 +20,33 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
 
+    <com.tssss.bysj.componet.GTextView
+        android:id="@+id/chat_no_history_tv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/padding_16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/padding_16dp"
+        android:gravity="center"
+        android:text="@string/chat_no_history"
+        android:textSize="24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/chat_msg_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chat_name_gtv"
+        app:layout_constraintVertical_weight="1"
+        tools:ignore="SpUsage" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_rv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="@dimen/padding_16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/padding_16dp"
         app:layout_constraintBottom_toTopOf="@id/chat_msg_et"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,11 +66,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/chat_chat_ib"
+        app:layout_constraintRight_toLeftOf="@id/send_msg_ib"
         tools:ignore="Autofill,HardcodedText,LabelFor" />
 
     <ImageButton
-        android:id="@+id/chat_chat_ib"
+        android:id="@+id/send_msg_ib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_16dp"

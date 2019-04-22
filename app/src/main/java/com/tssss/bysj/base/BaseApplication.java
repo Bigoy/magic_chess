@@ -4,6 +4,8 @@ package com.tssss.bysj.base;
 import android.app.Application;
 import android.os.Process;
 
+import cn.jpush.im.android.api.JMessageClient;
+
 public class BaseApplication extends Application {
 
     /**
@@ -17,5 +19,6 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        JMessageClient.init(this, true);
     }
 }

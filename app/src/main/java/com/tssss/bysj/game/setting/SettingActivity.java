@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
@@ -22,35 +23,40 @@ import androidx.annotation.Nullable;
 @ViewInject(layoutId = R.layout.activity_setting)
 public class SettingActivity extends BaseActivity {
 
-    private GTextView account_detail;
-    private GTextView alter_password;
+    private GTextView accountDetail;
+    private GTextView alterPassword;
     private GTextView version;
-    private GTextView version_description;
+    private GTextView versionDescription;
     private GTextView about;
-    private LinearLayout voice_ll;
-    private LinearLayout verbose_ll;
-    private ImageView voice_iv;
-    private ImageView verbose_iv;
+    private LinearLayout voiceLl;
+    private LinearLayout verboseLl;
+    private ImageView voiceIv;
+    private ImageView verboseIv;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initSettingTabState();
-        initNotifyState();
     }
 
     private void initNotifyState() {
         if (SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VOICE)) {
-            voice_iv.setImageResource(R.drawable.ic_switch_on);
+            voiceIv.setImageResource(R.drawable.ic_switch_on);
         }
         if (!SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VOICE)) {
-            voice_iv.setImageResource(R.drawable.ic_switch_off);
+            voiceIv.setImageResource(R.drawable.ic_switch_off);
         }
         if (SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VERBOSE)) {
-            verbose_iv.setImageResource(R.drawable.ic_switch_on);
+            verboseIv.setImageResource(R.drawable.ic_switch_on);
         }
         if (!SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VERBOSE)) {
-            verbose_iv.setImageResource(R.drawable.ic_switch_off);
+            verboseIv.setImageResource(R.drawable.ic_switch_off);
         }
     }
 
@@ -60,33 +66,39 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void findViews() {
-        account_detail = findViewById(R.id.setting_account);
-        alter_password = findViewById(R.id.setting_alter_psd);
+        accountDetail = findViewById(R.id.setting_account);
+        alterPassword = findViewById(R.id.setting_alter_psd);
         version = findViewById(R.id.setting_version);
-        version_description = findViewById(R.id.setting_version_description);
+        versionDescription = findViewById(R.id.setting_version_description);
         about = findViewById(R.id.setting_about_game);
-        voice_ll = findViewById(R.id.setting_group_notify_voice);
-        verbose_ll = findViewById(R.id.setting_group_notify_verbose);
-        voice_iv = findViewById(R.id.setting_voice_iv);
-        verbose_iv = findViewById(R.id.setting_verbose_iv);
+        voiceLl = findViewById(R.id.setting_group_notify_voice);
+        verboseLl = findViewById(R.id.setting_group_notify_verbose);
+        voiceIv = findViewById(R.id.setting_voice_iv);
+        verboseIv = findViewById(R.id.setting_verbose_iv);
+        scrollView = findViewById(R.id.setting_scroll);
     }
 
     @Override
     protected void setEventListeners() {
-        account_detail.setOnClickListener(this);
-        alter_password.setOnClickListener(this);
+        accountDetail.setOnClickListener(this);
+        alterPassword.setOnClickListener(this);
         version.setOnClickListener(this);
-        version_description.setOnClickListener(this);
+        versionDescription.setOnClickListener(this);
         about.setOnClickListener(this);
-        voice_ll.setOnClickListener(this);
-        verbose_ll.setOnClickListener(this);
+        voiceLl.setOnClickListener(this);
+        verboseLl.setOnClickListener(this);
     }
 
     @Override
     protected void afterBindView() {
-        SharedPreferencesUtil.keepBoolean(this, Constant.SETTING_NOTIFY_VOICE, true);
-        SharedPreferencesUtil.keepBoolean(this, Constant.SETTING_NOTIFY_VERBOSE, true);
         initSettingTabState();
+        initNotifyState();
+    }
+
+    @Override
+    protected void clickTopBarCenter() {
+        super.clickTopBarCenter();
+        scrollView.fullScroll(View.FOCUS_UP);
     }
 
     @Override
@@ -99,27 +111,30 @@ public class SettingActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.setting_account:
-                startColorAnimation(account_detail);
+                startColorAnimation(accountDetail);
                 openActivityDelay(AccountActivity.class, 110);
                 break;
             case R.id.setting_alter_psd:
-                startColorAnimation(alter_password);
+                startColorAnimation(alterPassword);
                 openActivityDelay(PasswordActivity.class, 110);
                 break;
             case R.id.setting_version:
                 startColorAnimation(version);
                 break;
             case R.id.setting_version_description:
-                startColorAnimation(version_description);
+                startColorAnimation(versionDescription);
                 break;
             case R.id.setting_about_game:
                 startColorAnimation(about);
                 break;
             case R.id.setting_group_notify_voice:
-                switchNotifyState(voice_iv, Constant.SETTING_NOTIFY_VOICE);
+                switchNotifyState(voiceIv, Constant.SETTING_NOTIFY_VOICE);
                 break;
             case R.id.setting_group_notify_verbose:
-                switchNotifyState(verbose_iv, Constant.SETTING_NOTIFY_VERBOSE);
+                switchNotifyState(verboseIv, Constant.SETTING_NOTIFY_VERBOSE);
+                break;
+            case R.id.setting_scroll:
+                scrollView.smoothScrollTo(0, 0);
                 break;
             default:
 
@@ -150,16 +165,16 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void initSettingTabState() {
-        account_detail.setTextColor(0xFF7E561B);
-        alter_password.setTextColor(0xFF7E561B);
+        accountDetail.setTextColor(0xFF7E561B);
+        alterPassword.setTextColor(0xFF7E561B);
         version.setTextColor(0xFF7E561B);
-        version_description.setTextColor(0xFF7E561B);
+        versionDescription.setTextColor(0xFF7E561B);
         about.setTextColor(0xFF7E561B);
 
-        account_detail.setBackgroundColor(0x00000000);
-        alter_password.setBackgroundColor(0x00000000);
+        accountDetail.setBackgroundColor(0x00000000);
+        alterPassword.setBackgroundColor(0x00000000);
         version.setBackgroundColor(0x00000000);
-        version_description.setBackgroundColor(0x00000000);
+        versionDescription.setBackgroundColor(0x00000000);
         about.setBackgroundColor(0x00000000);
     }
 }

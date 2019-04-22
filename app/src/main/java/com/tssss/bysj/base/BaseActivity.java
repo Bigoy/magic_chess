@@ -52,12 +52,13 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         }
 
         hideStatusBarAndNavigationBar();
+        afterBindView();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        afterBindView();
         handler = new Handler();
     }
 
