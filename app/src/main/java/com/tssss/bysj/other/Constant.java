@@ -20,14 +20,6 @@ public class Constant {
     public static final String JSON_KEY_ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
 
     /**
-     * 账户相关
-     */
-    public static final String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
-    public static final String ACCOUNT_FOUND = "ACCOUNT_FOUND";
-    public static final String ACCOUNT_ACCESSIBLE_DENY = "ACCESSIBLE_DENY";
-    public static final String ACCOUNT_ACCESSIBLE_GRANT = "ACCESSIBLE_GRANT";
-
-    /**
      * 数据持久化 KEY
      */
     public static final String SETTING_NOTIFY_VOICE = "SETTING_NOTIFY_VOICE";
@@ -45,9 +37,13 @@ public class Constant {
     public static final String ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
 
     /**
-     * 登录状态
+     * 登录
+     * 通过不同状态与用户交互
      */
     public static final String LOGIN_STATE = "LOGIN_STATE";
+
     public static final String LOGIN_STATE_SUCCESS = "LOGIN_STATE_SUCCESS";
     public static final String LOGIN_STATE_FAILED = "LOGIN_STATE_FAILED";
+    public static final String LOGIN_STATE_NOT_REGISTER = "LOGIN_STATE_NOT_REGISTER";
+    public static final String LOGIN_STATE_ERROR_PASSWORD = "LOGIN_STATE_ERROR_PASSWORD";
 }

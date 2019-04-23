@@ -22,6 +22,7 @@ public class AlertDialog extends BaseDialog {
     public static final String OPERATION_TYPE_OK = "OPERATION_TYPE_OK";
     public static final String OPERATION_TYPE_NO = "OPERATION_TYPE_NO";
     public static final String OPERATION_TYPE_NORMAL = "OPERATION_TYPE_NORMAL";
+    public static final String OPERATION_TYPE_SIMPLE = "OPERATION_TYPE_SIMPLE";
 
     protected GTextView dialog_desc;
     protected GTextView dialog_sub_desc;
@@ -122,6 +123,9 @@ public class AlertDialog extends BaseDialog {
             findViewById(R.id.dialog_divider).setVisibility(View.VISIBLE);
             dialog_ok.setVisibility(View.VISIBLE);
             dialog_no.setVisibility(View.VISIBLE);
+        } else if (OPERATION_TYPE_SIMPLE.equals(operationType)) {
+            dialog_ok.setVisibility(View.GONE);
+            dialog_no.setVisibility(View.GONE);
         }
     }
 

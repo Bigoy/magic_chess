@@ -32,7 +32,7 @@ public interface IAccountContract {
         /**
          * 当前输入的账户不存在
          */
-        void onAccountNotFound();
+        void onAccountNotFound(User user);
 
         /**
          * 账户与密码不一致，密码不一致
@@ -110,7 +110,7 @@ public interface IAccountContract {
         }
 
         @Override
-        public void onAccountNotFound() {
+        public void onAccountNotFound(User user) {
 
         }
 

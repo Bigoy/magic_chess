@@ -33,9 +33,6 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
     private boolean cancelLogin;
     private Handler handler;
 
-    private final String TYPE_SUCCESS = "TYPE_SUCCESS";
-    private final String TYPE_ERROR = "TYPE_ERROR";
-
     LoginPresenter(Context context, IAccountContract.IView view) {
         super(view);
         user = new User();
@@ -89,20 +86,24 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                         if (i == 0) {
                                             UserDataCache.saveAccount(user);
                                             AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
-                                            updateUi(TYPE_SUCCESS);
+                                            updateUi(Constant.LOGIN_STATE_SUCCESS);
                                         } else {
                                             Logger.log(s);
-                                            updateUi(TYPE_ERROR);
+                                            updateUi(Constant.LOGIN_STATE_FAILED);
                                         }
                                     }
                                 });
+                            } else if (Constant.LOGIN_STATE_NOT_REGISTER.equals(finalLoginState)) {
+                                updateUi(Constant.LOGIN_STATE_NOT_REGISTER);
+                            } else if (Constant.LOGIN_STATE_ERROR_PASSWORD.equals(finalLoginState)) {
+                                updateUi(Constant.LOGIN_STATE_ERROR_PASSWORD);
                             } else {
-                                updateUi(TYPE_ERROR);
+                                updateUi(Constant.LOGIN_STATE_FAILED);
                                 Logger.log("服务端出现了问题!");
                             }
                         } catch (JSONException e) {
                             Logger.log("json 对象解析异常，请检查服务端返回的内容！");
-                            updateUi(TYPE_ERROR);
+                            updateUi(Constant.LOGIN_STATE_FAILED);
                         }
 
                     } else {
@@ -119,7 +120,6 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                     }
                 }
             });
-
         }
     }
 
@@ -147,12 +147,14 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (TYPE_SUCCESS.equals(type)) {
-                        if (null != user) {
-                            getView().onSuccess(user);
-                        }
-                    } else if (TYPE_ERROR.equals(type)) {
+                    if (Constant.LOGIN_STATE_SUCCESS.equals(type)) {
+                        getView().onSuccess(user);
+                    } else if (Constant.LOGIN_STATE_FAILED.equals(type)) {
                         getView().onError(Constant.NET_CODE_UNKNOWN, "登录异常");
+                    } else if (Constant.LOGIN_STATE_NOT_REGISTER.equals(type)) {
+                        getView().onAccountNotFound(user);
+                    } else if (Constant.LOGIN_STATE_ERROR_PASSWORD.equals(type)) {
+                        getView().onPasswordError();
                     }
                 }
             });
@@ -160,3 +162,4 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
         }
     }
 }
+

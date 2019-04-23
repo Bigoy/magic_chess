@@ -1,6 +1,6 @@
 package com.tssss.bysj.login;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -9,8 +9,11 @@ import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
+import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.componet.dialog.AlertDialog;
+import com.tssss.bysj.game.NewRoleActivity;
 import com.tssss.bysj.game.hall.HallActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
@@ -19,8 +22,6 @@ import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
 
-import androidx.annotation.Nullable;
-import cn.jpush.im.android.api.JMessageClient;
 
 @ViewInject(layoutId = R.layout.activity_login)
 public class LoginActivity extends BaseActivity implements IAccountContract.IView {
@@ -125,9 +126,46 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     }
 
     @Override
-    public void onAccountNotFound() {
-        ToastUtil.showToast(this, getString(R.string.account_not_found),
-                ToastUtil.TOAST_DEFAULT);
+    public void onAccountNotFound(User user) {
+        // 告知用户注册
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .desc("登录状态")
+                .subDesc("你还没有注册，赶紧注册一个吧！")
+                .okDesc("注册账户")
+                .operationListener(new AlertDialog.OnDialogOperationListener() {
+                    @Override
+                    public void ok() {
+                        registerUser(user);
+                    }
+
+                    @Override
+                    public void no() {
+                        showGodByeAlert();
+                    }
+                });
+        builder.display();
+    }
+
+    private void showGodByeAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .subDesc("拜拜~~~")
+                .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
+        builder.display();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backLauncher();
+                BaseApplication.exitApp();
+            }
+        }, 1000);
+    }
+
+    private void registerUser(User user) {
+        Intent registerIntent = new Intent(this, NewRoleActivity.class);
+        registerIntent.putExtra(Constant.ACCOUNT_ID, user.getUserId());
+        registerIntent.putExtra(Constant.ACCOUNT_PASSWORD, user.getUserPassword());
+        startActivity(registerIntent);
     }
 
     @Override
@@ -135,6 +173,8 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         password_error_gtv.setText(getString(R.string.account_error_password));
         AnimationUtil.flipView(this, password_gtv, password_error_gtv);
         password_et.setText("");
+        AnimationUtil.flipView(this, logging_gtv, login_ib);
+        unlockViews();
     }
 
     @Override
