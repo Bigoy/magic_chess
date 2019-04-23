@@ -12,5 +12,5 @@ public abstract class BaseHttpProvider {
 
     public abstract void requestAsyncGet(String url, Map<String, ?> param, HttpCallback callback);
 
-    public abstract void requestPost();
+    public abstract void requestPost(String url, Map<String, ?> param, HttpCallback callback);
 }

@@ -137,23 +137,29 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 
     @Override
     public void onAccountNotFound(User user) {
-        // 告知用户注册
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .desc("登录状态")
-                .subDesc("你还没有注册，赶紧注册一个吧！")
-                .okDesc("注册账户")
-                .operationListener(new AlertDialog.OnDialogOperationListener() {
-                    @Override
-                    public void ok() {
-                        registerUser(user);
-                    }
+        AnimationUtil.flipView(this, logging_gtv, login_ib);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 告知用户注册
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
+                        .desc("登录状态")
+                        .subDesc("你还没有注册，赶紧注册一个吧！")
+                        .okDesc("注册账户")
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                registerUser(user);
+                            }
 
-                    @Override
-                    public void no() {
-                        showGodByeAlert();
-                    }
-                });
-        builder.display();
+                            @Override
+                            public void no() {
+                                showGodByeAlert();
+                            }
+                        });
+                builder.display();
+            }
+        }, 300);
     }
 
     private void showGodByeAlert() {

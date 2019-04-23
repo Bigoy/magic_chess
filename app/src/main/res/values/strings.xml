@@ -41,7 +41,7 @@
     <!-- NewRoleActivity -->
     <string name="new_role_input_name">填写新角色的名称。</string>
     <string name="new_role_sex">选择性别。</string>
-    <string name="new_role_head_img">选择你喜欢的头像。</string>
+    <string name="new_role_head_img">添加一张你喜欢的头像。</string>
     <string name="new_role_null_name">角色名称不能为空</string>
     <string name="new_role_null_sex">请选择角色性别</string>
 

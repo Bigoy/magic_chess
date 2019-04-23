@@ -1,5 +1,6 @@
 package com.tssss.bysj.http;
 
+import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.exception.NetException;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.VersionManager;
@@ -144,8 +145,46 @@ public class OkHttpProvider extends BaseHttpProvider {
     }
 
     @Override
-    public void requestPost() {
+    public void requestPost(String url, Map<String, ?> param, HttpCallback callback) {
+        if (!SystemUtil.checkNet()) {
+            if (null != callback) {
+                callback.onFailure("no available net");
+            }
+        } else if (StringUtil.isBlank(url)) {
+            if (null != callback) {
+                callback.onFailure("url is illegal");
+            }
+        } else {
+            String postContent = "";
+            if (null != param && param.size() > 0) {
+                postContent = JSON.toJSONString(param);
+                Logger.log(postContent);
+            }
+            Request request = HttpRequestFactory.okhttpPostStringRequest(url, postContent);
+            HttpClientFactory.okHttpClient().newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    if (null != callback) {
+                        callback.onFailure("http request failed");
+                        Logger.log("http request failed");
+                    }
+                }
 
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (null != callback) {
+                        if (response.body() != null) {
+                            String result = response.body().string();
+                            callback.onSuccess(result);
+                            Logger.log(result);
+                        } else {
+                            callback.onFailure("服务器未返回任何内容");
+                            Logger.log("服务器未返回任何内容");
+                        }
+                    }
+                }
+            });
+
+        }
     }
-
 }

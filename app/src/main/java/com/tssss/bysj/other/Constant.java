@@ -46,4 +46,25 @@ public class Constant {
     public static final String LOGIN_STATE_FAILED = "LOGIN_STATE_FAILED";
     public static final String LOGIN_STATE_NOT_REGISTER = "LOGIN_STATE_NOT_REGISTER";
     public static final String LOGIN_STATE_ERROR_PASSWORD = "LOGIN_STATE_ERROR_PASSWORD";
+
+    /**
+     * 注册
+     */
+    public static final String REGISTER_RESULT = "REGISTER_RESULT";
+
+    public static final String REGISTER_RESULT_SUCCESS = "REGISTER_RESULT_SUCCESS";
+    public static final String REGISTER_RESULT_FAILED = "REGISTER_RESULT_FAILED";
+
+    /**
+     * 游戏角色
+     */
+    public static final String ROLE_AVATAR = "ROLE_AVATAR";
+
+    public static final String ROLE_SEX = "ROLE_SEX";
+    public static final String ROLE_SEX_MAN = "MAN";
+    public static final String ROLE_SEX_WOMAN = "WOMAN";
+    public static final String ROLE_SEX_SECRET = "SECRET";
+
+    public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
+    public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";
 }

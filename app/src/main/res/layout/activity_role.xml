@@ -7,6 +7,7 @@
     tools:context=".game.NewRoleActivity">
 
     <ScrollView
+        android:id="@+id/new_role_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
@@ -34,51 +35,18 @@
 
             </LinearLayout>
 
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:orientation="vertical"
+            <ImageButton
+                android:id="@+id/new_role_add_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="72dp"
+                android:background="@null"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
-                android:rowCount="2">
+                android:src="@drawable/ic_btn_add_avatar"
+                tools:ignore="ContentDescription">
 
-                <ImageView
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="right|bottom"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:src="@drawable/head_img_test"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
-
-                <ImageView
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="right|top"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/head_img_test"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
-
-                <ImageView
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="left|bottom"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:src="@drawable/head_img_test"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
-
-                <ImageView
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="left|top"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:src="@drawable/head_img_test"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
-            </GridLayout>
+            </ImageButton>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,6 +66,7 @@
                     tools:ignore="RtlHardcoded,SpUsage" />
 
                 <EditText
+                    android:id="@+id/new_role_input_nick_name"
                     style="@style/GEditTextNoBg"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
@@ -133,13 +102,14 @@
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.tssss.bysj.componet.GTextView
+                        android:id="@+id/new_role_sex_man"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="72dp"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
-                        android:background="@drawable/sex"
+                        android:background="@drawable/sex_man"
                         android:gravity="center"
                         android:text="@string/sex_man"
                         android:textColor="@color/white_ffffff"
@@ -147,13 +117,14 @@
                         android:textStyle="bold"
                         tools:ignore="SpUsage" />
 
-                    <TextView
+                    <com.tssss.bysj.componet.GTextView
+                        android:id="@+id/new_role_sex_woman"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="72dp"
                         android:layout_weight="1"
-                        android:background="@drawable/sex"
+                        android:background="@drawable/sex_woman"
                         android:gravity="center"
                         android:text="@string/sex_woman"
                         android:textColor="@color/white_ffffff"
@@ -183,6 +154,7 @@
                     tools:ignore="RtlHardcoded,SpUsage" />
 
                 <EditText
+                    android:id="@+id/new_role_input_signature"
                     style="@style/GEditTextNoBg"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
@@ -194,6 +166,15 @@
                     tools:ignore="Autofill,RtlSymmetry" />
 
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/new_role_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:background="@null"
+                android:src="@drawable/ic_btn_create_role"
+                tools:ignore="ContentDescription" />
 
 
         </LinearLayout>

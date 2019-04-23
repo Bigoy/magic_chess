@@ -49,5 +49,7 @@ dependencies {
     implementation 'me.jessyan:autosize:0.9.5'
     implementation 'com.squareup.okhttp3:okhttp:3.14.0'
     implementation 'cn.jiguang.sdk:jmessage:2.8.2'  // 此处以JMessage 2.8.2 版本为例。
-    implementation 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:1.2.7'
+    implementation 'org.jetbrains:annotations:15.0'// 此处以JCore 1.2.7 版本为例。
+    implementation 'com.github.wildma:PictureSelector:1.1.2'
 }

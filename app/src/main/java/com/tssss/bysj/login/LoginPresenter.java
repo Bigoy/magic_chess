@@ -66,7 +66,8 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
      */
     @Override
     public void confirmAccountOperation() {
-        if (null != user) {
+        getView().onAccountNotFound(user);
+        /*if (null != user) {
             Map<String, String> userMap = new HashMap<>();
             userMap.put("userID", user.getUserId());
             userMap.put("userPassword", user.getUserPassword());
@@ -115,13 +116,13 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                 @Override
                 public void onFailure(String errorMsg) {
                     if (!cancelLogin) {
-                        getView().onError(Constant.NET_CODE_UNKNOWN, errorMsg);
+                        updateUi(Constant.LOGIN_STATE_FAILED);
                     } else {
                         Logger.log("登录取消");
                     }
                 }
             });
-        }
+        }*/
     }
 
     @Override
