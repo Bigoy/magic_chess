@@ -1,6 +1,7 @@
 package com.tssss.bysj.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
 
+import androidx.annotation.Nullable;
+
 
 @ViewInject(layoutId = R.layout.activity_login)
 public class LoginActivity extends BaseActivity implements IAccountContract.IView {
@@ -40,6 +43,16 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     private Handler mHandler;
     private User mLoginUser;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        autoFill();
+    }
+
+    private void autoFill() {
+        account_et.setText(UserDataCache.readAccount(Constant.ACCOUNT_ID));
+        password_et.setText(UserDataCache.readAccount(Constant.ACCOUNT_PASSWORD));
+    }
 
     @Override
     protected void findViews() {
@@ -78,9 +91,6 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 
     @Override
     protected void afterBindView() {
-        account_et.setText(UserDataCache.readAccount(UserDataCache.ACCOUNT));
-        password_et.setText(UserDataCache.readAccount(UserDataCache.PASSWORD));
-
         mHandler = new Handler();
         mLoginPresenter = new LoginPresenter(this, this);
         mLoginUser = new User();

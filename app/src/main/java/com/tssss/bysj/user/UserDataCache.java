@@ -1,9 +1,9 @@
 package com.tssss.bysj.user;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.SharedPreferencesUtil;
 
@@ -13,8 +13,6 @@ import com.tssss.bysj.util.SharedPreferencesUtil;
  * 保存用户账户信息到本地
  */
 public class UserDataCache {
-    public static final String ACCOUNT = "account";
-    public static final String PASSWORD = "password";
 
     /**
      * 保存用户信息
@@ -25,6 +23,8 @@ public class UserDataCache {
         } else {
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_ID, user.getUserId());
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_PASSWORD, user.getUserPassword());
+            Logger.log(readAccount(Constant.ACCOUNT_ID));
+            Logger.log(readAccount(Constant.ACCOUNT_PASSWORD));
         }
 
     }
