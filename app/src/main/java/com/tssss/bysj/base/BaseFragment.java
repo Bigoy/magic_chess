@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.mvp.view.LifeCircleMvpFragment;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class BaseFragment extends LifeCircleMvpFragment {
-    private Unbinder unbinder;
 
     @Nullable
     @Override
@@ -25,7 +24,7 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
             int layoutId = viewInject.layoutId();
             if (layoutId > 0) {
                 view = initFragmentView(inflater, layoutId);
-                bindView(view);
+                findViews();
                 afterBindView();
             } else {
                 throw new RuntimeException("layoutId <= 0");
@@ -36,17 +35,14 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
         return view;
     }
 
+    protected abstract void findViews();
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEventListeners();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     protected abstract void afterBindView();
 
@@ -54,9 +50,9 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
         return inflater.inflate(layoutResId, null);
     }
 
-    private void bindView(View mView) {
-        unbinder = ButterKnife.bind(this, mView);
-    }
-
     protected abstract void setEventListeners();
+
+    protected View findViewById(int id) {
+        return Objects.requireNonNull(getActivity()).findViewById(id);
+    }
 }

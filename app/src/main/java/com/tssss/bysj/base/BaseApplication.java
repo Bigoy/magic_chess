@@ -19,6 +19,6 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        JMessageClient.init(this, true);
+        JMessageClient.init(this, true);
     }
 }

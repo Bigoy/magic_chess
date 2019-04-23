@@ -1,17 +1,14 @@
 package com.tssss.bysj.game.news;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.R2;
 import com.tssss.bysj.base.BaseFragment;
 import com.tssss.bysj.base.annoation.ViewInject;
 
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
 
 @ViewInject(layoutId = R.layout.fragment_news_recommend)
 public class RecommendFragment extends BaseFragment {
-    @BindView(R2.id.news_recommend)
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     @Override
     protected void afterBindView() {
 
@@ -20,5 +17,10 @@ public class RecommendFragment extends BaseFragment {
     @Override
     protected void setEventListeners() {
 
+    }
+
+    @Override
+    protected void findViews() {
+        recyclerView =  (RecyclerView)findViewById(R.id.news_recommend);
     }
 }
