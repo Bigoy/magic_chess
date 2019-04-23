@@ -1,32 +1,38 @@
 package com.tssss.bysj.game.setting;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
+import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.other.AppDataCache;
+import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
+
+import cn.jpush.im.android.api.JMessageClient;
 
 @ViewInject(layoutId = R.layout.activity_account)
 public class AccountActivity extends BaseActivity {
     private GTextView security;
-    private GTextView alter_phone;
+    private GTextView alterPhone;
+    private ImageButton logout;
 
     @Override
     protected void findViews() {
         security = findViewById(R.id.setting_security);
-        alter_phone = findViewById(R.id.setting_alter_phone);
+        alterPhone = findViewById(R.id.setting_alter_phone);
     }
 
     @Override
     protected void setEventListeners() {
         security.setOnClickListener(this);
-        alter_phone.setOnClickListener(this);
+        alterPhone.setOnClickListener(this);
+        logout.findViewById(R.id.account_log_out);
     }
 
     @Override
@@ -42,7 +48,12 @@ public class AccountActivity extends BaseActivity {
                 startColorAnimation(security);
                 break;
             case R.id.setting_alter_phone:
-                startColorAnimation(alter_phone);
+                startColorAnimation(alterPhone);
+                break;
+            case R.id.account_log_out:
+                AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
+                JMessageClient.logout();
+                BaseApplication.exitApp();
                 break;
             default:
         }
@@ -61,9 +72,9 @@ public class AccountActivity extends BaseActivity {
 
     private void initSettingTabState() {
         security.setTextColor(0xFF7E561B);
-        alter_phone.setTextColor(0xFF7E561B);
+        alterPhone.setTextColor(0xFF7E561B);
 
         security.setBackgroundColor(0x00000000);
-        alter_phone.setBackgroundColor(0x00000000);
+        alterPhone.setBackgroundColor(0x00000000);
     }
 }

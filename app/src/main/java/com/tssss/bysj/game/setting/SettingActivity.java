@@ -15,6 +15,7 @@ import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.SharedPreferencesUtil;
 
@@ -46,22 +47,18 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void initNotifyState() {
-        if (SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VOICE)) {
+        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VOICE)) {
             voiceIv.setImageResource(R.drawable.ic_switch_on);
         }
-        if (!SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VOICE)) {
+        if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VOICE)) {
             voiceIv.setImageResource(R.drawable.ic_switch_off);
         }
-        if (SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VERBOSE)) {
+        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VERBOSE)) {
             verboseIv.setImageResource(R.drawable.ic_switch_on);
         }
-        if (!SharedPreferencesUtil.readBoolean(this, Constant.SETTING_NOTIFY_VERBOSE)) {
+        if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VERBOSE)) {
             verboseIv.setImageResource(R.drawable.ic_switch_off);
         }
-    }
-
-    private void validateNotifyState() {
-        initNotifyState();
     }
 
     @Override
@@ -144,12 +141,12 @@ public class SettingActivity extends BaseActivity {
     private void switchNotifyState(ImageView v, String key) {
         initSettingTabState();
         v.setVisibility(View.INVISIBLE);
-        if (SharedPreferencesUtil.readBoolean(this, key)) {
+        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),key)) {
             v.setImageResource(R.drawable.ic_switch_off);
-            SharedPreferencesUtil.keepBoolean(this, key, false);
-        } else if (!SharedPreferencesUtil.readBoolean(this, key)) {
+            SharedPreferencesUtil.keepBoolean(SharedPreferencesFactory.getUserSharedPreferences(), key, false);
+        } else if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), key)) {
             v.setImageResource(R.drawable.ic_switch_on);
-            SharedPreferencesUtil.keepBoolean(this, key, true);
+            SharedPreferencesUtil.keepBoolean(SharedPreferencesFactory.getUserSharedPreferences(), key, true);
         }
         AnimationUtil.flipView(this, v);
     }

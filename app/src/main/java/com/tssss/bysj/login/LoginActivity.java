@@ -13,12 +13,14 @@ import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.game.hall.HallActivity;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import androidx.annotation.Nullable;
+import cn.jpush.im.android.api.JMessageClient;
 
 @ViewInject(layoutId = R.layout.activity_login)
 public class LoginActivity extends BaseActivity implements IAccountContract.IView {
@@ -37,13 +39,6 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     private Handler mHandler;
     private User mLoginUser;
 
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        account_et.setText(UserDataCache.readAccount(this, UserDataCache.ACCOUNT));
-        password_et.setText(UserDataCache.readAccount(this, UserDataCache.PASSWORD));
-    }
 
     @Override
     protected void findViews() {
@@ -82,6 +77,9 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 
     @Override
     protected void afterBindView() {
+        account_et.setText(UserDataCache.readAccount(UserDataCache.ACCOUNT));
+        password_et.setText(UserDataCache.readAccount(UserDataCache.PASSWORD));
+
         mHandler = new Handler();
         mLoginPresenter = new LoginPresenter(this, this);
         mLoginUser = new User();
@@ -144,7 +142,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         if (loginCount == 0) {
             lockViews();
             // 保存用户当前输入的账户信息，此时无需验证账户与密码的一致性
-            UserDataCache.saveAccount(this, mLoginUser);
+            UserDataCache.saveAccount(mLoginUser);
             AnimationUtil.flipView(this, login_ib, logging_gtv);
             mLoginPresenter.confirmAccountOperation();
         }
@@ -173,6 +171,14 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         Log.i("userId", user.getUserId());
         Log.i("userPwd", user.getUserPassword());
         openActivityAndFinishSelf(HallActivity.class);
+    }
+
+    @Override
+    public void onError(int i, String s) {
+        AnimationUtil.flipView(this, logging_gtv, login_ib);
+        unlockViews();
+        ToastUtil.showToast(this, "登录异常", ToastUtil.TOAST_ERROR);
+        Logger.log(this.getClass(), s);
     }
 
     /**

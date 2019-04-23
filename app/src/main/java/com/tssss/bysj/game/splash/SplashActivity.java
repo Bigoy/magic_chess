@@ -1,22 +1,21 @@
 package com.tssss.bysj.game.splash;
 
-import android.os.Bundle;
+import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
+import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.main.MainActivity;
 import com.tssss.bysj.game.splash.presenter.SplashAdPresenter;
+import com.tssss.bysj.util.SystemUtil;
 
 @ViewInject(layoutId = R.layout.activity_splash)
 public class SplashActivity extends BaseActivity implements ISplashContract.IView {
     private SplashAdPresenter mAdPresenter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected void findViews() {
@@ -28,7 +27,30 @@ public class SplashActivity extends BaseActivity implements ISplashContract.IVie
 
     @Override
     protected void afterBindView() {
-        initAdPresenter();
+        if (!SystemUtil.checkNet()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .desc("网络状态")
+                    .subDesc("抱歉，必须连接到互联网才可以体验游戏")
+                    .operationType(AlertDialog.OPERATION_TYPE_NORMAL)
+                    .okDesc("去连接网络")
+                    .noDesc("退出游戏")
+                    .operationListener(new AlertDialog.OnDialogOperationListener() {
+                        @Override
+                        public void ok() {
+                            Intent netIntent = new Intent();
+                            netIntent.setAction(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+                            startActivity(netIntent);
+                        }
+
+                        @Override
+                        public void no() {
+                            BaseApplication.exitApp();
+                        }
+                    });
+            builder.display();
+        } else {
+            initAdPresenter();
+        }
     }
 
     private void initAdPresenter() {
@@ -48,6 +70,8 @@ public class SplashActivity extends BaseActivity implements ISplashContract.IVie
 
     @Override
     public void skipAd() {
-        openActivityAndFinishSelf(MainActivity.class);
+        if (SystemUtil.checkNet()) {
+            openActivityAndFinishSelf(MainActivity.class);
+        }
     }
 }

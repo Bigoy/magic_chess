@@ -2,6 +2,8 @@ package com.tssss.bysj.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.WindowManager;
 
 import java.text.SimpleDateFormat;
@@ -9,6 +11,12 @@ import java.util.Date;
 
 @SuppressWarnings("deprecation")
 public class SystemUtil {
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    public static void init(Context c) {
+        context = c;
+    }
 
     /**
      * Get screen size
@@ -43,5 +51,19 @@ public class SystemUtil {
 
     public static String getCurrentTime() {
         return getCurrentTime("MM月dd日 HH:mm");
+    }
+
+
+    /**
+     * 检查网络是否可用
+     */
+    public static boolean checkNet() {
+        if (context == null){
+            return false;
+        }
+        ConnectivityManager con = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = con.getActiveNetworkInfo();
+        return null != networkInfo && networkInfo.isAvailable();
     }
 }

@@ -20,7 +20,10 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.event.MessageEvent;
+import cn.jpush.im.android.api.model.Message;
 
 @ViewInject(layoutId = R.layout.activity_chat)
 public class ChatActivity extends BaseActivity implements OnMenuItemClickListener {
@@ -48,6 +51,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     protected void afterBindView() {
+        JMessageClient.registerEventReceiver(this);
         messageList = new ArrayList<>();
         adapter = new ChatRvAdapter(this, messageList);
         if (messageList.size() <= 0) {
@@ -80,6 +84,12 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                 .items(items)
                 .build();
         menu.display();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JMessageClient.unRegisterEventReceiver(this);
     }
 
     @Override
@@ -172,15 +182,25 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
         }
     }
 
+    /**
+     * 极光IM 接收在线消息
+     */
     public void onEvent(MessageEvent event) {
-        /*Message message = event.getMessage();
-        ChatMessage chatMessage = new ChatMessage();
+        Message message = event.getMessage();
+        ChatMessage newMessage = new ChatMessage();
         ContentType contentType = message.getContentType();
         if (contentType == ContentType.text) {
-            chatMessage.setTime(String.valueOf(message.getCreateTime()));
-            chatMessage.setMessage(message.getContent().getStringExtras());
-            JMessageClient.createSingleTextMessage()
-        }*/
-
+            newMessage.setMessageFrom(ChatMessage.MESSAGE_RECEIVER);
+            newMessage.setTime(String.valueOf(message.getCreateTime()));
+            newMessage.setMessage(message.getFromType() + message.getId());
+        }
+        if (chatRv.getAdapter() == null) {
+            chatRv.setLayoutManager(new LinearLayoutManager(this));
+            chatRv.setAdapter(adapter);
+        }
+        messageList.add(newMessage);
+        adapter.notifyItemChanged(adapter.getItemCount());
+        adapter.notifyDataSetChanged();
+        chatRv.smoothScrollToPosition(adapter.getItemCount());
     }
 }

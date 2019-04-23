@@ -59,6 +59,11 @@ public interface IAccountContract {
          * 账户操作成功，返回用户信息
          */
         void onSuccess(User user);
+
+        /**
+         * 其它错误
+         */
+        void onError(int i, String s);
     }
 
     interface IPresenter extends ILifeCircle{
@@ -126,6 +131,11 @@ public interface IAccountContract {
 
         @Override
         public void onSuccess(User user) {
+
+        }
+
+        @Override
+        public void onError(int i, String s) {
 
         }
 

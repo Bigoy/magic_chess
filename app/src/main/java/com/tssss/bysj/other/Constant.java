@@ -32,4 +32,22 @@ public class Constant {
      */
     public static final String SETTING_NOTIFY_VOICE = "SETTING_NOTIFY_VOICE";
     public static final String SETTING_NOTIFY_VERBOSE = "SETTING_NOTIFY_VERBOSE";
+
+    /**
+     * 账号登录状态
+     * 已经登录
+     * 未登录，退出了登录
+     */
+    public static final String ACCOUNT_STATE = "ACCOUNT_STATE";
+    public static final String ACCOUNT_STATE_LOGIN = "ACCOUNT_STATE_LOGIN";
+    public static final String ACCOUNT_STATE_LOGOUT = "ACCOUNT_STATE_LOGOUT";
+    public static final String ACCOUNT_ID = "ACCOUNT_ID";
+    public static final String ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
+
+    /**
+     * 登录状态
+     */
+    public static final String LOGIN_STATE = "LOGIN_STATE";
+    public static final String LOGIN_STATE_SUCCESS = "LOGIN_STATE_SUCCESS";
+    public static final String LOGIN_STATE_FAILED = "LOGIN_STATE_FAILED";
 }
