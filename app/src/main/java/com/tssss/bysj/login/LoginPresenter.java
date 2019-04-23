@@ -54,8 +54,8 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
             getView().onValidPassword();
         }
         if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
-            getView().onProcess();
             this.user = user;
+            getView().onProcess();
         }
     }
 
