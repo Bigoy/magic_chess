@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.tssss.bysj.componet.GTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:text="这是作者小时候玩过的游戏，想必也有小伙伴玩过，开发这款游戏也就是跟大家分享一下我的童年吧，玩法不难，但是有趣。希望你们喜欢！"
+        android:textSize="22dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <com.tssss.bysj.componet.GTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="联系作者"
+            android:textColor="#6F5836"
+            tools:ignore="HardcodedText" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="版权：taoshuai©copyright"
+            tools:ignore="HardcodedText" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="邮箱：1315702128@qq.com"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+</RelativeLayout>

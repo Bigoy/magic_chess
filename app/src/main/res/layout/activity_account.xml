@@ -49,13 +49,13 @@
                     tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
 
                 <com.tssss.bysj.componet.GTextView
-                    android:id="@+id/setting_alter_phone"
+                    android:id="@+id/setting_account_device"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginBottom="16dp"
                     android:gravity="start|center_vertical"
                     android:paddingStart="16dp"
-                    android:text="@string/setting_alter_phone"
+                    android:text="@string/setting_device"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="28dp"
                     tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />

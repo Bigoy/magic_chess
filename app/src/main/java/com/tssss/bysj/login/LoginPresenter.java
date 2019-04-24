@@ -13,6 +13,7 @@ import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AccountUtil;
+import com.tssss.bysj.util.SystemUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,6 +88,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                         // 0 表示JMessage登录成功
                                         if (i == 0) {
                                             UserDataCache.saveAccount(user);
+                                            UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
                                             AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
                                             updateUi(Constant.LOGIN_STATE_SUCCESS);
                                         } else {

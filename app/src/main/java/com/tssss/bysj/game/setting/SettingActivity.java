@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +36,8 @@ public class SettingActivity extends BaseActivity {
     private ImageView verboseIv;
     private ScrollView scrollView;
 
+    private Handler handler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +50,16 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void initNotifyState() {
-        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VOICE)) {
+        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), Constant.SETTING_NOTIFY_VOICE)) {
             voiceIv.setImageResource(R.drawable.ic_switch_on);
         }
-        if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VOICE)) {
+        if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), Constant.SETTING_NOTIFY_VOICE)) {
             voiceIv.setImageResource(R.drawable.ic_switch_off);
         }
-        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VERBOSE)) {
+        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), Constant.SETTING_NOTIFY_VERBOSE)) {
             verboseIv.setImageResource(R.drawable.ic_switch_on);
         }
-        if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),Constant.SETTING_NOTIFY_VERBOSE)) {
+        if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), Constant.SETTING_NOTIFY_VERBOSE)) {
             verboseIv.setImageResource(R.drawable.ic_switch_off);
         }
     }
@@ -90,6 +93,7 @@ public class SettingActivity extends BaseActivity {
     protected void afterBindView() {
         initSettingTabState();
         initNotifyState();
+        handler = new Handler();
     }
 
     @Override
@@ -117,12 +121,14 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.setting_version:
                 startColorAnimation(version);
+                openActivityDelay(VersionActivity.class, 110);
                 break;
             case R.id.setting_version_description:
-                startColorAnimation(versionDescription);
+//                startColorAnimation(versionDescription);
                 break;
             case R.id.setting_about_game:
                 startColorAnimation(about);
+                openActivityDelay(GameDetailActivity.class, 110);
                 break;
             case R.id.setting_group_notify_voice:
                 switchNotifyState(voiceIv, Constant.SETTING_NOTIFY_VOICE);
@@ -141,7 +147,7 @@ public class SettingActivity extends BaseActivity {
     private void switchNotifyState(ImageView v, String key) {
         initSettingTabState();
         v.setVisibility(View.INVISIBLE);
-        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(),key)) {
+        if (SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), key)) {
             v.setImageResource(R.drawable.ic_switch_off);
             SharedPreferencesUtil.keepBoolean(SharedPreferencesFactory.getUserSharedPreferences(), key, false);
         } else if (!SharedPreferencesUtil.readBoolean(SharedPreferencesFactory.getUserSharedPreferences(), key)) {

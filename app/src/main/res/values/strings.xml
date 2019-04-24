@@ -88,5 +88,7 @@
     <string name="friend_category_group">分组</string>
     <string name="chat_no_history">没有任何聊天记录</string>
     <string name="loading">加载中...</string>
+    <string name="setting_device">查看登录设备</string>
+    <string name="setting_device_tip">最近一次登录：</string>
 
 </resources>

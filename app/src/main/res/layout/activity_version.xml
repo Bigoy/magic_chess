@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <com.tssss.bysj.componet.GTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已经是最新版本"
+            android:textColor="#664F2E"
+            android:textSize="22dp"
+            tools:ignore="HardcodedText,SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="版本号：1.0.0"
+            android:textSize="18dp"
+            tools:ignore="HardcodedText,SpUsage" />
+    </LinearLayout>
+</RelativeLayout>

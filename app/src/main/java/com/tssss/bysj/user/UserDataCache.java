@@ -38,4 +38,18 @@ public class UserDataCache {
         return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), key);
     }
 
+    /**
+     * 用户退出登录时清除账户缓存信息
+     */
+    public static void clearUserCache() {
+
+    }
+
+    public static void keepLastLoginTime(String time) {
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_LOGIN_TIME, time);
+    }
+
+    public static String readLastLoginTime() {
+        return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_LOGIN_TIME);
+    }
 }

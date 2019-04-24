@@ -50,6 +50,7 @@ public class Constant {
     public static final String ACCOUNT_STATE_LOGOUT = "ACCOUNT_STATE_LOGOUT";
     public static final String ACCOUNT_ID = "ACCOUNT_ID";
     public static final String ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
+    public static final String ACCOUNT_LOGIN_TIME = "ACCOUNT_LOGIN_TIME";
 
     /**
      * 登录

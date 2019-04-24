@@ -56,6 +56,10 @@
         <activity android:name=".game.setting.SettingActivity" />
         <activity android:name=".game.setting.PasswordActivity" />
         <activity android:name=".game.im.ChatActivity" />
+        <activity android:name=".game.setting.DeviceActivity" />
+        <activity android:name=".game.setting.VersionActivity" />
+        <activity android:name=".game.setting.GameDetailActivity" />
+        <activity android:name=".game.setting.AccountStateActivity" />
     </application>
 
 </manifest>
