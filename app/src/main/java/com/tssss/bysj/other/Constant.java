@@ -2,6 +2,11 @@ package com.tssss.bysj.other;
 
 public class Constant {
     /**
+     * 三方
+     */
+    public static final String JMESSAGE_APP_KEY = "e0ae5aeb8eda030f9e338f64";
+
+    /**
      * 网络相关
      */
     public static final int NET_CODE_PAGE_NOT_FOUND = 404;
@@ -32,6 +37,24 @@ public class Constant {
     public static final String JSON_KEY_NEWS_TP_CONTENT_TEXT = "NEWS_TP_CONTENT_TEXT";
     public static final String JSON_KEY_NEWS_TP_CONTENT_PICTURE = "NEWS_TP_CONTENT_PICTURE";
     public static final String JSON_KEY_NEWS_TP_FROM = "NEWS_TP_FROM";
+
+    // friends
+    public static final String JSON_KEY_FRIEND_LIST = "FRIEND_LIST";
+    public static final String JSON_KEY_FRIEND_AVATAR = "FRIEND_AVATAR";
+    public static final String JSON_KEY_FRIEND_NAME = "FRIEND_NAME";
+    public static final String JSON_KEY_FRIEND_SEX = "FRIEND_SEX";
+    public static final String JSON_KEY_FRIEND_SIGNATURE = "FRIEND_SIGNATURE";
+    public static final String JSON_KEY_FRIEND_LEVEL = "FRIEND_LEVEL";
+
+
+    // recommend role
+    public static final String JSON_KEY_FRIEND_ADD_RECOMMEND = "FRIEND_ADD_RECOMMEND_LIST";
+    public static final String JSON_KEY_FRIEND_ADD_ID = "FRIEND_ADD_RECOMMEND_ID";
+    public static final String JSON_KEY_FRIEND_ADD_AVATAR = "FRIEND_ADD_AVATAR";
+    public static final String JSON_KEY_FRIEND_ADD_NAME = "FRIEND_ADD_NAME";
+    public static final String JSON_KEY_FRIEND_ADD_SEX = "FRIEND_ADD_SEX";
+    public static final String JSON_KEY_FRIEND_ADD_SIGNATURE = "FRIEND_ADD_SIGNATURE";
+    public static final String JSON_KEY_FRIEND_ADD_LEVEL = "FRIEND_ADD_LEVEL";
 
 
     /**
@@ -83,4 +106,5 @@ public class Constant {
 
     public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
     public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";
+
 }

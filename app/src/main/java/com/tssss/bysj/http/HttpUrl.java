@@ -34,4 +34,17 @@ public class HttpUrl {
      * 动态：最新内容
      */
     public static final String URL_NEWS_NEWEST = host + "/news/newest";
+    /**
+     * 好友
+     */
+    public static final String URL_FRIEND = host + "/friend";
+    /**
+     * 添加好友
+     */
+    public static final String URL_FRIEND_ADD = host + "/friend/add";
+    /**
+     * 添加好友时的推荐玩家
+     */
+    public static final String URL_FRIEND_ADD_RECOMMEND = host + "/friend/add/recommend";
+
 }

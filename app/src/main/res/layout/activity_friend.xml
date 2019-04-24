@@ -7,7 +7,7 @@
     android:background="@drawable/bg_common"
     tools:context=".game.friend.FriendsActivity">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/friends_category_ll"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -49,6 +49,18 @@
             tools:ignore="RtlHardcoded,SpUsage" />
 
     </LinearLayout>
+-->
+
+    <com.tssss.bysj.componet.GTextView
+        android:id="@+id/friends_loading_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/loading"
+        android:textColor="#414141"
+        android:textSize="32dp"
+        tools:ignore="SpUsage" />
+
 
     <ImageView
         android:id="@+id/friends_null_iv"
@@ -59,7 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_category_ll"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/null_friends"
         tools:ignore="ContentDescription" />
 
@@ -72,7 +84,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_category_ll" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

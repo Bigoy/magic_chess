@@ -60,6 +60,7 @@
         <activity android:name=".game.setting.VersionActivity" />
         <activity android:name=".game.setting.GameDetailActivity" />
         <activity android:name=".game.setting.AccountStateActivity" />
+        <activity android:name=".game.friend.AddFriendActivity" />
     </application>
 
 </manifest>

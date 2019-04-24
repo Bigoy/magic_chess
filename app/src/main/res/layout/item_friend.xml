@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_item_friend"
-    android:padding="@dimen/padding_24dp">
+    android:background="#00CBFFCD"
+    android:orientation="vertical">
 
     <com.tssss.bysj.componet.GTextView
+        android:id="@+id/item_friend_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="28dp"
+        tools:ignore="SpUsage" />
+
+
+    <!--<com.tssss.bysj.componet.GTextView
         android:id="@+id/item_friend_rank_gtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,5 +53,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+-->
+</LinearLayout>

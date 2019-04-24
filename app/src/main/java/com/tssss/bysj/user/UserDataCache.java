@@ -2,10 +2,13 @@ package com.tssss.bysj.user;
 
 import android.util.Log;
 
+import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.SharedPreferencesUtil;
+
+import java.util.Map;
 
 /**
  * 用户数据缓存
@@ -52,4 +55,5 @@ public class UserDataCache {
     public static String readLastLoginTime() {
         return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_LOGIN_TIME);
     }
+
 }
