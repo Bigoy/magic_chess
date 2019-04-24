@@ -1,47 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_news_t_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/padding_8dp"
-    android:background="@drawable/bg_item_news">
+    android:background="@drawable/bg_item_news"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/item_news_t_head_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/item_news_t_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textColor="#524160"
-        android:textSize="@dimen/font_size_24sp"
-        android:textStyle="bold"
-        android:typeface="sans"
-        app:layout_constraintStart_toEndOf="@+id/item_news_t_head_iv"
-        app:layout_constraintTop_toTopOf="@+id/item_news_t_head_iv" />
-
-    <TextView
-        android:id="@+id/item_news_t_news_tv"
-        android:layout_width="@dimen/width_248dp"
+    <LinearLayout
+        android:id="@+id/item_news_t_content_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="start"
-        android:singleLine="false"
-        android:textColor="#282828"
-        android:textSize="@dimen/font_size_20sp"
-        android:typeface="sans"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/item_news_t_name_tv"
-        app:layout_constraintTop_toBottomOf="@+id/item_news_t_name_tv" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_news_t_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="start"
+            android:singleLine="false"
+            android:text="contentcccccccccccccccccccccccccccccccc"
+            android:textColor="#282828"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:typeface="sans"
+            tools:ignore="SpUsage" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp">
+
+            <TextView
+                android:id="@+id/item_news_t_from"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="left|center_vertical"
+                android:text="From tssss"
+                android:textColor="#5C5C5C"
+                android:textSize="18dp"
+                tools:ignore="SpUsage" />
+
+            <TextView
+                android:id="@+id/item_news_t_time"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:gravity="right|center_vertical"
+                android:text="04-22"
+                android:textColor="#5C5C5C"
+                android:textSize="18dp"
+                tools:ignore="SpUsage" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

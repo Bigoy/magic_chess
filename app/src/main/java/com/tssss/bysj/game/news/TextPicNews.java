@@ -1,45 +1,58 @@
 package com.tssss.bysj.game.news;
 
-import android.graphics.Bitmap;
+import java.util.List;
 
 public class TextPicNews extends News {
-    private int mUserHead;
-    private String mUserName, mUserNewsStr;
-    private Bitmap mUserNewsBm;
+    private String contentText;
+    private String from;
+    private String time;
+    private List<String> contentPicture;
 
-    public int getUserHead() {
-        return mUserHead;
+    public TextPicNews() {
+
     }
 
-    public void setUserHead(int mUserHead) {
-        this.mUserHead = mUserHead;
+    public TextPicNews(String contentText, String from, String time, List<String> contentPicture) {
+        this.contentText = contentText;
+        this.from = from;
+        this.time = time;
+        this.contentPicture = contentPicture;
     }
 
-    public String getUserName() {
-        return mUserName;
+    public String getContentText() {
+        return contentText;
     }
 
-    public void setUserName(String mUserName) {
-        this.mUserName = mUserName;
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
     }
 
-    public String getUserNewsStr() {
-        return mUserNewsStr;
+    public String getFrom() {
+        return from;
     }
 
-    public void setUserNewsStr(String mUserNewsStr) {
-        this.mUserNewsStr = mUserNewsStr;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public Bitmap getUserNewsBm() {
-        return mUserNewsBm;
+    public String getTime() {
+        return time;
     }
 
-    public void setUserNewsBm(Bitmap mUserNewsBm) {
-        this.mUserNewsBm = mUserNewsBm;
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public List<String> getContentPicture() {
+        return contentPicture;
+    }
+
+    public void setContentPicture(List<String> contentPicture) {
+        this.contentPicture = contentPicture;
     }
 
     @Override
+
     public int getNewsStyle() {
         return News.STYLE_TEXT_PICTURE;
     }

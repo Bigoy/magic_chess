@@ -1,36 +1,44 @@
 package com.tssss.bysj.game.news;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tssss.bysj.R;
+import com.tssss.bysj.base.BaseRvViewHolder;
+import com.tssss.bysj.game.news.adapter.NewsPictureAdapter;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PictureNewsHolder extends RecyclerView.ViewHolder {
-    private TextView mUserNameTv;
-    private ImageView mUserHeadIv, mUserNewsIv;
-
-    private PictureNews mNews;
+public class PictureNewsHolder extends BaseRvViewHolder<PictureNews> {
+    private TextView from;
+    private TextView time;
+    private RecyclerView content;
 
     public PictureNewsHolder(View itemView) {
         super(itemView);
-
-        findViews();
     }
 
-    private void findViews() {
-        mUserNameTv = itemView.findViewById(R.id.item_news_p_name_tv);
-        mUserHeadIv = itemView.findViewById(R.id.item_news_p_head_iv);
-        mUserNewsIv = itemView.findViewById(R.id.item_news_p_news_iv);
+    @Override
+    protected void instantiateObject() {
+
     }
 
-    public void setViews(News news) {
-        this.mNews = (PictureNews) news;
-
-        mUserNameTv.setText(mNews.getUserName());
-        mUserHeadIv.setImageResource(mNews.getUserHead());
-        mUserNewsIv.setImageBitmap(mNews.getUserNews());
+    @Override
+    public void fillData(PictureNews data) {
+        if (null != data) {
+            from.setText(data.getFrom());
+            time.setText(data.getTime());
+            content.setLayoutManager(new GridLayoutManager(getContent(), 3));
+            content.setAdapter(new NewsPictureAdapter(getContent(), data.getPictures()));
+        }
     }
+
+    @Override
+    protected void findViews() {
+        from = findTextView(R.id.item_news_p_from);
+        time = findTextView(R.id.item_news_p_time);
+        content = findRecyclerView(R.id.item_news_p_content);
+    }
+
 }

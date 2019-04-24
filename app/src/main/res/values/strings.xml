@@ -87,5 +87,6 @@
     <string name="friend_category_all">所有</string>
     <string name="friend_category_group">分组</string>
     <string name="chat_no_history">没有任何聊天记录</string>
+    <string name="loading">加载中...</string>
 
 </resources>

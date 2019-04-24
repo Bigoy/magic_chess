@@ -5,34 +5,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tssss.bysj.R;
+import com.tssss.bysj.base.BaseRvViewHolder;
+import com.tssss.bysj.game.news.adapter.NewsPictureAdapter;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TextPicNewsHolder extends RecyclerView.ViewHolder {
-    private TextView mUserNameTv, mUserNewsTv;
-    private ImageView mUserHeadIv, mUserNewsIv;
-
-    private TextPicNews mNews;
+public class TextPicNewsHolder extends BaseRvViewHolder<TextPicNews> {
+    private TextView contentText;
+    private TextView from;
+    private TextView time;
+    private RecyclerView contentPicture;
 
     public TextPicNewsHolder(View itemView) {
         super(itemView);
-
-        findViews();
     }
 
-    private void findViews() {
-        mUserNameTv = itemView.findViewById(R.id.item_news_tp_name_tv);
-        mUserNewsTv = itemView.findViewById(R.id.item_news_tp_news_tv);
-        mUserHeadIv = itemView.findViewById(R.id.item_news_tp_head_iv);
-        mUserNewsIv = itemView.findViewById(R.id.item_news_tp_news_iv);
+    @Override
+    protected void instantiateObject() {
+
     }
 
-    public void setViews(News news) {
-        this.mNews = (TextPicNews) news;
+    @Override
+    public void fillData(TextPicNews data) {
+        if (null != data) {
+            contentText.setText(data.getContentText());
+            from.setText(data.getFrom());
+            time.setText(data.getTime());
+            contentPicture.setLayoutManager(new GridLayoutManager(getContent(), 3));
+            contentPicture.setAdapter(new NewsPictureAdapter(getContent(), data.getContentPicture()));
 
-        mUserNameTv.setText(mNews.getUserName());
-        mUserNewsTv.setText(mNews.getUserNewsStr());
-        mUserHeadIv.setImageResource(mNews.getUserHead());
-        mUserNewsIv.setImageBitmap(mNews.getUserNewsBm());
+        }
     }
+
+    @Override
+    protected void findViews() {
+        contentText = findTextView(R.id.item_news_tp_content_t);
+        from = findTextView(R.id.item_news_tp_from);
+        time = findTextView(R.id.item_news_tp_time);
+        contentPicture = findRecyclerView(R.id.item_news_tp_content_p);
+    }
+
 }

@@ -1,31 +1,42 @@
 package com.tssss.bysj.game.news;
 
 public class TextNews extends News {
-    private int mUserHead;
-    private String mUserName, mUserNews;
+    private String content;
+    private String from;
+    private String time;
 
-    public int getUserHead() {
-        return mUserHead;
+
+    public TextNews() {
     }
 
-    public void setUserHead(int mUserHead) {
-        this.mUserHead = mUserHead;
+    public TextNews(String content, String from, String time) {
+        this.content = content;
+        this.from = from;
+        this.time = time;
     }
 
-    public String getUserName() {
-        return mUserName;
+    public String getContent() {
+        return content;
     }
 
-    public void setUserName(String mUserName) {
-        this.mUserName = mUserName;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getUserNews() {
-        return mUserNews;
+    public String getFrom() {
+        return from;
     }
 
-    public void setUserNews(String mUserNews) {
-        this.mUserNews = mUserNews;
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Override

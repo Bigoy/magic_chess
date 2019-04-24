@@ -133,7 +133,7 @@ public class OkHttpProvider extends BaseHttpProvider {
                         if (response.body() != null) {
                             String result = response.body().string();
                             callback.onSuccess(result);
-                            Logger.log(result);
+//                            Logger.log(result);
                         } else {
                             callback.onFailure("服务器未返回任何内容");
                             Logger.log("服务器未返回任何内容");

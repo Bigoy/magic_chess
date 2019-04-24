@@ -44,7 +44,7 @@
             android:name=".game.friend.FriendsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".game.news.NewsActivity"
+            android:name=".game.news.veiw.NewsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".game.PeopleActivity"

@@ -12,12 +12,27 @@ public class Constant {
     public static final String BASE_URL = "www.magicchess.com";
 
     /**
-     * 登录操作相关的 json key
+     * json key
      */
     public static final String JSON_KEY_ACCOUNT_EXIST = "ACCOUNT_EXIST";
     public static final String JSON_KEY_ACCOUNT_ACCESSIBLE = "ACCOUNT_ACCESSIBLE";
     public static final String JSON_KEY_ACCOUNT = "ACCOUNT";
     public static final String JSON_KEY_ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
+
+    // news
+    public static final String JSON_KEY_NEWS = "JSON_KEY_NEWS";
+    public static final String JSON_KEY_NEWS_TYPE = "JSON_KEY_NEWS_TYPE";
+    public static final String JSON_KEY_NEWS_TEXT_CONTENT = "NEWS_TEXT_CONTENT";
+    public static final String JSON_KEY_NEWS_TEXT_FROM = "NEWS_TEXT_FROM";
+    public static final String JSON_KEY_NEWS_TEXT_TIME = "NEWS_TEXT_TIME";
+    public static final String JSON_KEY_NEWS_PICTURE_CONTENT = "NEWS_PICTURE_CONTENT";
+    public static final String JSON_KEY_NEWS_PICTURE_FROM = "NEWS_PICTURE_FROM";
+    public static final String JSON_KEY_NEWS_PICTURE_TIME = "NEWS_PICTURE_TIME";
+    public static final String JSON_KEY_NEWS_TP_TIME = "NEWS_TP_TIME";
+    public static final String JSON_KEY_NEWS_TP_CONTENT_TEXT = "NEWS_TP_CONTENT_TEXT";
+    public static final String JSON_KEY_NEWS_TP_CONTENT_PICTURE = "NEWS_TP_CONTENT_PICTURE";
+    public static final String JSON_KEY_NEWS_TP_FROM = "NEWS_TP_FROM";
+
 
     /**
      * 数据持久化 KEY

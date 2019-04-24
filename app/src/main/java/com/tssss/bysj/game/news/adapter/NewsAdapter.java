@@ -1,15 +1,18 @@
-package com.tssss.bysj.adapter;
+package com.tssss.bysj.game.news.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.game.news.News;
+import com.tssss.bysj.game.news.PictureNews;
 import com.tssss.bysj.game.news.PictureNewsHolder;
+import com.tssss.bysj.game.news.TextNews;
 import com.tssss.bysj.game.news.TextNewsHolder;
+import com.tssss.bysj.game.news.TextPicNews;
 import com.tssss.bysj.game.news.TextPicNewsHolder;
+import com.tssss.bysj.other.Logger;
 
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        Log.wtf(getClass().getSimpleName(), "" + i);
+        Logger.log(i);
         if (i == News.STYLE_TEXT) {
             return new TextNewsHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_text,
                     viewGroup, false));
@@ -55,30 +58,20 @@ public class NewsAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof TextNewsHolder) {
-            ((TextNewsHolder) viewHolder).setViews(mNewsList.get(i));
+            ((TextNewsHolder) viewHolder).fillData((TextNews) mNewsList.get(i));
 
         } else if (viewHolder instanceof PictureNewsHolder) {
-            ((PictureNewsHolder) viewHolder).setViews(mNewsList.get(i));
+            ((PictureNewsHolder) viewHolder).fillData((PictureNews) mNewsList.get(i));
 
         } else if (viewHolder instanceof TextPicNewsHolder) {
-            ((TextPicNewsHolder) viewHolder).setViews(mNewsList.get(i));
+            ((TextPicNewsHolder) viewHolder).fillData((TextPicNews) mNewsList.get(i));
 
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mNewsList.get(position).getNewsStyle() == News.STYLE_TEXT) {
-            return News.STYLE_TEXT;
-
-        } else if (mNewsList.get(position).getNewsStyle() == News.STYLE_PICTURE) {
-            return News.STYLE_PICTURE;
-
-        } else if (mNewsList.get(position).getNewsStyle() == News.STYLE_TEXT_PICTURE) {
-            return News.STYLE_TEXT_PICTURE;
-        }
-
-        return 0;
+        return mNewsList.get(position).getNewsStyle();
     }
 
     @Override

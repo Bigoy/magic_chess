@@ -26,13 +26,14 @@ public class AccountActivity extends BaseActivity {
     protected void findViews() {
         security = findViewById(R.id.setting_security);
         alterPhone = findViewById(R.id.setting_alter_phone);
+        logout = findViewById(R.id.account_log_out);
     }
 
     @Override
     protected void setEventListeners() {
         security.setOnClickListener(this);
         alterPhone.setOnClickListener(this);
-        logout.findViewById(R.id.account_log_out);
+        logout.setOnClickListener(this);
     }
 
     @Override

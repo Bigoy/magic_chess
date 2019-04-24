@@ -66,7 +66,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
      */
     @Override
     public void confirmAccountOperation() {
-        getView().onAccountNotFound(user);
+        getView().onSuccess(user);
         /*if (null != user) {
             Map<String, String> userMap = new HashMap<>();
             userMap.put("userID", user.getUserId());

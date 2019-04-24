@@ -1,34 +1,48 @@
 package com.tssss.bysj.game.news;
 
-import android.graphics.Bitmap;
+import java.util.List;
 
 public class PictureNews extends News {
-    private int mUserHead;
-    private String mUserName;
-    private Bitmap mUserNews;
+    private String from;
+    private String time;
+    /**
+     * 图片以字符串的形式传输
+     */
+    private List<String> pictures;
 
-    public int getUserHead() {
-        return mUserHead;
+    public PictureNews() {
+
+
     }
 
-    public void setUserHead(int mUserHead) {
-        this.mUserHead = mUserHead;
+    public PictureNews(String from, String time, List<String> pictures) {
+        this.from = from;
+        this.time = time;
+        this.pictures = pictures;
     }
 
-    public String getUserName() {
-        return mUserName;
+    public String getFrom() {
+        return from;
     }
 
-    public void setUserName(String mUserName) {
-        this.mUserName = mUserName;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public Bitmap getUserNews() {
-        return mUserNews;
+    public String getTime() {
+        return time;
     }
 
-    public void setUserNews(Bitmap mUserNews) {
-        this.mUserNews = mUserNews;
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 
     @Override

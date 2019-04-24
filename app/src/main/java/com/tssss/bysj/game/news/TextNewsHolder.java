@@ -1,36 +1,41 @@
 package com.tssss.bysj.game.news;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tssss.bysj.R;
+import com.tssss.bysj.base.BaseRvViewHolder;
 
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
 
-public class TextNewsHolder extends RecyclerView.ViewHolder {
-    private TextView mUserNameTv, mUserNewsTv;
-    private ImageView mUserHeadIv;
+public class TextNewsHolder extends BaseRvViewHolder<TextNews> {
+    private TextView content;
+    private TextView from;
+    private TextView time;
 
-    private TextNews mNews;
-
-    public TextNewsHolder(View itemView) {
+    public TextNewsHolder(@NonNull View itemView) {
         super(itemView);
-
-        findViews();
     }
 
-    private void findViews() {
-        mUserNameTv = itemView.findViewById(R.id.item_news_t_name_tv);
-        mUserNewsTv = itemView.findViewById(R.id.item_news_t_news_tv);
-        mUserHeadIv = itemView.findViewById(R.id.item_news_t_head_iv);
+    @Override
+    protected void instantiateObject() {
+
     }
 
-    public void setViews(News news) {
-        this.mNews = (TextNews) news;
-
-        mUserHeadIv.setImageResource(mNews.getUserHead());
-        mUserNameTv.setText(mNews.getUserName());
-        mUserNewsTv.setText(mNews.getUserNews());
+    @Override
+    public void fillData(TextNews data) {
+        if (null != data) {
+            content.setText(data.getContent());
+            from.setText(data.getFrom());
+            time.setText(data.getTime());
+        }
     }
+
+    @Override
+    protected void findViews() {
+        content = findTextView(R.id.item_news_t_content);
+        from = findTextView(R.id.item_news_t_from);
+        time = findTextView(R.id.item_news_t_time);
+    }
+
 }

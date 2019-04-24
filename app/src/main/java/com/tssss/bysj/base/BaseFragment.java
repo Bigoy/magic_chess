@@ -8,22 +8,20 @@ import android.view.ViewGroup;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.mvp.view.LifeCircleMvpFragment;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public abstract class BaseFragment extends LifeCircleMvpFragment {
+    private View contentView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
         ViewInject viewInject = this.getClass().getAnnotation(ViewInject.class);
         if (viewInject != null) {
             int layoutId = viewInject.layoutId();
             if (layoutId > 0) {
-                view = initFragmentView(inflater, layoutId);
+                contentView = initFragmentView(inflater, layoutId);
                 findViews();
                 afterBindView();
             } else {
@@ -32,7 +30,7 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
         } else {
             throw new RuntimeException("no annotation");
         }
-        return view;
+        return contentView;
     }
 
     protected abstract void findViews();
@@ -53,6 +51,6 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
     protected abstract void setEventListeners();
 
     protected View findViewById(int id) {
-        return Objects.requireNonNull(getActivity()).findViewById(id);
+        return contentView.findViewById(id);
     }
 }

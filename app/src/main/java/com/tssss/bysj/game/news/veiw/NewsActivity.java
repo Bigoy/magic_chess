@@ -1,10 +1,6 @@
-package com.tssss.bysj.game.news;
+package com.tssss.bysj.game.news.veiw;
 
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Color;
 import android.view.View;
 
 import com.tssss.bysj.R;
@@ -53,6 +49,9 @@ public class NewsActivity extends BaseActivity implements OnMenuItemClickListene
         attentionFragment = new AttentionFragment();
         otherFragment = new OtherFragment();
         newestFragment = new NewestFragment();
+        // 默认显示推荐动态
+        startColorAnimation(categoryRecommend);
+        replaceFragment(R.id.news_fragment_container, recommendFragment);
     }
 
     @Override

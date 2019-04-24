@@ -14,7 +14,7 @@ import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.friend.FriendsActivity;
 import com.tssss.bysj.game.im.ChatActivity;
-import com.tssss.bysj.game.news.NewsActivity;
+import com.tssss.bysj.game.news.veiw.NewsActivity;
 import com.tssss.bysj.game.setting.SettingActivity;
 
 import java.util.ArrayList;

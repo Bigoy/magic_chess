@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,16 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <com.tssss.bysj.componet.GTextView
+        android:id="@+id/new_attention_loading_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/loading"
+        android:textColor="#414141"
+        android:textSize="32dp"
+        tools:ignore="SpUsage" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/news_attention_rv"
@@ -20,11 +30,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/news_null_iv"
+        android:id="@+id/new_attention_null_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/null_news"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -32,4 +42,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
