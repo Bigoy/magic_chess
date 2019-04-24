@@ -67,8 +67,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
      */
     @Override
     public void confirmAccountOperation() {
-        getView().onSuccess(user);
-        /*if (null != user) {
+        if (null != user) {
             Map<String, String> userMap = new HashMap<>();
             userMap.put("userID", user.getUserId());
             userMap.put("userPassword", user.getUserPassword());
@@ -106,8 +105,16 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                 Logger.log("服务端出现了问题!");
                             }
                         } catch (JSONException e) {
-                            Logger.log("json 对象解析异常，请检查服务端返回的内容！");
-                            updateUi(Constant.LOGIN_STATE_FAILED);
+                            if (!Constant.DEBUG) {
+                                Logger.log("json 对象解析异常，请检查服务端返回的内容！");
+                                updateUi(Constant.LOGIN_STATE_FAILED);
+
+                            } else {
+                                UserDataCache.saveAccount(user);
+                                UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
+                                AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
+                                updateUi(Constant.LOGIN_STATE_SUCCESS);
+                            }
                         }
 
                     } else {
@@ -124,7 +131,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                     }
                 }
             });
-        }*/
+        }
     }
 
     @Override

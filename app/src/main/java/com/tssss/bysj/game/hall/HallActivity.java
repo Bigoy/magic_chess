@@ -16,6 +16,8 @@ import com.tssss.bysj.game.friend.FriendsActivity;
 import com.tssss.bysj.game.im.ChatActivity;
 import com.tssss.bysj.game.news.veiw.NewsActivity;
 import com.tssss.bysj.game.setting.SettingActivity;
+import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,9 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
      * 向 HallPresenter 发送游戏匹配请求
      */
     private void matchGame() {
-
+        if (Constant.DEBUG) {
+            Logger.log("not match, debug");
+        }
     }
 
     @Override

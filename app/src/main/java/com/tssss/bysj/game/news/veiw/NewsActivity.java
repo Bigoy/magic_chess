@@ -7,12 +7,19 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
+import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
+import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 @ViewInject(layoutId = R.layout.activity_news)
 public class NewsActivity extends BaseActivity implements OnMenuItemClickListener {
@@ -24,6 +31,8 @@ public class NewsActivity extends BaseActivity implements OnMenuItemClickListene
     private AttentionFragment attentionFragment;
     private OtherFragment otherFragment;
     private NewestFragment newestFragment;
+    private ConstraintLayout container;
+    private GTextView functionClosed;
 
     private Menu menu;
 
@@ -33,6 +42,8 @@ public class NewsActivity extends BaseActivity implements OnMenuItemClickListene
         categoryAttention = findViewById(R.id.news_category_attention);
         categoryOther = findViewById(R.id.news_category_other);
         categoryNewest = findViewById(R.id.news_category_newest);
+        container = findViewById(R.id.news_container);
+        functionClosed = findViewById(R.id.news_function_closed);
     }
 
     @Override
@@ -45,13 +56,24 @@ public class NewsActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     protected void afterBindView() {
-        recommendFragment = new RecommendFragment();
-        attentionFragment = new AttentionFragment();
-        otherFragment = new OtherFragment();
-        newestFragment = new NewestFragment();
-        // 默认显示推荐动态
-        startColorAnimation(categoryRecommend);
-        replaceFragment(R.id.news_fragment_container, recommendFragment);
+        if (UserDataCache.readString(Constant.SP_FUNCTION_NEWS_STATE).equals(Constant.SP_FUNCTION_NEWS_STATE_CLOSED)) {
+            container.setVisibility(View.GONE);
+            functionClosed.setVisibility(View.VISIBLE);
+            String sb = "动态功能已经被关闭" +
+                    "\n" +
+                    "重新登录后可重新开启";
+            functionClosed.setText(sb);
+        } else {
+            recommendFragment = new RecommendFragment();
+            attentionFragment = new AttentionFragment();
+            otherFragment = new OtherFragment();
+            newestFragment = new NewestFragment();
+            // 默认显示推荐动态
+            startColorAnimation(categoryRecommend);
+            replaceFragment(R.id.news_fragment_container, recommendFragment);
+
+
+        }
     }
 
     @Override
@@ -66,14 +88,18 @@ public class NewsActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     protected void clickTopBarRight() {
-        super.clickTopBarRight();
-        List<String> items = new ArrayList<>();
-        items.add("我关注的");
-        items.add("屏蔽内容");
-        menu = new Menu.Builder(this, this)
-                .items(items)
-                .build();
-        menu.display();
+        if (UserDataCache.readString(Constant.SP_FUNCTION_NEWS_STATE).equals(Constant.SP_FUNCTION_NEWS_STATE_CLOSED)) {
+            Logger.log("动态功能被关闭");
+
+        } else {
+            List<String> items = new ArrayList<>();
+            items.add("关闭动态功能");
+            menu = new Menu.Builder(this, this)
+                    .items(items)
+                    .build();
+            menu.display();
+
+        }
     }
 
     @Override
@@ -121,10 +147,29 @@ public class NewsActivity extends BaseActivity implements OnMenuItemClickListene
         switch (position) {
             case 0:
                 menu.dismiss();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .desc("关闭动态功能")
+                        .subDesc("确定吗？" + "\n" + "重新登录后将自动开启")
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                UserDataCache.keepString(Constant.SP_FUNCTION_NEWS_STATE, Constant.SP_FUNCTION_NEWS_STATE_CLOSED);
+                                if (UserDataCache.readString(Constant.SP_FUNCTION_NEWS_STATE).equals(Constant.SP_FUNCTION_NEWS_STATE_CLOSED)) {
+                                    ToastUtil.showToast(NewsActivity.this, "关闭成功", ToastUtil.TOAST_DEFAULT);
+                                    finish();
+                                } else {
+                                    ToastUtil.showToast(NewsActivity.this, "出现错误，我们会尽快修复", ToastUtil.TOAST_ERROR);
+                                }
+                            }
+
+                            @Override
+                            public void no() {
+
+                            }
+                        });
+                builder.display();
                 break;
-            case 1:
-                menu.dismiss();
-                break;
+
             default:
 
         }

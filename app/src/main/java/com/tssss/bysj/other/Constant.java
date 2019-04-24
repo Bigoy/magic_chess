@@ -1,6 +1,8 @@
 package com.tssss.bysj.other;
 
 public class Constant {
+    public static final boolean DEBUG = true;
+
     /**
      * 三方
      */
@@ -106,5 +108,12 @@ public class Constant {
 
     public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
     public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";
+
+    /**
+     * 用户偏好设置
+     */
+    public static final String SP_FUNCTION_NEWS_STATE = "SP_FUNCTION_NEWS_STATE";
+    public static final String SP_FUNCTION_NEWS_STATE_CLOSED = "SP_FUNCTION_NEWS_STATE_CLOSED";
+    public static final String SP_FUNCTION_NEWS_STATE_USING = "SP_FUNCTION_NEWS_STATE_USING";
 
 }

@@ -11,6 +11,7 @@ import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
+import com.tssss.bysj.game.main.MainActivity;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.UserDataCache;
@@ -93,11 +94,12 @@ public class AccountActivity extends BaseActivity {
                         .operationListener(new AlertDialog.OnDialogOperationListener() {
                             @Override
                             public void ok() {
-                                AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
                                 UserDataCache.clearUserCache();
                                 JMessageClient.logout();
-                                backLauncher();
-                                BaseApplication.exitApp();
+                                AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
+                                openActivity(MainActivity.class);
+                               /* backLauncher();
+                                BaseApplication.exitApp();*/
                             }
 
                             @Override

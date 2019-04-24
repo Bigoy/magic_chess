@@ -1,14 +1,12 @@
 package com.tssss.bysj.user;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.SharedPreferencesUtil;
-
-import java.util.Map;
 
 /**
  * 用户数据缓存
@@ -45,7 +43,7 @@ public class UserDataCache {
      * 用户退出登录时清除账户缓存信息
      */
     public static void clearUserCache() {
-
+        SharedPreferencesFactory.getUserSharedPreferences().edit().clear().apply();
     }
 
     public static void keepLastLoginTime(String time) {
@@ -56,4 +54,11 @@ public class UserDataCache {
         return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_LOGIN_TIME);
     }
 
+    public static void keepString(String key, String value) {
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), key, value);
+    }
+
+    public static String readString(String key) {
+        return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), key);
+    }
 }
