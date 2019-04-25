@@ -38,6 +38,15 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
 
     @Override
     public void loadRecommendRoles() {
+        /*JMessageClient.getUserInfo("a16d4094af87e2e8", null, new GetUserInfoCallback() {
+            @Override
+            public void gotResult(int i, String s, UserInfo userInfo) {
+                Logger.log(i + s);
+                if (i == 0) {
+
+                }
+            }
+        });*/
         Map<String, String> paraMap = new HashMap<>();
         paraMap.put(Constant.ACCOUNT_ID, UserDataCache.readAccount(Constant.ACCOUNT_ID));
         OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_FRIEND_ADD_RECOMMEND, paraMap, new HttpCallback() {
@@ -48,6 +57,7 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                         List<Role> roleList = new ArrayList<>();
                         try {
                             JSONObject resultJson = new JSONObject(result);
+
                             JSONArray recommendRoleList = resultJson.getJSONArray(Constant.JSON_KEY_FRIEND_ADD_RECOMMEND);
                             for (int i = 0; i < recommendRoleList.length(); i++) {
                                 JSONObject sigleRoleJson = recommendRoleList.getJSONObject(i);
@@ -60,10 +70,12 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                                         sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_LEVEL)
                                 ));
                             }
+
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     getView().showRecommendRoles(roleList);
+
                                 }
                             });
 

@@ -3,23 +3,16 @@ package com.tssss.bysj.game.friend;
 import android.os.Handler;
 
 import com.tssss.bysj.game.core.Role;
-import com.tssss.bysj.http.HttpCallback;
-import com.tssss.bysj.http.HttpUrl;
-import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.UserDataCache;
-import com.tssss.bysj.util.StringUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.tssss.bysj.user.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import cn.jpush.im.android.api.ContactManager;
+import cn.jpush.im.android.api.callback.GetUserInfoListCallback;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> implements IFriendContract.IPresenter {
     private boolean cancelLoad;
@@ -33,7 +26,42 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
 
     @Override
     public void loadFriendList() {
-        Map<String, String> paramMap = new HashMap<>();
+        List<Role> roleList = new ArrayList<>();
+        ContactManager.getFriendList(new GetUserInfoListCallback() {
+            @Override
+            public void gotResult(int i, String s, List<UserInfo> list) {
+                if (i == 0) {
+                    for (int b = 0; b < list.size(); b++) {
+                        roleList.add(new Role(
+                                new User(list.get(b).getUserName(), null),
+                                list.get(b).getExtra(Constant.ROLE_AVATAR),
+                                list.get(b).getExtra(Constant.ROLE_NICK_NAME),
+                                list.get(b).getExtra(Constant.ROLE_SEX),
+                                list.get(b).getExtra(Constant.ROLE_SIGNATURE),
+                                list.get(b).getExtra(Constant.ROLE_LEVEL)
+                        ));
+
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getView().showFriend(roleList);
+                        }
+                    });
+                } else {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getView().showFriend(null);
+                        }
+                    });
+
+                }
+            }
+        });
+
+
+        /*Map<String, String> paramMap = new HashMap<>();
         paramMap.put(Constant.ACCOUNT_ID, UserDataCache.readAccount(Constant.ACCOUNT_ID));
         OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_FRIEND, paramMap, new HttpCallback() {
             @Override
@@ -86,7 +114,7 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
                     }
                 });
             }
-        });
+        });*/
     }
 
     @Override

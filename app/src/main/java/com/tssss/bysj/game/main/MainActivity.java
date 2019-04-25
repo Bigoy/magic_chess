@@ -7,10 +7,10 @@ import android.widget.ImageButton;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
-import com.tssss.bysj.game.hall.HallActivity;
 import com.tssss.bysj.login.LoginActivity;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.StringUtil;
 
@@ -47,30 +47,29 @@ public class MainActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.ac_main_login_ib:
                 if (AppDataCache.readAccountState().equals(Constant.ACCOUNT_STATE_LOGIN)) {
-                    openActivity(HallActivity.class);
-                    /*// 本地已经登录，那么登录到极光Message
+//                    openActivity(HallActivity.class);
+                    // 本地已经登录，那么登录到极光Message
                     String cacheId = UserDataCache.readAccount(Constant.ACCOUNT_ID);
                     String cachePsd = UserDataCache.readAccount(Constant.ACCOUNT_PASSWORD);
                     if (!StringUtil.isBlank(cacheId) && !StringUtil.isBlank(cachePsd)) {
-                        if (!Constant.DEBUG) {
-                            JMessageClient.login(cacheId, cachePsd, new BasicCallback() {
-                                @Override
-                                public void gotResult(int i, String s) {
-                                    if (i != 0) {
-                                        openActivity(LoginActivity.class);
-                                        AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
-                                        Log.w("MainActivity", "JMessage login failed");
-                                    }
-                                }
-                            });
+                        JMessageClient.login(cacheId, cachePsd, new BasicCallback() {
+                            @Override
+                            public void gotResult(int i, String s) {
+                                if (i == 0) {
 
-                        } else {
-                            openActivity(HallActivity.class);
-                        }
+                                    Logger.log("JIM 登录成功" + s);
+
+                                } else {
+                                    openActivity(LoginActivity.class);
+                                    AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
+                                    Log.w("MainActivity", "JMessage login failed >>> " + s);
+                                }
+                            }
+                        });
                     } else {
                         openActivity(LoginActivity.class);
                         AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
-                    }*/
+                    }
                 } else {
                     openActivity(LoginActivity.class);
                 }

@@ -12,14 +12,19 @@ import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.util.AnimationUtil;
+import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import cn.jpush.im.android.api.ContactManager;
+import cn.jpush.im.android.api.event.ContactNotifyEvent;
+import cn.jpush.im.api.BasicCallback;
 
 @ViewInject(layoutId = R.layout.activity_friend)
 public class FriendsActivity extends BaseActivity implements OnMenuItemClickListener,
@@ -36,6 +41,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     private Handler handler;
     private FriendAdapter adapter;
     private List<Role> friendList;
+    private boolean handlerRequest;
 
     @Override
     protected void findViews() {
@@ -56,6 +62,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     protected void afterBindView() {
         presenter = new FriendPresenter(this);
         handler = new Handler();
+        JMessageManager.registerEvent(this);
     }
 
     @Override
@@ -156,6 +163,12 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JMessageManager.unregisterEvent(this);
+    }
+
+    @Override
     public void showFriend(List<Role> roleList) {
         if (null != roleList && roleList.size() > 0) {
             friendList = roleList;
@@ -172,6 +185,100 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
         }
     }
 
+    public void onEvent(ContactNotifyEvent event) {
+        handlerRequest = true;
+        switch (event.getType()) {
+            case invite_received:
+                String desc = event.getFromUsername();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .desc(desc + " 想加你好友" + "\n" + "10秒考虑时间")
+                        .subDesc(event.getReason())
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                ContactManager.acceptInvitation(event.getFromUsername(), null, new BasicCallback() {
+                                    @Override
+                                    public void gotResult(int i, String s) {
+                                        if (i == 0) {
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast(FriendsActivity.this, "又多了个朋友", ToastUtil.TOAST_DEFAULT);
+//                                                    finish();
+                                                }
+                                            });
+
+                                        } else {
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast(FriendsActivity.this, "出现问题", ToastUtil.TOAST_ERROR);
+                                                    finish();
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                });
+                                handlerRequest = false;
+                            }
+
+                            @Override
+                            public void no() {
+                                handlerRequest = false;
+                            }
+                        });
+                if (!handlerRequest) {
+                    builder.display();
+
+                }
+                break;
+            case invite_accepted:
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
+                        .desc("好友申请通过")
+                        .subDesc(event.getFromUsername())
+                        .operationType(AlertDialog.OPERATION_TYPE_OK)
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                handlerRequest = false;
+                                finish();
+                            }
+
+                            @Override
+                            public void no() {
+                                handlerRequest = false;
+                            }
+                        });
+                if (!handlerRequest) {
+                    builder1.display();
+                }
+
+                break;
+            case invite_declined:
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
+                        .desc("你对TA的好友申请被残忍拒绝")
+                        .subDesc(event.getFromUsername())
+                        .operationType(AlertDialog.OPERATION_TYPE_OK)
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                handlerRequest = false;
+                                finish();
+                            }
+
+                            @Override
+                            public void no() {
+                                handlerRequest = false;
+                            }
+                        });
+                if (!handlerRequest) {
+                    builder2.display();
+                }
+                break;
+
+        }
+    }
     /*private ImageButton mFriendsBackIb, mSeekFriendsIb;
     private ImageView mFriendsNullIv;
     private GTextView mFriendsNumberGtv;

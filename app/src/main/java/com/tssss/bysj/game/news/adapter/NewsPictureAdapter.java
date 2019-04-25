@@ -59,7 +59,7 @@ public class NewsPictureAdapter extends RecyclerView.Adapter<NewsPictureAdapter.
         @Override
         public void fillData(String data) {
             if (!StringUtil.isBlank(data)) {
-                Glide.with(getContent())
+                Glide.with(getContext())
                         .load(data)
                         .into(picture);
 

@@ -61,6 +61,8 @@
         <activity android:name=".game.setting.GameDetailActivity" />
         <activity android:name=".game.setting.AccountStateActivity" />
         <activity android:name=".game.friend.AddFriendActivity" />
+        <activity android:name=".game.im.ChatListActivity" />
+        <activity android:name=".game.friend.FriendRequestActivity" />
     </application>
 
 </manifest>

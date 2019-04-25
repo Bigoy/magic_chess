@@ -1,5 +1,6 @@
 package com.tssss.bysj.login;
 
+import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.mvp.ILifeCircle;
 import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
@@ -47,6 +48,8 @@ public interface IAccountContract {
          */
         void onProcess();
 
+        void onNullRoleInfo(User user);
+
         /**
          * 连接服务器失败
          * 用户当前没有开启网络
@@ -58,7 +61,8 @@ public interface IAccountContract {
         /**
          * 账户操作成功，返回用户信息
          */
-        void onSuccess(User user);
+
+        void onSuccess(User user, Role role);
 
         /**
          * 其它错误
@@ -125,12 +129,17 @@ public interface IAccountContract {
         }
 
         @Override
+        public void onNullRoleInfo(User user) {
+
+        }
+
+        @Override
         public void onConnectionFailure(int code) {
 
         }
 
         @Override
-        public void onSuccess(User user) {
+        public void onSuccess(User user, Role role) {
 
         }
 

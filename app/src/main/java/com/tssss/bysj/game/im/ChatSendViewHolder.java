@@ -3,9 +3,11 @@ package com.tssss.bysj.game.im;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.util.StringUtil;
 
 import androidx.annotation.NonNull;
 
@@ -26,7 +28,13 @@ public class ChatSendViewHolder extends BaseRvViewHolder<ChatMessage> {
     @Override
     public void fillData(ChatMessage data) {
         if (null != data) {
-            sendAvatorIv.setImageResource(data.getUserAvatar());
+            String avatarStr = data.getUserAvatar();
+            if (!StringUtil.isBlank(avatarStr)) {
+                Glide.with(getContext())
+                        .load(avatarStr)
+                        .into(sendAvatorIv);
+
+            }
             sendMessageTv.setText(data.getMessage());
             sendTimeTv.setText(data.getTime());
         }

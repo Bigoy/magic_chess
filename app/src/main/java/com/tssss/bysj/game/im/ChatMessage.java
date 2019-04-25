@@ -6,11 +6,24 @@ public class ChatMessage {
 
     private int messageFrom;
 
-    private int userAvatar;
+    private String userAvatar;
 
     private String message;
 
     private String time;
+
+    public ChatMessage() {
+
+
+    }
+
+    public ChatMessage(int messageFrom, String userAvatar, String message, String time) {
+        this.messageFrom = messageFrom;
+        this.userAvatar = userAvatar;
+        this.message = message;
+        this.time = time;
+
+    }
 
     public int getMessageFrom() {
         return messageFrom;
@@ -20,11 +33,11 @@ public class ChatMessage {
         this.messageFrom = messageFrom;
     }
 
-    public int getUserAvatar() {
+    public String getUserAvatar() {
         return userAvatar;
     }
 
-    public void setUserAvatar(int userAvatar) {
+    public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
     }
 

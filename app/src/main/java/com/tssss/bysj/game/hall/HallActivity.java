@@ -13,7 +13,7 @@ import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.friend.FriendsActivity;
-import com.tssss.bysj.game.im.ChatActivity;
+import com.tssss.bysj.game.im.ChatListActivity;
 import com.tssss.bysj.game.news.veiw.NewsActivity;
 import com.tssss.bysj.game.setting.SettingActivity;
 import com.tssss.bysj.other.Constant;
@@ -61,7 +61,6 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     protected void afterBindView() {
-
     }
 
     @Override
@@ -80,7 +79,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
                 openActivity(FriendsActivity.class);
                 break;
             case R.id.hall_msg:
-                openActivity(ChatActivity.class);
+                openActivity(ChatListActivity.class);
                 break;
             case R.id.hall_game_setting:
                 openActivity(SettingActivity.class);

@@ -52,8 +52,17 @@ public class AnimationUtil {
         va.start();
     }
 
+
     public static void startBackgroundColorAnimator(TextView v, int from,int to) {
         v.setTextColor(Color.WHITE);
+        ValueAnimator va = ObjectAnimator.ofInt(v, "backgroundColor",
+                from, to);
+        va.setDuration(100);
+        va.setEvaluator(new ArgbEvaluator());
+        va.start();
+    }
+
+    public static void startBackgroundColorAnimator(View v, int from,int to) {
         ValueAnimator va = ObjectAnimator.ofInt(v, "backgroundColor",
                 from, to);
         va.setDuration(100);

@@ -3,6 +3,7 @@ package com.tssss.bysj.base;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tssss.bysj.componet.GTextView;
@@ -49,8 +50,14 @@ public abstract class BaseRvViewHolder<T> extends RecyclerView.ViewHolder {
 
     }
 
-    protected Context getContent() {
+    protected LinearLayout findLinearLayout(int id) {
+        return (LinearLayout) findViewById(id);
+
+    }
+
+    protected Context getContext() {
         return itemView.getContext();
 
     }
+
 }

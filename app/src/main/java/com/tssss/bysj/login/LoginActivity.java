@@ -14,7 +14,9 @@ import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
+import com.tssss.bysj.db.SQLiteFactory;
 import com.tssss.bysj.game.NewRoleActivity;
+import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.game.hall.HallActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
@@ -137,29 +139,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 
     @Override
     public void onAccountNotFound(User user) {
-        AnimationUtil.flipView(this, logging_gtv, login_ib);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 告知用户注册
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
-                        .desc("登录状态")
-                        .subDesc("你还没有注册，赶紧注册一个吧！")
-                        .okDesc("注册账户")
-                        .operationListener(new AlertDialog.OnDialogOperationListener() {
-                            @Override
-                            public void ok() {
-                                registerUser(user);
-                            }
 
-                            @Override
-                            public void no() {
-                                showGodByeAlert();
-                            }
-                        });
-                builder.display();
-            }
-        }, 300);
     }
 
     private void showGodByeAlert() {
@@ -205,6 +185,33 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     }
 
     @Override
+    public void onNullRoleInfo(User user) {
+        AnimationUtil.flipView(this, logging_gtv, login_ib);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 告知用户注册
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
+                        .desc("登录状态")
+                        .subDesc("你还没有角色，赶紧新建一个吧！")
+                        .okDesc("创建角色")
+                        .operationListener(new AlertDialog.OnDialogOperationListener() {
+                            @Override
+                            public void ok() {
+                                registerUser(user);
+                            }
+
+                            @Override
+                            public void no() {
+                                showGodByeAlert();
+                            }
+                        });
+                builder.display();
+            }
+        }, 300);
+    }
+
+    @Override
     public void onConnectionFailure(int code) {
         if (Constant.NET_CODE_OK != code) {
             logging_gtv.clearAnimation();
@@ -221,11 +228,14 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     }
 
     @Override
-    public void onSuccess(User user) {
+    public void onSuccess(User user, Role role) {
         loginCount = 0;
         Log.i(getClass().getSimpleName(), "登陆成功");
         Log.i("userId", user.getUserId());
         Log.i("userPwd", user.getUserPassword());
+        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getHistoryTable().createChatHistoryTable();
+        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getChatListTable().createChatListTable();
+        UserDataCache.keepRole(role);
         openActivityAndFinishSelf(HallActivity.class);
     }
 

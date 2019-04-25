@@ -29,8 +29,8 @@ public class PictureNewsHolder extends BaseRvViewHolder<PictureNews> {
         if (null != data) {
             from.setText(data.getFrom());
             time.setText(data.getTime());
-            content.setLayoutManager(new GridLayoutManager(getContent(), 3));
-            content.setAdapter(new NewsPictureAdapter(getContent(), data.getPictures()));
+            content.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            content.setAdapter(new NewsPictureAdapter(getContext(), data.getPictures()));
         }
     }
 

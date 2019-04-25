@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
 import com.tssss.bysj.util.AnimationUtil;
@@ -32,10 +32,12 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     private BaseApplication mApplication;
 
     private Handler handler;
+    private BaseActivity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
 
         ViewInject viewInject = this.getClass().getAnnotation(ViewInject.class);
         if (viewInject != null) {
@@ -119,6 +121,11 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         hideStatusBarAndNavigationBar();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     /**

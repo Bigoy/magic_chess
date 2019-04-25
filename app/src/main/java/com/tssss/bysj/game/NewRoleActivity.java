@@ -8,31 +8,32 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
+import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.game.hall.HallActivity;
-import com.tssss.bysj.http.HttpCallback;
-import com.tssss.bysj.http.HttpUrl;
-import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.ImageUtil;
 import com.tssss.bysj.util.StringUtil;
+import com.tssss.bysj.util.SystemUtil;
 import com.tssss.bysj.util.ToastUtil;
 import com.wildma.pictureselector.PictureSelector;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.UserInfo;
+import cn.jpush.im.android.api.options.RegisterOptionalUserInfo;
 import cn.jpush.im.api.BasicCallback;
+
+import static cn.jpush.im.android.api.model.UserInfo.Gender.male;
 
 @ViewInject(layoutId = R.layout.activity_role)
 public class NewRoleActivity extends BaseActivity {
@@ -125,14 +126,65 @@ public class NewRoleActivity extends BaseActivity {
             userExtraInfo.put(Constant.ACCOUNT_ID, intent.getStringExtra(Constant.ACCOUNT_ID));
             userExtraInfo.put(Constant.ACCOUNT_PASSWORD, intent.getStringExtra(Constant.ACCOUNT_PASSWORD));
         }
-        Logger.log(userExtraInfo, Constant.ROLE_AVATAR);
-        OkHttpProvider.getInstance().requestPost(HttpUrl.URL_REGISTER, userExtraInfo, new HttpCallback() {
+//        Logger.log(userExtraInfo, Constant.ROLE_AVATAR);
+        String userJsonInfo = JSON.toJSONString(userExtraInfo);
+        Logger.log(userJsonInfo);
+        RegisterOptionalUserInfo optionalUserInfo = new RegisterOptionalUserInfo();
+        optionalUserInfo.setExtras(userExtraInfo);
+        JMessageClient.register(userExtraInfo.get(Constant.ACCOUNT_ID),
+                userExtraInfo.get(Constant.ACCOUNT_PASSWORD),
+                optionalUserInfo, new BasicCallback() {
+                    @Override
+                    public void gotResult(int i, String s) {
+                        Logger.log(i + s);
+                        if (i == 898001) {
+                            JMessageClient.updateMyInfo(UserInfo.Field.all, UserInfo.fromJson(userJsonInfo), new BasicCallback() {
+                                @Override
+                                public void gotResult(int i, String s) {
+                                    Logger.log(i + s);
+                                    if (i == 0) {
+                                        Role role = new Role();
+                                        role.setUser(new User(userExtraInfo.get(Constant.ACCOUNT_ID), userExtraInfo.get(Constant.ACCOUNT_PASSWORD)));
+                                        role.setAvatar(userExtraInfo.get(Constant.ROLE_AVATAR));
+                                        role.setAvatar(userExtraInfo.get(Constant.ROLE_NICK_NAME));
+                                        role.setAvatar(userExtraInfo.get(Constant.ROLE_SEX));
+                                        role.setAvatar(userExtraInfo.get(Constant.ROLE_SIGNATURE));
+                                        role.setAvatar(userExtraInfo.get(Constant.ROLE_LEVEL));
+                                        UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast(NewRoleActivity.this, "创建角色成功", ToastUtil.TOAST_DEFAULT);
+                                                UserDataCache.keepRole(role);
+                                                openActivityAndFinishSelf(HallActivity.class);
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
+
+        /*OkHttpProvider.getInstance().requestPost(HttpUrl.URL_REGISTER, userExtraInfo, new HttpCallback() {
             @Override
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String registerResult = jsonObject.getString(Constant.REGISTER_RESULT);
                     if (Constant.REGISTER_RESULT_SUCCESS.equals(registerResult)) {
+                        SQLiteFactory.getInstance().getUserDataBase(NewRoleActivity.this,
+                                userExtraInfo.get(Constant.ACCOUNT_ID)).getHistoryTable().createChatHistoryTable();
+                        JSONObject roleJson = jsonObject.getJSONObject(Constant.JSON_KEY_ROLE);
+                        Role role = new Role();
+                        role.setAvatar(roleJson.getString(Constant.ROLE_AVATAR));
+                        role.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
+                        role.setSex(roleJson.getString(Constant.ROLE_SEX));
+                        role.setSignature(roleJson.getString(Constant.ROLE_SIGNATURE));
+                        role.setLevel(roleJson.getString(Constant.ROLE_LEVEL));
+                        UserDataCache.keepRole(role);
                         JMessageClient.register(userExtraInfo.get(Constant.ACCOUNT_ID),
                                 userExtraInfo.get(Constant.ACCOUNT_PASSWORD), new BasicCallback() {
                                     @Override
@@ -144,6 +196,7 @@ public class NewRoleActivity extends BaseActivity {
                                             user.setUserId(userExtraInfo.get(Constant.ACCOUNT_ID));
                                             user.setUserPassword(userExtraInfo.get(Constant.ACCOUNT_PASSWORD));
                                             UserDataCache.saveAccount(user);
+//                                            JMessageClient.updateMyInfo(UserInfo.Field.extras,UserInfo.f);
                                             openActivityAndFinishSelf(HallActivity.class);
 
                                         } else {
@@ -182,7 +235,7 @@ public class NewRoleActivity extends BaseActivity {
             public void onFailure(String errorMsg) {
 
             }
-        });
+        });*/
     }
 
     private void choiceImage() {

@@ -61,7 +61,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         @Override
         public void fillData(Role data) {
             if (null != data) {
-                Glide.with(getContent())
+                Glide.with(getContext())
                         .load(data.getAvatar())
                         .into(avatar);
                 name.setText(data.getName());

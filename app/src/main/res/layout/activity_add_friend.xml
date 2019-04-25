@@ -51,6 +51,21 @@
             android:paddingBottom="16dp"
             android:visibility="gone" />
 
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/add_friend_recommend_loading"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="加载中"
+            android:textSize="24dp"
+            android:visibility="visible"
+            tools:ignore="HardcodedText,SpUsage" />
+
     </LinearLayout>
 
 </LinearLayout>

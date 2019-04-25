@@ -8,10 +8,14 @@ import android.widget.ImageButton;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.game.friend.adapter.RecommendAdapter;
+import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AccountUtil;
+import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.List;
@@ -25,6 +29,7 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
     private EditText accountIDEt;
     private ImageButton sendAddFriendRequest;
     private RecyclerView recommendRv;
+    private GTextView loading;
 
     private Handler handler;
     private AddFriendPresenter presenter;
@@ -34,7 +39,7 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
         accountIDEt = findViewById(R.id.add_friend_input_id);
         sendAddFriendRequest = findViewById(R.id.add_friend_request);
         recommendRv = findViewById(R.id.add_friend_recommend_roles);
-
+        loading = findViewById(R.id.add_friend_recommend_loading);
     }
 
     @Override
@@ -45,6 +50,9 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
                 String targetAccountID = accountIDEt.getText().toString();
                 if (!AccountUtil.validPhoneNumber(targetAccountID)) {
                     ToastUtil.showToast(this, "请重新输入对方的手机号码", ToastUtil.TOAST_ERROR);
+                } else if (targetAccountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
+                    ToastUtil.showToast(this, "不能添加自己", ToastUtil.TOAST_ERROR);
+
                 } else {
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -83,11 +91,15 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
     @Override
     public void showRecommendRoles(List<Role> recommendRoles) {
         if (null != recommendRoles && recommendRoles.size() > 0) {
+            loading.setVisibility(View.GONE);
             recommendRv.setVisibility(View.VISIBLE);
             recommendRv.setLayoutManager(new LinearLayoutManager(this));
             recommendRv.setAdapter(new RecommendAdapter(this, recommendRoles));
         } else {
             recommendRv.setVisibility(View.GONE);
+            loading.setVisibility(View.GONE);
+            loading.setText("暂无推荐");
+            AnimationUtil.flipView(this, loading);
         }
     }
 

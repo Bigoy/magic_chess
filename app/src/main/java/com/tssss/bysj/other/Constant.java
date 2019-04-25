@@ -7,6 +7,7 @@ public class Constant {
      * 三方
      */
     public static final String JMESSAGE_APP_KEY = "e0ae5aeb8eda030f9e338f64";
+    public static final String JMESSAGE_MESSAGE_KEY = "MAGIC_CHESS";
 
     /**
      * 网络相关
@@ -25,6 +26,7 @@ public class Constant {
     public static final String JSON_KEY_ACCOUNT_ACCESSIBLE = "ACCOUNT_ACCESSIBLE";
     public static final String JSON_KEY_ACCOUNT = "ACCOUNT";
     public static final String JSON_KEY_ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
+    public static final String JSON_KEY_ROLE = "JSON_KEY_ROLE";
 
     // news
     public static final String JSON_KEY_NEWS = "JSON_KEY_NEWS";
@@ -108,6 +110,7 @@ public class Constant {
 
     public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
     public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";
+    public static final String ROLE_LEVEL = "ROLE_LEVEL";
 
     /**
      * 用户偏好设置

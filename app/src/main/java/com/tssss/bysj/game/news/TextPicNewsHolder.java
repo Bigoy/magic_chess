@@ -1,7 +1,6 @@
 package com.tssss.bysj.game.news;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tssss.bysj.R;
@@ -32,8 +31,8 @@ public class TextPicNewsHolder extends BaseRvViewHolder<TextPicNews> {
             contentText.setText(data.getContentText());
             from.setText(data.getFrom());
             time.setText(data.getTime());
-            contentPicture.setLayoutManager(new GridLayoutManager(getContent(), 3));
-            contentPicture.setAdapter(new NewsPictureAdapter(getContent(), data.getContentPicture()));
+            contentPicture.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            contentPicture.setAdapter(new NewsPictureAdapter(getContext(), data.getContentPicture()));
 
         }
     }

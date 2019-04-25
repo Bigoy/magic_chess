@@ -1,12 +1,13 @@
 package com.tssss.bysj.user;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.SharedPreferencesUtil;
+import com.tssss.bysj.util.StringUtil;
 
 /**
  * 用户数据缓存
@@ -52,6 +53,36 @@ public class UserDataCache {
 
     public static String readLastLoginTime() {
         return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_LOGIN_TIME);
+    }
+
+    public static void keepRole(Role role) {
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_AVATAR, role.getAvatar());
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_NICK_NAME, role.getName());
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SEX, role.getSex());
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SIGNATURE, role.getSignature());
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_LEVEL, role.getLevel());
+    }
+
+    public static Role readRole() {
+        String avatart = readString(Constant.ROLE_AVATAR);
+        String name = readString(Constant.ROLE_NICK_NAME);
+        String sex = readString(Constant.ROLE_SEX);
+        String signature = readString(Constant.ROLE_SIGNATURE);
+        String level = readString(Constant.ROLE_LEVEL);
+        Role role = null;
+        if (StringUtil.isBlank(avatart) || StringUtil.isBlank(name) || StringUtil.isBlank(sex) || StringUtil.isBlank(signature) || StringUtil.isBlank(level)) {
+            return role;
+        } else {
+            role = new Role();
+            role.setUser(new User(readAccount(Constant.ACCOUNT_ID), readAccount(Constant.ACCOUNT_PASSWORD)));
+            role.setAvatar(avatart);
+            role.setName(name);
+            role.setSex(sex);
+            role.setSignature(signature);
+            role.setLevel(level);
+
+        }
+        return role;
     }
 
     public static void keepString(String key, String value) {
