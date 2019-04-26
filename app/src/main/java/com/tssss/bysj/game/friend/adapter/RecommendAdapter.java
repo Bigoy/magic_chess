@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 
 import java.util.List;
 
@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder> {
 
     private Context context;
-    private List<Role> roleList;
+    private List<GameRole> gameRoleList;
 
-    public RecommendAdapter(Context context, List<Role> roleList) {
+    public RecommendAdapter(Context context, List<GameRole> gameRoleList) {
         this.context = context;
-        this.roleList = roleList;
+        this.gameRoleList = gameRoleList;
     }
 
     @NonNull
@@ -35,17 +35,17 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
     @Override
     public void onBindViewHolder(@NonNull RecommendViewHolder holder, int position) {
-        if (null != roleList) {
-            holder.fillData(roleList.get(position));
+        if (null != gameRoleList) {
+            holder.fillData(gameRoleList.get(position));
         }
     }
 
     @Override
     public int getItemCount() {
-        return roleList.size();
+        return gameRoleList.size();
     }
 
-    public static class RecommendViewHolder extends BaseRvViewHolder<Role> {
+    public static class RecommendViewHolder extends BaseRvViewHolder<GameRole> {
         private ImageView avatar;
         private GTextView name;
 
@@ -59,7 +59,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         }
 
         @Override
-        public void fillData(Role data) {
+        public void fillData(GameRole data) {
             if (null != data) {
                 Glide.with(getContext())
                         .load(data.getAvatar())

@@ -2,7 +2,7 @@ package com.tssss.bysj.game.friend;
 
 import android.os.Handler;
 
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
 import com.tssss.bysj.http.OkHttpProvider;
@@ -54,14 +54,14 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
             public void onSuccess(String result) {
                 if (!cancel) {
                     if (!StringUtil.isBlank(result)) {
-                        List<Role> roleList = new ArrayList<>();
+                        List<GameRole> gameRoleList = new ArrayList<>();
                         try {
                             JSONObject resultJson = new JSONObject(result);
 
                             JSONArray recommendRoleList = resultJson.getJSONArray(Constant.JSON_KEY_FRIEND_ADD_RECOMMEND);
                             for (int i = 0; i < recommendRoleList.length(); i++) {
                                 JSONObject sigleRoleJson = recommendRoleList.getJSONObject(i);
-                                roleList.add(new Role(
+                                gameRoleList.add(new GameRole(
                                         new User(sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_ID), null),
                                         sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_AVATAR),
                                         sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_NAME),
@@ -74,7 +74,7 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    getView().showRecommendRoles(roleList);
+                                    getView().showRecommendRoles(gameRoleList);
 
                                 }
                             });
@@ -112,6 +112,8 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                 });
             }
         });
+
+
     }
 
     @Override
@@ -134,12 +136,28 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                                     getView().showRequestSucceed();
                                 }
                             }, 1000);
+                        } else if (i == 898002) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getView().showNotUser();
+                                }
+                            });
+                        } else if (i == 805002) {
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getView().showRequestFailed("你们已经是好友了哟");
+                                    Logger.log(i + s);
+                                }
+                            }, 1000);
+
                         } else {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    getView().showRequestFailed();
-                                    Logger.log(s);
+                                    getView().showRequestFailed(s);
+                                    Logger.log(i + s);
                                 }
                             }, 1000);
                         }

@@ -49,6 +49,14 @@ public class SystemUtil {
         return simpleDateFormat.format(date);
     }
 
+    public static String chargeSecondsToNowTime(String seconds) {
+
+        long time = Long.parseLong(seconds)*1000-8*3600*1000;
+        SimpleDateFormat format2 = new SimpleDateFormat("MM月dd日 HH:mm");
+        return format2.format(new Date(time));
+
+    }
+
     public static String getCurrentTime() {
         return getCurrentTime("MM月dd日 HH:mm");
     }

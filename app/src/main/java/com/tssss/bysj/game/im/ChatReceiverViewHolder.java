@@ -27,13 +27,13 @@ public class ChatReceiverViewHolder extends BaseRvViewHolder<ChatMessage> {
 
     @Override
     public void fillData(ChatMessage data) {
-        String avatarStr = data.getUserAvatar();
+        /*String avatarStr = data.getUserAvatar();
         if (!StringUtil.isBlank(avatarStr)) {
             Glide.with(getContext())
                     .load(avatarStr)
                     .into(receiverAvatorIv);
 
-        }
+        }*/
         receiverMessageTv.setText(data.getMessage());
         receiverTimeTv.setText(data.getTime());
     }

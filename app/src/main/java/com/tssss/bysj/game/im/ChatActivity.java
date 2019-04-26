@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
@@ -14,20 +15,26 @@ import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.SystemUtil;
+import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.event.MessageEvent;
+import cn.jpush.im.android.api.event.NotificationClickEvent;
+import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.options.MessageSendingOptions;
+import cn.jpush.im.api.BasicCallback;
 
 @ViewInject(layoutId = R.layout.activity_chat)
 public class ChatActivity extends BaseActivity implements OnMenuItemClickListener,
@@ -45,6 +52,8 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
     private String targetRoleName;
     private ChatPresenter presenter;
     private boolean historyLoaded;
+    private Conversation conversation;
+    private boolean succeed;
 
     @Override
     protected void findViews() {
@@ -62,6 +71,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     protected void afterBindView() {
+        JMessageClient.registerEventReceiver(this);
         chatMessageList = new ArrayList<>();
         initAdapter();
         chatRv.setLayoutManager(new LinearLayoutManager(this));
@@ -74,7 +84,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             targetName.setText(targetRoleName);
             presenter.loadChatHistory(this.targetAccountID);
         }
-        JMessageClient.registerEventReceiver(this);
+
     }
 
     @Override
@@ -118,6 +128,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
     }
 
     private void sendMsg() {
+        succeed = false;
         String msg = chatMsgEt.getText().toString();
         if (StringUtil.isBlank(msg)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -126,6 +137,44 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                     .operationType(AlertDialog.OPERATION_TYPE_OK);
             builder.display();
         } else {
+
+            //通过username和appkey拿到会话对象，通过指定appkey可以创建一个和跨应用用户的会话对象，从而实现跨应用的消息发送
+            Conversation mConversation = JMessageClient.getSingleConversation(targetAccountID, null);
+            if (mConversation == null) {
+                mConversation = Conversation.createSingleConversation(targetAccountID, null);
+            }
+
+            //构造message content对象
+            TextContent textContent = new TextContent(chatMsgEt.getText().toString());
+            textContent.setStringExtra("msg_time", SystemUtil.getCurrentTime());
+
+            //创建message实体，设置消息发送回调。
+            final Message message = mConversation.createSendMessage(textContent, targetAccountID);
+            message.setOnSendCompleteCallback(new BasicCallback() {
+                @Override
+                public void gotResult(int i, String s) {
+                    if (i != 0) {
+                        ToastUtil.showToast(ChatActivity.this, "发送失败", ToastUtil.TOAST_ERROR);
+
+                    } else {
+                        succeed = true;
+                        Logger.log("send msg = " + succeed);
+                        updateMsg(msg);
+                    }
+                }
+            });
+
+            MessageSendingOptions options = new MessageSendingOptions();
+            options.setShowNotification(true);
+            options.setRetainOffline(true);
+            JMessageClient.sendMessage(message, options);
+
+        }
+
+    }
+
+    private void updateMsg(String msg) {
+        if (succeed) {
             loadingTv.setVisibility(View.GONE);
             chatRv.setVisibility(View.VISIBLE);
             if (null == chatRv.getAdapter()) {
@@ -133,7 +182,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                 chatRv.setAdapter(adapter);
             }
             ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setMessageFrom(ChatMessage.MESSAGE_SEND);
+            chatMessage.setMessageFrom(ChatMessage.MESSAGE_ME);
             chatMessage.setUserAvatar("");
             chatMessage.setTime(SystemUtil.getCurrentTime());
             chatMessage.setMessage(msg);
@@ -144,12 +193,11 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             chatMessageList.add(chatMessage);
             loadingTv.setVisibility(View.GONE);
             chatRv.setVisibility(View.VISIBLE);
-            adapter.notifyItemInserted(adapter.getItemCount());
+//            adapter.notifyItemInserted(adapter.getItemCount());
             adapter.notifyDataSetChanged();
             chatRv.smoothScrollToPosition(adapter.getItemCount());
             chatMsgEt.setText("");
         }
-
     }
 
     private void initAdapter() {
@@ -182,11 +230,12 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                                         adapter.notifyItemMoved(0, adapter.getItemCount());
                                         menu.dismiss();
                                         chatRv.setVisibility(View.GONE);
+                                        loadingTv.setText("记录为空");
                                         AnimationUtil.flipView(ChatActivity.this, loadingTv);
                                         if (null != chatMessageList) {
                                             chatMessageList.clear();
-
                                         }
+                                        JMessageClient.deleteSingleConversation(targetAccountID);
                                     }
 
                                     @Override
@@ -217,24 +266,28 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
         ChatMessage newMessage = new ChatMessage();
         ContentType contentType = message.getContentType();
         if (contentType == ContentType.text) {
-            newMessage.setMessageFrom(ChatMessage.MESSAGE_RECEIVER);
-            newMessage.setTime(String.valueOf(message.getCreateTime()));
-            newMessage.setMessage(message.getFromType() + message.getId());
+            newMessage.setMessageFrom(ChatMessage.MESSAGE_NOT_ME);
+            String msgJson = message.getContent().toJson();
+            Map<String, String> msgMap = (Map<String, String>) JSON.parse(msgJson);
+//            Map<String, String> timeMap = (Map<String, String>) JSON.parse(msgMap.get("extras"));
+            newMessage.setMessage(msgMap.get("text"));
+            newMessage.setTime(message.getContent().getStringExtra("msg_time"));
+            if (chatRv.getAdapter() == null) {
+                chatRv.setLayoutManager(new LinearLayoutManager(this));
+                chatRv.setAdapter(adapter);
+            }
+            if (null == chatMessageList) {
+                chatMessageList = new ArrayList<>();
+            }
+            chatMessageList.add(newMessage);
+            loadingTv.setVisibility(View.GONE);
+            chatRv.setVisibility(View.VISIBLE);
+            Logger.log("收到新的消息：" + newMessage.getMessage());
+//        adapter.notifyItemChanged(adapter.getItemCount());
+            adapter.notifyDataSetChanged();
+            chatRv.smoothScrollToPosition(chatMessageList.size());
         }
-        if (chatRv.getAdapter() == null) {
-            chatRv.setLayoutManager(new LinearLayoutManager(this));
-            chatRv.setAdapter(adapter);
-        }
-        if (null == chatMessageList) {
-            chatMessageList = new ArrayList<>();
-        }
-        chatMessageList.add(newMessage);
-        loadingTv.setVisibility(View.GONE);
-        chatRv.setVisibility(View.VISIBLE);
-        Logger.log("收到新的消息：" + newMessage.getMessage());
-        adapter.notifyItemChanged(adapter.getItemCount());
-        adapter.notifyDataSetChanged();
-        chatRv.smoothScrollToPosition(adapter.getItemCount());
+
     }
 
     @Override
@@ -252,7 +305,19 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                 loadingTv.setVisibility(View.GONE);
                 chatRv.setVisibility(View.VISIBLE);
             }
+            int startP = chatMessageList.size();
             this.chatMessageList.addAll(messageList);
+            if (null == chatRv.getAdapter()) {
+                chatRv.setLayoutManager(new LinearLayoutManager(this));
+                chatRv.setAdapter(new ChatRvAdapter(this, chatMessageList));
+            }
+            adapter.notifyItemRangeInserted(startP, chatMessageList.size());
+            adapter.notifyDataSetChanged();
+            chatRv.smoothScrollToPosition(chatMessageList.size());
         }
+    }
+
+    public void onEvent(NotificationClickEvent event) {
+
     }
 }

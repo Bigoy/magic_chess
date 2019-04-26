@@ -16,8 +16,9 @@ import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.db.SQLiteFactory;
 import com.tssss.bysj.game.NewRoleActivity;
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.game.hall.HallActivity;
+import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
@@ -139,7 +140,10 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 
     @Override
     public void onAccountNotFound(User user) {
-
+        /*Intent intent = new Intent(this, NewRoleActivity.class);
+        intent.putExtra(Constant.ACCOUNT_ID, user.getUserId());
+        intent.putExtra(Constant.ACCOUNT_PASSWORD, user.getUserPassword());
+        startActivity(intent);*/
     }
 
     private void showGodByeAlert() {
@@ -157,7 +161,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         }, 1000);
     }
 
-    private void registerUser(User user) {
+    private void createMyRole(User user) {
         Intent registerIntent = new Intent(this, NewRoleActivity.class);
         registerIntent.putExtra(Constant.ACCOUNT_ID, user.getUserId());
         registerIntent.putExtra(Constant.ACCOUNT_PASSWORD, user.getUserPassword());
@@ -178,9 +182,11 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
         if (loginCount == 0) {
             lockViews();
             // 保存用户当前输入的账户信息，此时无需验证账户与密码的一致性
-            UserDataCache.saveAccount(mLoginUser);
+//            UserDataCache.keepString("history_account", account_et.getText().toString());
+//            UserDataCache.keepString("history_password", password_et.getText().toString());
             AnimationUtil.flipView(this, login_ib, logging_gtv);
-            mLoginPresenter.confirmAccountOperation();
+            UserDataCache.saveAccount(mLoginUser);
+            mLoginPresenter.confirmAccountOperation(account_et.getText().toString(), password_et.getText().toString());
         }
     }
 
@@ -198,7 +204,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
                         .operationListener(new AlertDialog.OnDialogOperationListener() {
                             @Override
                             public void ok() {
-                                registerUser(user);
+                                createMyRole(user);
                             }
 
                             @Override
@@ -228,14 +234,15 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     }
 
     @Override
-    public void onSuccess(User user, Role role) {
+    public void onSuccess(User user, GameRole gameRole) {
         loginCount = 0;
-        Log.i(getClass().getSimpleName(), "登陆成功");
-        Log.i("userId", user.getUserId());
-        Log.i("userPwd", user.getUserPassword());
-        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getHistoryTable().createChatHistoryTable();
-        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getChatListTable().createChatListTable();
-        UserDataCache.keepRole(role);
+//        Log.i(getClass().getSimpleName(), "登陆成功");
+//        Log.i("userId", user.getUserId());
+//        Log.i("userPwd", user.getUserPassword());
+//        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getHistoryTable().createChatHistoryTable();
+//        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getChatListTable().createChatListTable();
+//        UserDataCache.keepRole(gameRole);
+        AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
         openActivityAndFinishSelf(HallActivity.class);
     }
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginBottom="8dp"
     android:layout_height="wrap_content">
 
     <com.tssss.bysj.componet.GTextView
@@ -27,6 +28,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/head_img_test"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_chat_send_time_gtv"
         tools:ignore="ContentDescription" />

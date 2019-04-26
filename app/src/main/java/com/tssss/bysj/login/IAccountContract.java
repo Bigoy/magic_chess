@@ -1,6 +1,6 @@
 package com.tssss.bysj.login;
 
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.mvp.ILifeCircle;
 import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
@@ -62,7 +62,7 @@ public interface IAccountContract {
          * 账户操作成功，返回用户信息
          */
 
-        void onSuccess(User user, Role role);
+        void onSuccess(User user, GameRole gameRole);
 
         /**
          * 其它错误
@@ -81,7 +81,7 @@ public interface IAccountContract {
          * 登录
          * 注册
          */
-        void confirmAccountOperation();
+        void confirmAccountOperation(String account, String password);
 
         /**
          * 返回用户基本信息
@@ -139,7 +139,7 @@ public interface IAccountContract {
         }
 
         @Override
-        public void onSuccess(User user, Role role) {
+        public void onSuccess(User user, GameRole gameRole) {
 
         }
 

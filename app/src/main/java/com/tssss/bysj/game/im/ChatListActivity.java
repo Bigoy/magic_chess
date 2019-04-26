@@ -16,6 +16,8 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.event.ConversationRefreshEvent;
 
 @ViewInject(layoutId = R.layout.activity_chat_list)
 public class ChatListActivity extends BaseActivity implements IChatListContract.IView,
@@ -41,6 +43,7 @@ public class ChatListActivity extends BaseActivity implements IChatListContract.
 
     @Override
     protected void afterBindView() {
+        JMessageClient.registerEventReceiver(this);
         presenter = new ChatListPresenter(this, this);
         presenter.loadChatList(UserDataCache.readAccount(Constant.ACCOUNT_ID));
     }
@@ -68,6 +71,13 @@ public class ChatListActivity extends BaseActivity implements IChatListContract.
         }
     }
 
+    public void onEvent(ConversationRefreshEvent event) {
+        Logger.log(event.getReason().toString());
+       /* Conversation newConversition = new Conversation();
+        newConversition.setName(JMessageClient.getUserInfo(event.getConversation().););
+        chatList.add(*/
+    }
+
     @Override
     public void showLoadError(String errorMsg) {
         loading.setVisibility(View.GONE);
@@ -77,14 +87,24 @@ public class ChatListActivity extends BaseActivity implements IChatListContract.
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JMessageClient.unRegisterEventReceiver(this);
+    }
+
+    @Override
     public void onChatListItemClick(View v, int position) {
         if (v.getId() == R.id.item_chat_list_container) {
             if (null != this.chatList) {
-                Intent chatIntent = new Intent(this, ChatActivity.class);
-                try {
+                Intent chatIntent = new Intent(ChatListActivity.this, ChatActivity.class);
+                chatIntent.putExtra(Constant.ACCOUNT_ID, this.chatList.get(position).getId());
+                chatIntent.putExtra(Constant.ROLE_NICK_NAME, this.chatList.get(position).getName());
+                startActivity(chatIntent);
+
+                /*try {
                     Conversation conversation = this.chatList.get(position);
-                    String userId = conversation.getRole().getUser().getUserId();
-                    String roleName = conversation.getRole().getName();
+                    String userId = conversation.getGameRole().getUser().getUserId();
+                    String roleName = conversation.getGameRole().getName();
                     if (Constant.DEBUG) {
                         userId = "DEBUG";
                         roleName = "DEBUG";
@@ -96,7 +116,7 @@ public class ChatListActivity extends BaseActivity implements IChatListContract.
                 } catch (Exception e) {
                     Logger.log("会话列表数据错误");
 
-                }
+                }*/
             }
         }
     }

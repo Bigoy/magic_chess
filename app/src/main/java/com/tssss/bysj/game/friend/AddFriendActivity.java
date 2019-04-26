@@ -10,7 +10,7 @@ import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.game.friend.adapter.RecommendAdapter;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.UserDataCache;
@@ -89,12 +89,12 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
     }
 
     @Override
-    public void showRecommendRoles(List<Role> recommendRoles) {
-        if (null != recommendRoles && recommendRoles.size() > 0) {
+    public void showRecommendRoles(List<GameRole> recommendGameRoles) {
+        if (null != recommendGameRoles && recommendGameRoles.size() > 0) {
             loading.setVisibility(View.GONE);
             recommendRv.setVisibility(View.VISIBLE);
             recommendRv.setLayoutManager(new LinearLayoutManager(this));
-            recommendRv.setAdapter(new RecommendAdapter(this, recommendRoles));
+            recommendRv.setAdapter(new RecommendAdapter(this, recommendGameRoles));
         } else {
             recommendRv.setVisibility(View.GONE);
             loading.setVisibility(View.GONE);
@@ -118,9 +118,15 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
     }
 
     @Override
-    public void showRequestFailed() {
+    public void showRequestFailed(String s) {
         finish();
-        ToastUtil.showToast(this, "发送失败，请稍后再试", ToastUtil.TOAST_ERROR);
+        ToastUtil.showToast(this, s, ToastUtil.TOAST_ERROR);
+    }
+
+    @Override
+    public void showNotUser() {
+        ToastUtil.showToast(this, "你输入的用户不存在", ToastUtil.TOAST_ERROR);
+        finish();
     }
 
 

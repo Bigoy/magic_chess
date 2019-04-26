@@ -110,7 +110,18 @@ public class Constant {
 
     public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
     public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";
+
+    //   实习生、正式棋手、老司机、
+    //    神奇大佬、大师、顶级棋手
     public static final String ROLE_LEVEL = "ROLE_LEVEL";
+    public static final String ROLE_SX = "实习生";
+    public static final String ROLE_ZSQS = "正式棋手";
+    public static final String ROLE_LSJ = "老司机";
+    public static final String ROLE_SQDL = "神奇大佬";
+    public static final String ROLE_DS = "大师";
+    public static final String ROLE_DJQS = "顶级棋手";
+
+    public static final String ROLE_EXP = "ROLE_EXP";
 
     /**
      * 用户偏好设置
@@ -119,4 +130,5 @@ public class Constant {
     public static final String SP_FUNCTION_NEWS_STATE_CLOSED = "SP_FUNCTION_NEWS_STATE_CLOSED";
     public static final String SP_FUNCTION_NEWS_STATE_USING = "SP_FUNCTION_NEWS_STATE_USING";
 
+    public static final String JMESSAGE_KEY = "J_MESSAGE_KEY";
 }

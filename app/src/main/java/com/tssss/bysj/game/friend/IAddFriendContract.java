@@ -1,6 +1,6 @@
 package com.tssss.bysj.game.friend;
 
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.mvp.ILifeCircle;
 import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
@@ -9,13 +9,15 @@ import java.util.List;
 
 public interface IAddFriendContract {
     interface IView extends IMvpView {
-        void showRecommendRoles(List<Role> recommendRoles);
+        void showRecommendRoles(List<GameRole> recommendGameRoles);
 
         void showRequesting();
 
         void showRequestSucceed();
 
-        void showRequestFailed();
+        void showRequestFailed(String s);
+
+        void showNotUser();
     }
 
     interface IPresenter extends ILifeCircle{
@@ -26,7 +28,7 @@ public interface IAddFriendContract {
 
     IView emptyView = new IView() {
         @Override
-        public void showRecommendRoles(List<Role> recommendRoles) {
+        public void showRecommendRoles(List<GameRole> recommendGameRoles) {
 
         }
 
@@ -41,7 +43,12 @@ public interface IAddFriendContract {
         }
 
         @Override
-        public void showRequestFailed() {
+        public void showRequestFailed(String s) {
+
+        }
+
+        @Override
+        public void showNotUser() {
 
         }
 

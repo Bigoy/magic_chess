@@ -94,7 +94,7 @@ public class AccountActivity extends BaseActivity {
                         .operationListener(new AlertDialog.OnDialogOperationListener() {
                             @Override
                             public void ok() {
-                                UserDataCache.clearUserCache();
+//                                UserDataCache.clearUserCache();
                                 JMessageClient.logout();
                                 AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
                                 openActivity(MainActivity.class);

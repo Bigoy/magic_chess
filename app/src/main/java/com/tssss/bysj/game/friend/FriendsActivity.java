@@ -1,5 +1,6 @@
 package com.tssss.bysj.game.friend;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,10 +12,14 @@ import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.UserInfoActivity;
+import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.im.ChatActivity;
 import com.tssss.bysj.game.im.JMessageManager;
+import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.util.AnimationUtil;
+import com.tssss.bysj.util.JMessageUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -23,12 +28,15 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.ContactManager;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.event.ContactNotifyEvent;
+import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.api.BasicCallback;
 
 @ViewInject(layoutId = R.layout.activity_friend)
 public class FriendsActivity extends BaseActivity implements OnMenuItemClickListener,
-        IFriendContract.IView {
+        IFriendContract.IView, OnFriendItemClickListener {
 
     //    private GTextView all;
 //    private GTextView group;
@@ -40,8 +48,9 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     private FriendPresenter presenter;
     private Handler handler;
     private FriendAdapter adapter;
-    private List<Role> friendList;
+    private List<GameRole> friendList;
     private boolean handlerRequest;
+    private Menu itemMenu;
 
     @Override
     protected void findViews() {
@@ -94,7 +103,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
         super.clickTopBarRight();
         List<String> items = new ArrayList<>();
         items.add("添加好友");
-        items.add("好友统计");
+//        items.add("好友统计");
         menu = new Menu.Builder(this, this)
                 .items(items)
                 .build();
@@ -123,7 +132,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
             case 0:
                 openActivityDelay(AddFriendActivity.class, 120);
                 break;
-            case 1:
+            /*case 1:
                 menu.dismiss();
                 int friendCount = 0;
                 if (null != friendList && friendList.size() > 0) {
@@ -131,7 +140,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                 }
                 AlertDialog dialog = new AlertDialog(this);
                 dialog.desc("好友统计");
-                dialog.subDesc("你总共有好友：" + friendCount);
+                dialog.subDesc("你总共有好友：" + 0);
                 dialog.noDesc("知道了");
                 dialog.operationType(AlertDialog.OPERATION_TYPE_NO);
                 dialog.operationListener(new AlertDialog.OnDialogOperationListener() {
@@ -145,7 +154,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                     }
                 });
                 dialog.display();
-                break;
+                break;*/
             default:
         }
     }
@@ -169,14 +178,14 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     }
 
     @Override
-    public void showFriend(List<Role> roleList) {
-        if (null != roleList && roleList.size() > 0) {
-            friendList = roleList;
+    public void showFriend(List<GameRole> gameRoleList) {
+        if (null != gameRoleList && gameRoleList.size() > 0) {
+            friendList = gameRoleList;
             loading.setVisibility(View.GONE);
             nullFriends.setVisibility(View.GONE);
             friendRv.setVisibility(View.VISIBLE);
             friendRv.setLayoutManager(new LinearLayoutManager(this));
-            adapter = new FriendAdapter(this, friendList);
+            adapter = new FriendAdapter(this, friendList, this);
             friendRv.setAdapter(adapter);
 
         } else {
@@ -205,6 +214,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                                                 public void run() {
                                                     ToastUtil.showToast(FriendsActivity.this, "又多了个朋友", ToastUtil.TOAST_DEFAULT);
 //                                                    finish();
+                                                    newFriend(event);
                                                 }
                                             });
 
@@ -228,21 +238,18 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                                 handlerRequest = false;
                             }
                         });
-                if (!handlerRequest) {
-                    builder.display();
-
-                }
+                builder.display();
                 break;
             case invite_accepted:
+
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
-                        .desc("好友申请通过")
-                        .subDesc(event.getFromUsername())
+                        .desc("你与 " + event.getFromUsername() + " 好友申请通过")
                         .operationType(AlertDialog.OPERATION_TYPE_OK)
                         .operationListener(new AlertDialog.OnDialogOperationListener() {
                             @Override
                             public void ok() {
                                 handlerRequest = false;
-                                finish();
+                                newFriend(event);
                             }
 
                             @Override
@@ -250,9 +257,8 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                                 handlerRequest = false;
                             }
                         });
-                if (!handlerRequest) {
-                    builder1.display();
-                }
+                builder1.display();
+
 
                 break;
             case invite_declined:
@@ -272,9 +278,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                                 handlerRequest = false;
                             }
                         });
-                if (!handlerRequest) {
-                    builder2.display();
-                }
+                builder2.display();
                 break;
 
         }
@@ -334,4 +338,61 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     public void showFriends(List<GameRole> friends) {
         mFriendsNumberGtv.setText("当前好友数：" + friends.size());
     }*/
+
+
+    private void newFriend(ContactNotifyEvent event) {
+        final UserInfo[] userInfoA = {null};
+        JMessageClient.getUserInfo(event.getFromUsername(),
+                new GetUserInfoCallback() {
+                    @Override
+                    public void gotResult(int i, String s, UserInfo userInfo) {
+                        if (i == 0) {
+                            userInfoA[0] = userInfo;
+                        }
+                    }
+                });
+        friendList.add(JMessageUtil.invertUserInfoToGameRole(userInfoA[0]));
+        adapter.notifyItemInserted(0);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v, int position) {
+        if (null == friendList || friendList.size() <= 0) {
+            return;
+        }
+        GameRole gameRole = friendList.get(position);
+        if (null == itemMenu) {
+            itemMenu = new Menu(this, new OnMenuItemClickListener() {
+                @Override
+                public void onMenuItemClick(View v, int position) {
+                    switch (position) {
+                        case 0:
+                            Intent intent = new Intent(FriendsActivity.this, UserInfoActivity.class);
+                            intent.putExtra(Constant.ROLE_AVATAR, gameRole.getAvatar());
+                            intent.putExtra(Constant.ROLE_NICK_NAME, gameRole.getName());
+                            intent.putExtra(Constant.ROLE_SEX, gameRole.getSex());
+                            intent.putExtra(Constant.ROLE_SIGNATURE, gameRole.getSignature());
+                            intent.putExtra(Constant.ROLE_LEVEL, gameRole.getLevel());
+                            startActivity(intent);
+                            itemMenu.dismiss();
+                            break;
+                        case 1:
+                            Intent chatIntent = new Intent(FriendsActivity.this, ChatActivity.class);
+                            chatIntent.putExtra(Constant.ACCOUNT_ID, gameRole.getUser().getUserId());
+                            chatIntent.putExtra(Constant.ROLE_NICK_NAME, gameRole.getName());
+                            startActivity(chatIntent);
+                            itemMenu.dismiss();
+                            break;
+                    }
+                }
+            });
+            List<String> items = new ArrayList<>();
+            items.add("查看好友信息");
+            items.add("发起聊天");
+            items.add("发起游戏邀请");
+            itemMenu.setMenuItems(items);
+            itemMenu.display();
+        }
+    }
 }

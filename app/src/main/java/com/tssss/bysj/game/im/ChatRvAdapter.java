@@ -26,10 +26,10 @@ public class ChatRvAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView;
-        if (viewType == ChatMessage.MESSAGE_SEND) {
+        if (viewType == ChatMessage.MESSAGE_ME) {
             itemView = LayoutInflater.from(context).inflate(R.layout.item_chat_send, parent, false);
             return new ChatSendViewHolder(itemView);
-        } else if (viewType == ChatMessage.MESSAGE_RECEIVER) {
+        } else if (viewType == ChatMessage.MESSAGE_NOT_ME) {
             itemView = LayoutInflater.from(context).inflate(R.layout.item_chat_receive, parent, false);
             return new ChatReceiverViewHolder(itemView);
         }

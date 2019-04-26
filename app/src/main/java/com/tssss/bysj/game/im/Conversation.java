@@ -1,36 +1,45 @@
 package com.tssss.bysj.game.im;
 
-import com.tssss.bysj.game.core.Role;
+import java.io.File;
 
 public class Conversation {
-    private Role role;
+    private String lastMessage;
 
-    private String lastChatHistory;
+    private File avatar;
 
-    public Conversation() {
+    private String name;
 
+    private String id;
+
+    public String getLastMessage() {
+        return lastMessage;
     }
 
-
-
-    public Conversation(Role role, String lastChatHistory) {
-        this.role = role;
-        this.lastChatHistory = lastChatHistory;
-
-    }
-    public Role getRole() {
-        return role;
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public File getAvatar() {
+        return avatar;
     }
 
-    public String getLastChatHistory() {
-        return lastChatHistory;
+    public void setAvatar(File avatar) {
+        this.avatar = avatar;
     }
 
-    public void setLastChatHistory(String lastChatHistory) {
-        this.lastChatHistory = lastChatHistory;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

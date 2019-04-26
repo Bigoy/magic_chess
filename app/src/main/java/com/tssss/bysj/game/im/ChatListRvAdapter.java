@@ -12,9 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
-import com.tssss.bysj.game.core.Role;
 import com.tssss.bysj.util.AnimationUtil;
-import com.tssss.bysj.util.StringUtil;
 
 import java.util.List;
 
@@ -74,22 +72,11 @@ public class ChatListRvAdapter extends RecyclerView.Adapter<ChatListRvAdapter.Ch
         @Override
         public void fillData(Conversation data) {
             if (null != data) {
-                Role role = data.getRole();
-                if (null != role) {
-                    String avatarStr = role.getAvatar();
-                    name.setText(role.getName());
-                    lastHistory.setText(data.getLastChatHistory());
-                    if (StringUtil.isBlank(avatarStr)) {
-                        Glide.with(getContext())
-                                .load(R.drawable.head_img_test)
-                                .into(avatar);
-                    } else {
-                        Glide.with(getContext())
-                                .load(avatarStr)
-                                .into(avatar);
-
-                    }
-                }
+                Glide.with(getContext())
+                        .load(data.getAvatar())
+                        .into(avatar);
+                name.setText(data.getName());
+                lastHistory.setText(data.getLastMessage());
             }
         }
 

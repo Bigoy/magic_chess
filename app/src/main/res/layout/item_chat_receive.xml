@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginBottom="8dp"
     android:layout_height="wrap_content">
 
     <com.tssss.bysj.componet.GTextView
@@ -26,8 +27,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
+
         android:layout_marginTop="@dimen/padding_32dp"
         android:src="@drawable/head_img_test"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_chat_receive_time_gtv"
         tools:ignore="ContentDescription" />

@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tssss.bysj.game.core.Role;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.game.im.Conversation;
 
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class ChatListTable {
                 String name = cursor.getString(2);
                 String lastMessage = cursor.getString(3);
 
-                conversationList.add(new Conversation(new Role(accountID, avatar, name, null, null), lastMessage));
+//                conversationList.add(new Conversation(new GameRole(accountID, avatar, name, null, null), lastMessage));
 
             }
             cursor.close();

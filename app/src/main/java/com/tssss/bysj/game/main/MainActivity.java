@@ -1,6 +1,5 @@
 package com.tssss.bysj.game.main;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -8,14 +7,6 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.login.LoginActivity;
-import com.tssss.bysj.other.AppDataCache;
-import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.UserDataCache;
-import com.tssss.bysj.util.StringUtil;
-
-import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.api.BasicCallback;
 
 @ViewInject(layoutId = R.layout.activity_main)
 public class MainActivity extends BaseActivity {
@@ -46,7 +37,8 @@ public class MainActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ac_main_login_ib:
-                if (AppDataCache.readAccountState().equals(Constant.ACCOUNT_STATE_LOGIN)) {
+                openActivity(LoginActivity.class);
+                /*if (AppDataCache.readAccountState().equals(Constant.ACCOUNT_STATE_LOGIN)) {
 //                    openActivity(HallActivity.class);
                     // 本地已经登录，那么登录到极光Message
                     String cacheId = UserDataCache.readAccount(Constant.ACCOUNT_ID);
@@ -56,8 +48,8 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void gotResult(int i, String s) {
                                 if (i == 0) {
-
                                     Logger.log("JIM 登录成功" + s);
+
 
                                 } else {
                                     openActivity(LoginActivity.class);
@@ -73,7 +65,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     openActivity(LoginActivity.class);
                 }
-                break;
+                break;*/
         }
     }
 

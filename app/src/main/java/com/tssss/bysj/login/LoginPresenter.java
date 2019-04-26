@@ -3,7 +3,8 @@ package com.tssss.bysj.login;
 import android.content.Context;
 import android.os.Handler;
 
-import com.tssss.bysj.game.core.Role;
+import com.alibaba.fastjson.JSON;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
@@ -11,16 +12,16 @@ import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AccountUtil;
-import com.tssss.bysj.util.SystemUtil;
+import com.tssss.bysj.util.StringUtil;
 
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.RequestCallback;
 import cn.jpush.im.android.api.model.DeviceInfo;
 import cn.jpush.im.android.api.model.UserInfo;
-import cn.jpush.im.android.api.options.RegisterOptionalUserInfo;
 import cn.jpush.im.api.BasicCallback;
 
 public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
@@ -64,17 +65,59 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
      * 向服务器发起登录请求
      */
     @Override
-    public void confirmAccountOperation() {
-        if (null != user) {
-            JMessageClient.login(user.getUserId(), user.getUserPassword(), new RequestCallback<List<DeviceInfo>>() {
+    public void confirmAccountOperation(String account, String password) {
+        int aa = 0;
+        if (aa == 0) {
+            JMessageClient.login(account, password, new RequestCallback<List<DeviceInfo>>() {
                 @Override
                 public void gotResult(int i, String s, List<DeviceInfo> deviceInfos) {
                     Logger.log(i + "  " + s);
 
                     if (i == 0) {
+                        AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
                         UserInfo userInfo = JMessageClient.getMyInfo();
-                        if (userInfo.getExtras().size() <= 0) {
-                            if (null == UserDataCache.readRole()) {
+                        if (null != userInfo) {
+                            String roleInfo = userInfo.getSignature();
+                            if (!StringUtil.isBlank(roleInfo)) {
+                                Map<String, String> roleMap = (Map<String, String>) JSON.parse(roleInfo);
+
+                                GameRole myRole = new GameRole();
+                                myRole.setUser(user);
+                                myRole.setAvatar(roleMap.get(Constant.ROLE_AVATAR));
+                                myRole.setName(roleMap.get(Constant.ROLE_NICK_NAME));
+                                myRole.setSex(roleMap.get(Constant.ROLE_SEX));
+                                myRole.setSignature(roleMap.get(Constant.ROLE_SIGNATURE));
+                                myRole.setLevel(roleMap.get(Constant.ROLE_LEVEL));
+                                try {
+                                    myRole.setRoleExperience(Integer.valueOf(roleMap.get(Constant.ROLE_EXP)));
+                                } catch (Exception e) {
+                                    myRole.setRoleExperience(0);
+                                }
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getView().onSuccess(user, myRole);
+                                    }
+                                });
+                            } else {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getView().onNullRoleInfo(user);
+                                    }
+                                });
+                            }
+                        } else {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getView().onNullRoleInfo(user);
+                                }
+                            });
+                        }
+                        /*if (userInfo.getExtras().size() <= 0 || StringUtil.isBlank(extrasInfo)) {
+                            GameRole role = AppDataCache.readRole();
+                            if (null == role) {
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -85,39 +128,51 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        getView().onSuccess(user, UserDataCache.readRole());
+                                        getView().onSuccess(user, AppDataCache.readRole());
                                     }
                                 });
+
                             }
 
                         } else {
 
-                            Role role = new Role();
-                            role.setUser(user);
-                            role.setAvatar(userInfo.getExtra(Constant.ROLE_AVATAR));
-                            role.setAvatar(userInfo.getExtra(Constant.ROLE_NICK_NAME));
-                            role.setAvatar(userInfo.getExtra(Constant.ROLE_SEX));
-                            role.setAvatar(userInfo.getExtra(Constant.ROLE_SIGNATURE));
-                            role.setAvatar(userInfo.getExtra(Constant.ROLE_LEVEL));
+                            GameRole gameRole = new GameRole();
+                            gameRole.setUser(user);
+                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_AVATAR));
+                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_NICK_NAME));
+                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SEX));
+                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SIGNATURE));
+                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_LEVEL));
                             UserDataCache.saveAccount(user);
                             UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
                             AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    getView().onSuccess(user, role);
+                                    getView().onSuccess(user, gameRole);
                                 }
                             });
 
-                        }
-                    } else if (i == 871105 || i == 898002) {
+                        }*/
+                    } else if (i == 871105 || i == 898002 || i == 801003) {
                         // 用户不存在
                         JMessageClient.register(user.getUserId(), user.getUserPassword(), new BasicCallback() {
                             @Override
                             public void gotResult(int i, String s) {
                                 Logger.log(i + s);
                                 if (i == 0) {
-                                    UserInfo userInfo = JMessageClient.getMyInfo();
+                                    JMessageClient.login(user.getUserId(), user.getUserPassword(), new BasicCallback() {
+                                        @Override
+                                        public void gotResult(int i, String s) {
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    getView().onNullRoleInfo(user);
+                                                }
+                                            });
+                                        }
+                                    });
+                                    /*UserInfo userInfo = JMessageClient.getMyInfo();
                                     if (userInfo.getExtras().size() <= 0) {
                                         handler.post(new Runnable() {
                                             @Override
@@ -127,25 +182,32 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                         });
 
                                     } else {
-                                        Role role = new Role();
-                                        role.setUser(user);
-                                        role.setAvatar(userInfo.getExtra(Constant.ROLE_AVATAR));
-                                        role.setAvatar(userInfo.getExtra(Constant.ROLE_NICK_NAME));
-                                        role.setAvatar(userInfo.getExtra(Constant.ROLE_SEX));
-                                        role.setAvatar(userInfo.getExtra(Constant.ROLE_SIGNATURE));
-                                        role.setAvatar(userInfo.getExtra(Constant.ROLE_LEVEL));
+                                        GameRole gameRole = new GameRole();
+                                        gameRole.setUser(user);
+                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_AVATAR));
+                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_NICK_NAME));
+                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SEX));
+                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SIGNATURE));
+                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_LEVEL));
                                         UserDataCache.saveAccount(user);
                                         UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
                                         AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
                                         handler.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                getView().onSuccess(user, role);
+                                                getView().onSuccess(user, gameRole);
                                             }
                                         });
 
-                                    }
+                                    }*/
 
+                                } else {
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getView().onError(i, s);
+                                        }
+                                    });
                                 }
                             }
                         });
@@ -163,11 +225,12 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                             }
                         });
 
-                    } else if (i == 801003) {
+                    } else if (i == 801004) {
+                        Logger.log(i + s);
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                getView().onAccountNotFound(user);
+                                getView().onPasswordError();
                             }
                         });
                     }
@@ -186,7 +249,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                             String finalLoginState = realLoginResult.getString(Constant.LOGIN_STATE);
                             if (Constant.LOGIN_STATE_SUCCESS.equals(finalLoginState)) {
                                 JSONObject roleJson = realLoginResult.getJSONObject(Constant.JSON_KEY_ROLE);
-                                Role role = new Role();
+                                GameRole role = new GameRole();
                                 role.setAvatar(roleJson.getString(Constant.ROLE_AVATAR));
                                 role.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
                                 role.setSex(roleJson.getString(Constant.ROLE_SEX));
@@ -233,7 +296,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Role debugRole = new Role();
+                                        GameRole debugRole = new GameRole();
                                         debugRole.setAvatar("");
                                         debugRole.setName("debug");
                                         debugRole.setSex(Constant.ROLE_SEX_MAN);

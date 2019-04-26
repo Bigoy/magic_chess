@@ -18,6 +18,9 @@ public class Constant {
     public static int NET_POST_SUCCEED = 0;
     public static int NET_POST_FAILED = 1;
 
+
+
+
     // json key
     public static String JSON_KEY_USER_STATE = "userState";
     public static String JSON_KEY_GAME_ROLE = "gameRole";

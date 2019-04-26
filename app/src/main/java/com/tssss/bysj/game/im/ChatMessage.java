@@ -1,8 +1,8 @@
 package com.tssss.bysj.game.im;
 
 public class ChatMessage {
-    public static final int MESSAGE_SEND = 1;
-    public static final int MESSAGE_RECEIVER = 2;
+    public static final int MESSAGE_ME = 1;
+    public static final int MESSAGE_NOT_ME = 2;
 
     private int messageFrom;
 

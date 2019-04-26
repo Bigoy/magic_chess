@@ -2,13 +2,15 @@ package com.tssss.bysj.game.friend;
 
 import android.os.Handler;
 
-import com.tssss.bysj.game.core.Role;
+import com.alibaba.fastjson.JSON;
+import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.callback.GetUserInfoListCallback;
@@ -26,28 +28,45 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
 
     @Override
     public void loadFriendList() {
-        List<Role> roleList = new ArrayList<>();
+        List<GameRole> gameRoleList = new ArrayList<>();
         ContactManager.getFriendList(new GetUserInfoListCallback() {
             @Override
             public void gotResult(int i, String s, List<UserInfo> list) {
                 if (i == 0) {
                     for (int b = 0; b < list.size(); b++) {
-                        roleList.add(new Role(
-                                new User(list.get(b).getUserName(), null),
-                                list.get(b).getExtra(Constant.ROLE_AVATAR),
-                                list.get(b).getExtra(Constant.ROLE_NICK_NAME),
-                                list.get(b).getExtra(Constant.ROLE_SEX),
-                                list.get(b).getExtra(Constant.ROLE_SIGNATURE),
-                                list.get(b).getExtra(Constant.ROLE_LEVEL)
-                        ));
+                        Map<String, String> map = (Map<String, String>) JSON.parse(list.get(b).getSignature());
 
+                        try {
+                            gameRoleList.add(new GameRole(
+                                    new User(list.get(b).getUserName(), null),
+                                    list.get(b).getAvatarFile(),
+                                    map.get(Constant.ROLE_NICK_NAME),
+                                    map.get(Constant.ROLE_SEX),
+                                    map.get(Constant.ROLE_SIGNATURE),
+                                    map.get(Constant.ROLE_LEVEL),
+                                    Integer.valueOf(map.get(Constant.ROLE_EXP)
+                                    )
+                            ));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            gameRoleList.add(new GameRole(
+                                    new User(list.get(b).getUserName(), null),
+                                    list.get(b).getAvatar(),
+                                    map.get(Constant.ROLE_NICK_NAME),
+                                    map.get(Constant.ROLE_SEX),
+                                    map.get(Constant.ROLE_SIGNATURE),
+                                    map.get(Constant.ROLE_LEVEL),
+                                    0
+                            ));
+                        }
                     }
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            getView().showFriend(roleList);
+                            getView().showFriend(gameRoleList);
                         }
                     });
+
                 } else {
                     handler.post(new Runnable() {
                         @Override
@@ -68,13 +87,13 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
             public void onSuccess(String result) {
                 if (!cancelLoad) {
                     if (!StringUtil.isBlank(result)) {
-                        List<Role> friendList = new ArrayList<>();
+                        List<GameRole> friendList = new ArrayList<>();
                         try {
                             JSONObject resultJson = new JSONObject(result);
                             JSONArray friendListJson = resultJson.getJSONArray(Constant.JSON_KEY_FRIEND_LIST);
                             for (int i = 0; i < friendListJson.length(); i++) {
                                 JSONObject singleFriendJson = friendListJson.getJSONObject(i);
-                                friendList.add(new Role(
+                                friendList.add(new GameRole(
                                         singleFriendJson.getString(Constant.JSON_KEY_FRIEND_AVATAR),
                                         singleFriendJson.getString(Constant.JSON_KEY_FRIEND_NAME),
                                         singleFriendJson.getString(Constant.JSON_KEY_FRIEND_SEX),
