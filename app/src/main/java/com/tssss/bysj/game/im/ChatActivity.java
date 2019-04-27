@@ -1,5 +1,6 @@
 package com.tssss.bysj.game.im;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
@@ -27,12 +28,14 @@ import java.util.Map;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.NotificationClickEvent;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
 
@@ -80,8 +83,17 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
         Intent chatIntent = getIntent();
         if (null != chatIntent) {
             this.targetAccountID = chatIntent.getStringExtra(Constant.ACCOUNT_ID);
-            this.targetRoleName = chatIntent.getStringExtra(Constant.ROLE_NICK_NAME);
-            targetName.setText(targetRoleName);
+            JMessageClient.getUserInfo(targetAccountID, new GetUserInfoCallback() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void gotResult(int i, String s, UserInfo userInfo) {
+                    if (i == 0) {
+                        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
+                        String name = map.get(Constant.ROLE_NICK_NAME);
+                        targetName.setText("对方是：" + name);
+                    }
+                }
+            });
             presenter.loadChatHistory(this.targetAccountID);
         }
 
@@ -108,6 +120,12 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                 .items(items)
                 .build();
         menu.display();
+    }
+
+    @Override
+    protected void clickTopBarCenter() {
+        super.clickTopBarCenter();
+        chatRv.smoothScrollToPosition(0);
     }
 
     @Override
@@ -318,6 +336,6 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
     }
 
     public void onEvent(NotificationClickEvent event) {
-
+        JMessageManager.handlerNotificationEvent(event, this, false);
     }
 }

@@ -34,31 +34,23 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
             public void gotResult(int i, String s, List<UserInfo> list) {
                 if (i == 0) {
                     for (int b = 0; b < list.size(); b++) {
-                        Map<String, String> map = (Map<String, String>) JSON.parse(list.get(b).getSignature());
+                        UserInfo userInfo = list.get(b);
+                        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
+                        GameRole role = new GameRole();
+                        role.setUser(new User(userInfo.getUserName(), null));
+                        role.setAvatar(userInfo.getAvatar());
+                        role.setAvatarFile(userInfo.getAvatarFile());
+                        role.setName(map.get(Constant.ROLE_NICK_NAME));
+                        role.setSex(map.get(Constant.ROLE_SEX));
+                        role.setLevel(map.get(Constant.ROLE_LEVEL));
+                        role.setSignature(map.get(Constant.ROLE_SIGNATURE));
 
                         try {
-                            gameRoleList.add(new GameRole(
-                                    new User(list.get(b).getUserName(), null),
-                                    list.get(b).getAvatarFile(),
-                                    map.get(Constant.ROLE_NICK_NAME),
-                                    map.get(Constant.ROLE_SEX),
-                                    map.get(Constant.ROLE_SIGNATURE),
-                                    map.get(Constant.ROLE_LEVEL),
-                                    Integer.valueOf(map.get(Constant.ROLE_EXP)
-                                    )
-                            ));
+                            role.setRoleExperience(Integer.valueOf(map.get(Constant.ROLE_EXP)));
                         } catch (Exception e) {
-                            e.printStackTrace();
-                            gameRoleList.add(new GameRole(
-                                    new User(list.get(b).getUserName(), null),
-                                    list.get(b).getAvatar(),
-                                    map.get(Constant.ROLE_NICK_NAME),
-                                    map.get(Constant.ROLE_SEX),
-                                    map.get(Constant.ROLE_SIGNATURE),
-                                    map.get(Constant.ROLE_LEVEL),
-                                    0
-                            ));
+                            role.setRoleExperience(0);
                         }
+                        gameRoleList.add(role);
                     }
                     handler.post(new Runnable() {
                         @Override

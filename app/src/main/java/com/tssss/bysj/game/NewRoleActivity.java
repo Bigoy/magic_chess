@@ -19,7 +19,7 @@ import com.tssss.bysj.game.main.MainActivity;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.UserDataCache;
+import com.tssss.bysj.util.ImageUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 import com.wildma.pictureselector.PictureSelector;
@@ -133,6 +133,7 @@ public class NewRoleActivity extends BaseActivity {
             userRole.put(Constant.ACCOUNT_ID, intent.getStringExtra(Constant.ACCOUNT_ID));
             userRole.put(Constant.ACCOUNT_PASSWORD, intent.getStringExtra(Constant.ACCOUNT_PASSWORD));
             userRole.put(Constant.ROLE_EXP, "0");
+            userRole.put(Constant.ROLE_LEVEL, Constant.ROLE_SX);
             updateUserInfo = JMessageClient.getMyInfo();
             updateUserInfo.setSignature(JSON.toJSONString(userRole));
             JMessageClient.updateMyInfo(UserInfo.Field.signature, updateUserInfo, new BasicCallback() {
@@ -145,7 +146,7 @@ public class NewRoleActivity extends BaseActivity {
                                 ToastUtil.showToast(NewRoleActivity.this, "创建成功", ToastUtil.TOAST_DEFAULT);
                                 String myRoleInfoJson = JMessageClient.getMyInfo().getSignature();
                                 Logger.log(myRoleInfoJson);
-                                Intent hallIntent = new Intent(NewRoleActivity.this,HallActivity.class);
+                                Intent hallIntent = new Intent(NewRoleActivity.this, HallActivity.class);
                                 startActivity(hallIntent);
                             }
                         });
@@ -348,13 +349,14 @@ public class NewRoleActivity extends BaseActivity {
         if (requestCode == PictureSelector.SELECT_REQUEST_CODE) {
             if (data != null) {
                 String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
-//                userRole.put(Constant.ROLE_AVATAR, ImageUtil.getImageStr(picturePath));
+
                 avatarFile = new File(picturePath);
                 JMessageClient.updateUserAvatar(avatarFile, new BasicCallback() {
                     @Override
                     public void gotResult(int i, String s) {
                         if (i == 0) {
                             avatarUpdateSuccess = true;
+//                            userRole.put(Constant.ROLE_AVATAR, ImageUtil.getImageStr(picturePath));
                             Logger.log("头像更新成功");
                             Logger.log(picturePath);
 

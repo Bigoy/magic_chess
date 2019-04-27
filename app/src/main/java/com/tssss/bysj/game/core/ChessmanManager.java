@@ -2,6 +2,8 @@ package com.tssss.bysj.game.core;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 
 import com.tssss.bysj.game.Chessman;
@@ -129,7 +131,7 @@ public class ChessmanManager {
             // 原来的锚点使用状态设为false。
             am.getAnchor(chessmen.get(keyChessman).getPosition()).setUsed(false);
             chessmen.get(keyChessman).setPosition(position);
-            am.getAnchor(chessmen.get(keyChessman).getPosition()).setUsed(true);
+            am.getAnchor(position).setUsed(true);
         }
 
         // 更新的棋子位置上传到服务器。
@@ -140,7 +142,10 @@ public class ChessmanManager {
     Update army's chessmen position, which are from the server.
      */
     public void updateArmyPosition(String key, String position) {
-        getChessman(key).setPosition(position);
+        AnchorManager am = AnchorManager.getAnchorManager();
+        am.getAnchor(chessmen.get(key).getPosition()).setUsed(false);
+        chessmen.get(key).setPosition(position);
+        am.getAnchor(position).setUsed(true);
     }
 
     /*
@@ -214,12 +219,20 @@ public class ChessmanManager {
     当棋子选中时在选中的棋子位置绘制稍大的圆圈作为标记。
      */
     public void drawMark(Canvas gameCanvas, String chessmanKey) {
-        /*AnchorManager am = AnchorManager.getAnchorManager();
+        AnchorManager am = AnchorManager.getAnchorManager();
         GameUtil gameUtil = GameUtil.getGameUtil();
 
         Paint markPaint = new Paint();
+        markPaint.setAntiAlias(true);
+        markPaint.setDither(true);
+        markPaint.setColor(Color.BLACK);
+        markPaint.setStyle(Paint.Style.STROKE);
+        markPaint.setStrokeWidth(4);
 
-        Bitmap src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_flag);
+        gameCanvas.drawCircle(am.getAnchor(getChessman(chessmanKey).getPosition()).getX(),
+                am.getAnchor(getChessman(chessmanKey).getPosition()).getY(), 80, markPaint);
+
+       /* Bitmap src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_flag);
         Bitmap bitmap = Bitmap.createBitmap(src);
 
         int x = am.getAnchor(chessmen.get(chessmanKey).getPosition()).getX() - (bitmap.getWidth() / 2);

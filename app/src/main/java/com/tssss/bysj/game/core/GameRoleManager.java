@@ -25,7 +25,7 @@ public class GameRoleManager {
         players = new HashMap<>();
     }
 
-    public static GameRoleManager getGameRoleManager() {
+    public static synchronized GameRoleManager getGameRoleManager() {
         if (gameRoleManager == null) {
             gameRoleManager = new GameRoleManager();
         }

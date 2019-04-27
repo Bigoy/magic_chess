@@ -16,18 +16,17 @@ import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.UserInfoActivity;
 import com.tssss.bysj.game.friend.FriendsActivity;
 import com.tssss.bysj.game.im.ChatListActivity;
+import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.game.news.veiw.NewsActivity;
 import com.tssss.bysj.game.setting.SettingActivity;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.event.MessageEvent;
+import cn.jpush.im.android.api.event.NotificationClickEvent;
 import cn.jpush.im.android.api.model.UserInfo;
 
 @ViewInject(layoutId = R.layout.activity_hall)
@@ -62,13 +61,19 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
      * 向 HallPresenter 发送游戏匹配请求
      */
     private void matchGame() {
-        if (Constant.DEBUG) {
-            Logger.log("not match, debug");
-        }
+
     }
+
 
     @Override
     protected void afterBindView() {
+        JMessageClient.registerEventReceiver(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JMessageClient.unRegisterEventReceiver(this);
     }
 
     @Override
@@ -153,25 +158,11 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
                 break;
             case 1:
                 Intent intent = new Intent(this, UserInfoActivity.class);
-                try {
-
-                    UserInfo myInfo = JMessageClient.getMyInfo();
-                    JSONObject jsonObject = new JSONObject(myInfo.getSignature());
-                    intent.putExtra(Constant.ROLE_NICK_NAME, jsonObject.getString(Constant.ROLE_NICK_NAME));
-                    intent.putExtra(Constant.ROLE_SEX, jsonObject.getString(Constant.ROLE_SEX));
-                    intent.putExtra(Constant.ROLE_SIGNATURE, jsonObject.getString(Constant.ROLE_SIGNATURE));
-
-                    String level = jsonObject.getString(Constant.ROLE_LEVEL);
-                    intent.putExtra(Constant.ROLE_LEVEL, level);
-
-                } catch (JSONException e) {
-                    intent.putExtra(Constant.ROLE_LEVEL, Constant.ROLE_SX);
-                } finally {
-                    startActivity(intent);
-                }
-
-                Log.i("Menu", "item = " + position);
+                UserInfo myInfo = JMessageClient.getMyInfo();
+                intent.putExtra(Constant.ACCOUNT_ID, myInfo.getUserName());
+                startActivity(intent);
                 menu.dismiss();
+
                 break;
          /*   case 2:
                 Log.i("Menu", "item = " + position);
@@ -179,5 +170,14 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
                 break;*/
             default:
         }
+    }
+
+    public void onEventMainThread(NotificationClickEvent event) {
+        JMessageManager.handlerNotificationEvent(event, this, true);
+    }
+
+    public void onEventMainThread(MessageEvent event) {
+        JMessageManager.handlerMessageEvent(event, this);
+
     }
 }

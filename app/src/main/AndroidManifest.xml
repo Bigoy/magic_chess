@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".game.setting.AccountActivity"/>
+        <activity android:name=".game.setting.AccountActivity" />
 
         <meta-data
             android:name="design_width_in_dp"
@@ -52,18 +52,47 @@
         <activity
             android:name=".game.UserInfoActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".game.NewRoleActivity" />
-        <activity android:name=".game.setting.SettingActivity" />
-        <activity android:name=".game.setting.PasswordActivity" />
-        <activity android:name=".game.im.ChatActivity" />
-        <activity android:name=".game.setting.DeviceActivity" />
-        <activity android:name=".game.setting.VersionActivity" />
-        <activity android:name=".game.setting.GameDetailActivity" />
-        <activity android:name=".game.setting.AccountStateActivity" />
-        <activity android:name=".game.friend.AddFriendActivity" />
-        <activity android:name=".game.im.ChatListActivity" />
-        <activity android:name=".game.friend.FriendRequestActivity" />
-        <activity android:name=".game.core.view.GameActivity" />
+        <activity
+            android:name=".game.NewRoleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.setting.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.setting.PasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.im.ChatActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.setting.DeviceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.setting.VersionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.setting.GameDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.setting.AccountStateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.friend.AddFriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.im.ChatListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.friend.FriendRequestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.core.view.GameActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.core.view.GameResultActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

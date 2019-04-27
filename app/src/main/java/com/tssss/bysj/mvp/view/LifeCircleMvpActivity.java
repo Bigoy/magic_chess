@@ -77,8 +77,7 @@ public class LifeCircleMvpActivity extends AppCompatActivity implements IMvpView
         }
     }
 
-    @Override
-    protected void onStop() {
+    protected void onTimerFinish() {
         super.onStop();
         MvpController mvpController = this.getMvpController();
         if (mvpController != null) {

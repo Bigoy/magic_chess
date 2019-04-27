@@ -5,15 +5,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.util.StringUtil;
+
+import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetUserInfoCallback;
+import cn.jpush.im.android.api.model.UserInfo;
 
 @ViewInject(layoutId = R.layout.activity_user_info)
 public class UserInfoActivity extends BaseActivity {
@@ -44,39 +48,22 @@ public class UserInfoActivity extends BaseActivity {
     protected void afterBindView() {
         Intent intent = getIntent();
         try {
-
-            Glide.with(this)
-                    .load(JMessageClient.getMyInfo().getAvatarFile())
-                    .into(avatar);
-            name.setText(intent.getStringExtra(Constant.ROLE_NICK_NAME));
-            sex.setText(intent.getStringExtra(Constant.ROLE_SEX));
-            String l = intent.getStringExtra(Constant.ROLE_LEVEL);
-            if (StringUtil.isBlank(l)) {
-                l = Constant.ROLE_SX;
-            }
-            level.setText(l);
-            signature.setText(intent.getStringExtra(Constant.ROLE_SIGNATURE));
-            /*JMessageClient.getMyInfo().getAvatarBitmap(new GetAvatarBitmapCallback() {
+            JMessageClient.getUserInfo(intent.getStringExtra(Constant.ACCOUNT_ID), new GetUserInfoCallback() {
                 @Override
-                public void gotResult(int i, String s, Bitmap bitmap) {
+                public void gotResult(int i, String s, UserInfo userInfo) {
                     if (i == 0) {
-                        avatar.setImageBitmap(bitmap);
-                        String infoJson = intent.getStringExtra("my_info");
-                        try {
-                            JSONObject jsonObject = new JSONObject(infoJson);
-                            name.setText(jsonObject.getString(Constant.ROLE_NICK_NAME));
-                            sex.setText(jsonObject.getString(Constant.ROLE_SEX));
-                            level.setText(jsonObject.getString(Constant.ROLE_LEVEL));
-                            signature.setText(jsonObject.getString(Constant.ROLE_SIGNATURE));
-                        } catch (JSONException e) {
-                            loadError();
-                        }
-                    } else {
-                        loadError();
+                        Glide.with(UserInfoActivity.this)
+                                .load(userInfo.getAvatarFile())
+                                .into(avatar);
+                        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
+                        name.setText(map.get(Constant.ROLE_NICK_NAME));
+                        sex.setText(map.get(Constant.ROLE_SEX));
+                        signature.setText(map.get(Constant.ROLE_SIGNATURE));
+                        signature.setText(map.get(Constant.ROLE_LEVEL));
                     }
                 }
             });
-*/
+
         } catch (Exception e) {
             loadError();
         }

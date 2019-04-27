@@ -30,11 +30,6 @@ public class Umpire {
             if (am.getAnchor(cm.getChessman(ChessmanManager.ARMY_A).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.ARMY_B).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.ARMY_C).getPosition()).getY() == tempB) {
-                // self输掉对局。self经验减去50，army经验加上50。
-                pm.getPlayer(GameRoleManager.SELF).setRoleExperience(-50);
-                pm.getPlayer(GameRoleManager.ARMY).setRoleExperience(50);
-                // 游戏结束。
-                stop();
                 return GameRoleManager.ARMY;
             }
         } else if (am.getAnchor(cm.getChessman(ChessmanManager.ARMY_A).getPosition()).getY() == tempA &&
@@ -43,11 +38,6 @@ public class Umpire {
             if (am.getAnchor(cm.getChessman(ChessmanManager.SELF_A).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.SELF_B).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.SELF_C).getPosition()).getY() == tempB) {
-                // self赢得比赛。self经验加上50，army经验减去50。
-                pm.getPlayer(GameRoleManager.SELF).setRoleExperience(-50);
-                pm.getPlayer(GameRoleManager.ARMY).setRoleExperience(50);
-                // 游戏结束。
-                stop();
                 return GameRoleManager.SELF;
             }
         }

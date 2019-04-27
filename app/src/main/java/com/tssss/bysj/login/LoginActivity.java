@@ -242,6 +242,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 //        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getHistoryTable().createChatHistoryTable();
 //        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getChatListTable().createChatListTable();
 //        UserDataCache.keepRole(gameRole);
+        UserDataCache.keepRole(gameRole);
         AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
         openActivityAndFinishSelf(HallActivity.class);
     }

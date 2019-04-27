@@ -85,7 +85,7 @@ public class AnchorManager {
     生成锚点。
      */
     public void createAnchors() {
-        /*GameUtil gameUtil = GameUtil.getGameUtil();
+        GameUtil gameUtil = GameUtil.getGameUtil();
         int temp = gameUtil.getSurfaceSize() / 4;
 
         Objects.requireNonNull(anchors.get(ONE)).setX(temp);
@@ -107,14 +107,14 @@ public class AnchorManager {
         Objects.requireNonNull(anchors.get(EIGHT)).setX(temp * 2);
         Objects.requireNonNull(anchors.get(EIGHT)).setY(temp * 3);
         Objects.requireNonNull(anchors.get(NINE)).setX(temp * 3);
-        Objects.requireNonNull(anchors.get(NINE)).setY(temp * 3);*/
+        Objects.requireNonNull(anchors.get(NINE)).setY(temp * 3);
     }
 
     /*
     用户是否点击在锚点上。
      */
     public boolean inRange(int x, int y) {
-        /*GameUtil gameUtil = GameUtil.getGameUtil();
+        GameUtil gameUtil = GameUtil.getGameUtil();
         int temp = gameUtil.getSurfaceSize() / 16;
 
         if (x >= anchors.get(AnchorManager.ONE).getX() - temp &&
@@ -164,16 +164,15 @@ public class AnchorManager {
             return true;
         } else {
             return false;
-        }*/
-        boolean test = false;
-        return test;
+        }
+
     }
 
     /*
     根据坐标返回锚点的key。
      */
     public String identifyAnchor(int x, int y) {
-        /*GameUtil gameUtil = GameUtil.getGameUtil();
+        GameUtil gameUtil = GameUtil.getGameUtil();
         int temp = gameUtil.getSurfaceSize() / 16;
         if (x >= anchors.get(ONE).getX() - temp && x <= anchors.get(ONE).getX() + temp &&
                 y >= anchors.get(ONE).getY() - temp && y <= anchors.get(ONE).getY() + temp) {
@@ -203,7 +202,6 @@ public class AnchorManager {
                 y >= anchors.get(NINE).getY() - temp && y <= anchors.get(NINE).getY() + temp) {
             return NINE;
         }
-        return "";*/
-        return "test";
+        return "";
     }
 }

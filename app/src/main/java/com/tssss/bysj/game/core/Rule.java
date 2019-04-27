@@ -1,7 +1,11 @@
 package com.tssss.bysj.game.core;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.MotionEvent;
+
+import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.util.ToastUtil;
 
 public class Rule {
     @SuppressLint("StaticFieldLeak")
@@ -28,36 +32,32 @@ public class Rule {
     b 点击的地方必须有棋子存在；
      */
     public boolean canCheckChessman(MotionEvent event) {
-        /*AnchorManager am = AnchorManager.getAnchorManager();
+        AnchorManager am = AnchorManager.getAnchorManager();
         ChessmanManager cm = ChessmanManager.getChessmanManager();
+        GameRoleManager gm = GameRoleManager.getGameRoleManager();
 
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        if (turn) {
-            if (am.inRange(x, y)) {
-                if (am.getAnchor(am.identifyAnchor(x, y)).isUsed()) {
+        if (am.inRange(x, y)) {
+            if (am.getAnchor(am.identifyAnchor(x, y)).isUsed()) {
+                if (cm.getChessman(cm.identify(am.identifyAnchor(x, y))).getCamp().equals(gm.getPlayer(GameRoleManager.SELF).getChessmanCamp())) {
+                    Logger.log("你的棋子");
                     return true;
-                    if (cm.getChessman(cm.identify(am.identifyAnchor(x, y))).getCamp() == Chessman.CAMP_SELF) {
-                        return true;
-                    } else {
-                        cm.resetChessmenCheckedState();
-                        Log.wtf(getClass().getSimpleName(), Error.CHECK_NOT_SELF);
-                        Toast.makeText(mContext, Error.CHECK_NOT_SELF, Toast.LENGTH_SHORT).showToast();
-                    }
                 } else {
+                    Logger.log("该棋子属于对方");
                     cm.resetChessmenCheckedState();
-                    Log.wtf(getClass().getSimpleName(), Constant.CHECK_NO_CHESSMAN);
+
                 }
             } else {
                 cm.resetChessmenCheckedState();
-                Log.wtf(getClass().getSimpleName(), ANCHOR_NOT_IN_RANGE);
+                Log.wtf(getClass().getSimpleName(), Constant.CHECK_NO_CHESSMAN);
             }
         } else {
-            Log.wtf(getClass().getSimpleName(), Constant.CHECK_NOT_TURN);
-        }*/
-        boolean test = false;
-        return test;
+            cm.resetChessmenCheckedState();
+            Log.wtf(getClass().getSimpleName(), ANCHOR_NOT_IN_RANGE);
+        }
+        return false;
     }
 
     /*
@@ -69,7 +69,7 @@ public class Rule {
     e 两个圆圈之间不能直接走棋。
      */
     public boolean canMoveChessman(MotionEvent event) {
-        /*AnchorManager am = AnchorManager.getAnchorManager();
+        AnchorManager am = AnchorManager.getAnchorManager();
         ChessmanManager cm = ChessmanManager.getChessmanManager();
         GameUtil gameUtil = GameUtil.getGameUtil();
 
@@ -108,9 +108,8 @@ public class Rule {
         } else {
             cm.resetChessmenCheckedState();
             ToastUtil.showToast(gameUtil.getContext(), ANCHOR_NOT_IN_RANGE, ToastUtil.TOAST_ERROR);
-        }*/
-        boolean test = false;
-        return test;
+        }
+        return false;
     }
 
     private boolean canMoveToCircle(String oldPos, String newPos) {

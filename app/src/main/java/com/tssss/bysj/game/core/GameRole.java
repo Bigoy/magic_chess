@@ -22,6 +22,17 @@ public class GameRole {
     private String level = Constant.ROLE_SX;
     private int exp = 0;
 
+
+    public String getChessmanCamp() {
+        return chessmanCamp;
+    }
+
+    public void setChessmanCamp(String chessmanCamp) {
+        this.chessmanCamp = chessmanCamp;
+    }
+
+    private String chessmanCamp;
+
     public File getAvatarFile() {
         return avatarFile;
     }
