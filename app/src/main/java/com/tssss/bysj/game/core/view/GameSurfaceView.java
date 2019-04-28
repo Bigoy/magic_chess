@@ -233,10 +233,27 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                                         intent.putExtra("result", "你赢了");
                                         intent.putExtra("desc", "继续加油");
                                         intent.putExtra("exp", "经验值 +50");
+
+                                        Map<String, String> map = new HashMap<>();
+                                        map.put("operation", "result");
+                                        map.put("result", "你输了");
+                                        map.put("desc", "唉！好可惜");
+                                        map.put("exp", "经验值 -50");
+
+                                        host.sendMessage(JSON.toJSONString(map));
+
                                     } else {
                                         intent.putExtra("result", "你输了");
                                         intent.putExtra("desc", "唉！好可惜");
                                         intent.putExtra("exp", "经验值 -50");
+
+                                        Map<String, String> map = new HashMap<>();
+                                        map.put("operation", "result");
+                                        map.put("result", "你赢了");
+                                        map.put("desc", "非常棒，继续加油");
+                                        map.put("exp", "经验值 +50");
+
+                                        host.sendMessage(JSON.toJSONString(map));
                                     }
                                 }
                                 if (!GameActivity.first) {
@@ -245,10 +262,27 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                                         intent.putExtra("result", "你输了");
                                         intent.putExtra("desc", "唉！好可惜");
                                         intent.putExtra("exp", "经验值 -50");
+
+                                        Map<String, String> map = new HashMap<>();
+                                        map.put("operation", "result");
+                                        map.put("result", "你赢了");
+                                        map.put("desc", "非常棒，继续加油");
+                                        map.put("exp", "经验值 +50");
+
+                                        host.sendMessage(JSON.toJSONString(map));
+
                                     } else {
                                         intent.putExtra("result", "你赢了");
                                         intent.putExtra("desc", "继续加油");
                                         intent.putExtra("exp", "经验值 +50");
+
+                                        Map<String, String> map = new HashMap<>();
+                                        map.put("operation", "result");
+                                        map.put("result", "你输了");
+                                        map.put("desc", "唉！好可惜");
+                                        map.put("exp", "经验值 -50");
+
+                                        host.sendMessage(JSON.toJSONString(map));
                                     }
                                 }
 
