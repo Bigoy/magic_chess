@@ -39,9 +39,9 @@
 
 
     <!-- NewRoleActivity -->
-    <string name="new_role_input_name">填写新角色的名称。</string>
+    <string name="new_role_input_name">输入昵称。</string>
     <string name="new_role_sex">选择性别。</string>
-    <string name="new_role_head_img">添加一张你喜欢的头像。</string>
+    <string name="new_role_head_img">选择一张你喜欢的头像。</string>
     <string name="new_role_null_name">角色名称不能为空</string>
     <string name="new_role_null_sex">请选择角色性别</string>
 
@@ -55,7 +55,7 @@
     <string name="input_hint">请输入内容</string>
     <string name="sex_man">男</string>
     <string name="sex_woman">女</string>
-    <string name="new_role_tag">个性宣言。</string>
+    <string name="new_role_tag">你的签名。</string>
     <string name="news_category_recommend">推荐</string>
     <string name="news_category_attention">关注</string>
     <string name="news_category_other">其它</string>
@@ -90,5 +90,16 @@
     <string name="loading">加载中...</string>
     <string name="setting_device">查看登录设备</string>
     <string name="setting_device_tip">最近一次登录：</string>
+    <string name="user_info_signature">交友宣言</string>
+    <string name="user_info_battle_record">对战记录</string>
+    <string name="user_info_news">动态</string>
+    <string name="user_info_edit">编辑资料</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_friend">添加好友</string>
+    <string name="ta_info">TA的资料</string>
+    <string name="cancel">取消操作</string>
+    <string name="share_battle_record">分享战绩</string>
 
 </resources>

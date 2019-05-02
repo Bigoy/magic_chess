@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_battle_record_container"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/item_battle_record_container_desc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        tools:ignore="UselessParent">
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_battle_record_result"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:textSize="18dp"
+            tools:ignore="RtlSymmetry,SpUsage" />
+
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_battle_record_opponent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_battle_record_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingEnd="16dp"
+            android:textSize="10dp"
+            tools:ignore="SpUsage" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_battle_record_container_operation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_battle_record_share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/share_battle_record"
+            android:textSize="18dp"
+            android:visibility="visible"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_battle_record_look_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ta_info"
+            android:textSize="18dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_battle_record_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="#D55E5E"
+            android:textSize="18dp"
+            tools:ignore="SpUsage" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

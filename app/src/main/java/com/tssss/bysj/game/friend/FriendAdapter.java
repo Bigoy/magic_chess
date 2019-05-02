@@ -75,7 +75,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
                         .into(avatar);
                 String levelStr = data.getLevel();
                 if (StringUtil.isBlank(levelStr)) {
-                    levelStr = Constant.ROLE_SX;
+                    levelStr = Constant.ROLE_SX_I;
                 }
                 level.setText(levelStr);
             }

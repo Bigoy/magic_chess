@@ -1,4 +1,4 @@
-package com.tssss.bysj.game;
+package com.tssss.bysj.game.role;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -19,7 +19,6 @@ import com.tssss.bysj.game.main.MainActivity;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.util.ImageUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 import com.wildma.pictureselector.PictureSelector;
@@ -133,7 +132,7 @@ public class NewRoleActivity extends BaseActivity {
             userRole.put(Constant.ACCOUNT_ID, intent.getStringExtra(Constant.ACCOUNT_ID));
             userRole.put(Constant.ACCOUNT_PASSWORD, intent.getStringExtra(Constant.ACCOUNT_PASSWORD));
             userRole.put(Constant.ROLE_EXP, "0");
-            userRole.put(Constant.ROLE_LEVEL, Constant.ROLE_SX);
+            userRole.put(Constant.ROLE_LEVEL, Constant.ROLE_SX_I);
             updateUserInfo = JMessageClient.getMyInfo();
             updateUserInfo.setSignature(JSON.toJSONString(userRole));
             JMessageClient.updateMyInfo(UserInfo.Field.signature, updateUserInfo, new BasicCallback() {
@@ -143,7 +142,7 @@ public class NewRoleActivity extends BaseActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtil.showToast(NewRoleActivity.this, "创建成功", ToastUtil.TOAST_DEFAULT);
+                                ToastUtil.showToast(NewRoleActivity.this, "资料更新成功", ToastUtil.TOAST_DEFAULT);
                                 String myRoleInfoJson = JMessageClient.getMyInfo().getSignature();
                                 Logger.log(myRoleInfoJson);
                                 Intent hallIntent = new Intent(NewRoleActivity.this, HallActivity.class);
@@ -154,7 +153,7 @@ public class NewRoleActivity extends BaseActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtil.showToast(NewRoleActivity.this, "创建失败，抱歉！", ToastUtil.TOAST_ERROR);
+                                ToastUtil.showToast(NewRoleActivity.this, "资料更新失败！", ToastUtil.TOAST_ERROR);
                                 JMessageClient.logout();
                                 AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
                                 openActivity(MainActivity.class);
@@ -169,7 +168,7 @@ public class NewRoleActivity extends BaseActivity {
         gameRole.setAvatar(userRole.get(Constant.ROLE_AVATAR));
         gameRole.setName(userRole.get(Constant.ROLE_NICK_NAME));
         gameRole.setSex(userRole.get(Constant.ROLE_SEX));
-        gameRole.setLevel(Constant.ROLE_SX);
+        gameRole.setLevel(Constant.ROLE_SX_I);
         gameRole.setSignature(userRole.get(Constant.ROLE_SIGNATURE));
         gameRole.setUser(new User(userRole.get(Constant.ACCOUNT_ID), userRole.get(Constant.ACCOUNT_PASSWORD)));*/
 //        AppDataCache.keepRole(gameRole);

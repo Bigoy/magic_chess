@@ -50,10 +50,10 @@
             android:name=".game.PeopleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".game.UserInfoActivity"
+            android:name=".game.role.UserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".game.NewRoleActivity"
+            android:name=".game.role.NewRoleActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".game.setting.SettingActivity"

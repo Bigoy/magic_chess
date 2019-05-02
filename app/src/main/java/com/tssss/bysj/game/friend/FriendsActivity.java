@@ -12,7 +12,7 @@ import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
-import com.tssss.bysj.game.UserInfoActivity;
+import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.game.im.ChatActivity;
 import com.tssss.bysj.game.im.JMessageManager;
@@ -385,11 +385,6 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                     case 0:
                         Intent intent = new Intent(FriendsActivity.this, UserInfoActivity.class);
                         intent.putExtra(Constant.ACCOUNT_ID, gameRole.getUser().getUserId());
-                        intent.putExtra(Constant.ROLE_AVATAR, gameRole.getAvatar());
-                        intent.putExtra(Constant.ROLE_NICK_NAME, gameRole.getName());
-                        intent.putExtra(Constant.ROLE_SEX, gameRole.getSex());
-                        intent.putExtra(Constant.ROLE_SIGNATURE, gameRole.getSignature());
-                        intent.putExtra(Constant.ROLE_LEVEL, gameRole.getLevel());
                         startActivity(intent);
                         itemMenu.dismiss();
                         break;

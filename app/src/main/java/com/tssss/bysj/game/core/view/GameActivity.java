@@ -137,7 +137,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
                         armyRole.setSex(map.get(Constant.ROLE_SEX));
                         String level = intent.getStringExtra(Constant.ROLE_LEVEL);
                         if (StringUtil.isBlank(level)) {
-                            level = Constant.ROLE_SX;
+                            level = Constant.ROLE_SX_I;
                         }
                         armyRole.setLevel(level);
                         armyRole.setSignature(map.get(Constant.ROLE_SIGNATURE));

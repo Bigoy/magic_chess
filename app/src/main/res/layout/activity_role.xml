@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="20dp"
-    tools:context=".game.NewRoleActivity">
+    tools:context=".game.role.NewRoleActivity">
 
     <ScrollView
         android:id="@+id/new_role_scroll"

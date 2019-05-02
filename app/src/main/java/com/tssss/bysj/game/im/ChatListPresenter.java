@@ -14,7 +14,6 @@ import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
-import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
@@ -81,58 +80,7 @@ public class ChatListPresenter extends BaseMvpPresenter<IChatListContract.IView>
             }
         }
 
-        /*List<Conversation> conversationList = SQLiteFactory.getInstance()
-                .getUserDataBase(context, id)
-                .getChatListTable()
-                .queryChatList();
 
-        if (null == conversationList || conversationList.size() <= 0) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    getView().showNullList();
-                }
-            });
-        } else {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    getView().showChatList(conversationList);
-                }
-            });
-        }*/
-
-        /*List<Conversation> conversationList = JMessageClient.getConversationList();
-        if (conversationList.size() <= 0) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    getView().showNullList();
-                }
-            });
-        } else {
-            List<com.tssss.bysj.game.im.Conversation> conversationList1 = new ArrayList<>();
-            for (int i = 0; i < conversationList.size(); i++) {
-
-//                头像、id、名字
-                conversationList1.add(new com.tssss.bysj.game.im.Conversation(
-                                new GameRole(
-                                        conversationList.get(i).getLatestMessage().getFromUser().getAvatar(),
-                                        conversationList.get(i).getLatestMessage().getFromUser().getExtra(Constant.ROLE_NICK_NAME),
-                                        conversationList.get(i).getLatestMessage().getFromUser().getExtra(Constant.ROLE_SEX),
-                                        conversationList.get(i).getLatestMessage().getFromUser().getExtra(Constant.ROLE_SIGNATURE),
-                                        conversationList.get(i).getLatestMessage().getFromUser().getExtra(Constant.ROLE_LEVEL)),
-                                conversationList.get(i).getLatestMessage().getContext().getStringExtra(Constant.JMESSAGE_MESSAGE_KEY)
-                        )
-                );
-
-            }
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    getView().showChatList(conversationList1);
-                }
-            });*/
     }
 
 

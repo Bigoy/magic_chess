@@ -46,5 +46,9 @@ public class HttpUrl {
      * 添加好友时的推荐玩家
      */
     public static final String URL_FRIEND_ADD_RECOMMEND = host + "/friend/add/recommend";
+    /**
+     * 对战记录
+     */
+    public static final String URL_BATTLE_RECORD = host + "/battlerecord";
 
 }

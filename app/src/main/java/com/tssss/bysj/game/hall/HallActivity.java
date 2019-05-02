@@ -13,7 +13,7 @@ import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
-import com.tssss.bysj.game.UserInfoActivity;
+import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.game.friend.FriendsActivity;
 import com.tssss.bysj.game.im.ChatListActivity;
 import com.tssss.bysj.game.im.JMessageManager;

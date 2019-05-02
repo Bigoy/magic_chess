@@ -104,22 +104,51 @@ public class Constant {
     public static final String ROLE_AVATAR = "ROLE_AVATAR";
 
     public static final String ROLE_SEX = "ROLE_SEX";
-    public static final String ROLE_SEX_MAN = "MAN";
-    public static final String ROLE_SEX_WOMAN = "WOMAN";
+    public static final String ROLE_SEX_MAN = "♂";
+    public static final String ROLE_SEX_WOMAN = "♀";
     public static final String ROLE_SEX_SECRET = "SECRET";
 
     public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
     public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";
 
-    //   实习生、正式棋手、老司机、
-    //    神奇大佬、大师、顶级棋手
+    /* 实习生、
+    正式棋手、
+    老司机、
+    神奇大佬、
+    大师、
+    顶级棋手
+每个段位下分三个小段位，每一个小段位根据大段位不同所需的升级经验不同，
+实习生需要50分每阶段，
+正式棋手需要100分每阶段，
+老司机需要120分每阶段，
+神奇大佬需要150分每阶段，
+大师需要200分每阶段，
+顶级棋手需要300每阶段。*/
     public static final String ROLE_LEVEL = "ROLE_LEVEL";
-    public static final String ROLE_SX = "实习生";
-    public static final String ROLE_ZSQS = "正式棋手";
-    public static final String ROLE_LSJ = "老司机";
-    public static final String ROLE_SQDL = "神奇大佬";
-    public static final String ROLE_DS = "大师";
-    public static final String ROLE_DJQS = "顶级棋手";
+
+    public static final String ROLE_SX_I = "实习生I";
+    public static final String ROLE_SX_II = "实习生II";
+    public static final String ROLE_SX_III = "实习生III";
+
+    public static final String ROLE_ZSQS_I = "正式棋手I";
+    public static final String ROLE_ZSQS_II = "正式棋手II";
+    public static final String ROLE_ZSQS_III = "正式棋手III";
+
+    public static final String ROLE_LSJ_I = "老司机I";
+    public static final String ROLE_LSJ_II = "老司机II";
+    public static final String ROLE_LSJ_III = "老司机III";
+
+    public static final String ROLE_SQDL_I = "神奇大佬I";
+    public static final String ROLE_SQDL_II = "神奇大佬II";
+    public static final String ROLE_SQDL_III = "神奇大佬III";
+
+    public static final String ROLE_DS_I = "大师I";
+    public static final String ROLE_DS_II = "大师II";
+    public static final String ROLE_DS_III = "大师III";
+
+    public static final String ROLE_DJQS_I = "顶级棋手I";
+    public static final String ROLE_DJQS_II = "顶级棋手II";
+    public static final String ROLE_DJQS_III = "顶级棋手III";
 
     public static final String ROLE_EXP = "ROLE_EXP";
 
@@ -131,4 +160,7 @@ public class Constant {
     public static final String SP_FUNCTION_NEWS_STATE_USING = "SP_FUNCTION_NEWS_STATE_USING";
 
     public static final String JMESSAGE_KEY = "J_MESSAGE_KEY";
+
+    public static final String GAME_RESULT_WIN = "胜利";
+    public static final String GAME_RESULT_LOSE = "失败";
 }

@@ -53,7 +53,7 @@ public class AnimationUtil {
     }
 
 
-    public static void startBackgroundColorAnimator(TextView v, int from,int to) {
+    public static void startBackgroundColorAnimator(TextView v, int from, int to) {
         v.setTextColor(Color.WHITE);
         ValueAnimator va = ObjectAnimator.ofInt(v, "backgroundColor",
                 from, to);
@@ -62,7 +62,7 @@ public class AnimationUtil {
         va.start();
     }
 
-    public static void startBackgroundColorAnimator(View v, int from,int to) {
+    public static void startBackgroundColorAnimator(View v, int from, int to) {
         ValueAnimator va = ObjectAnimator.ofInt(v, "backgroundColor",
                 from, to);
         va.setDuration(100);
@@ -97,5 +97,20 @@ public class AnimationUtil {
         }
         v.clearAnimation();
         v.startAnimation(animation);
+    }
+
+
+    public static void switchViewsTraslate(Context context, View in, View out) {
+
+        if (null != in && null != out) {
+            Animation inAnim = AnimationUtils.loadAnimation(context, R.anim.traslate_in);
+            Animation outAnim = AnimationUtils.loadAnimation(context, R.anim.traslate_out);
+
+            out.startAnimation(outAnim);
+            out.setVisibility(View.GONE);
+            in.setVisibility(View.VISIBLE);
+            in.startAnimation(inAnim);
+
+        }
     }
 }

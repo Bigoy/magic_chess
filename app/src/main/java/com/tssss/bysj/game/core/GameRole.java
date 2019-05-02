@@ -19,7 +19,7 @@ public class GameRole {
     private String name;
     private String sex;
     private String signature;
-    private String level = Constant.ROLE_SX;
+    private String level = Constant.ROLE_SX_I;
     private int exp = 0;
 
 

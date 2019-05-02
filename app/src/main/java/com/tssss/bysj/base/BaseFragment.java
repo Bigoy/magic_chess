@@ -1,5 +1,6 @@
 package com.tssss.bysj.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEventListeners();
+
     }
 
 
