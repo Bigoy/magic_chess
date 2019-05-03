@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.tssss.bysj.componet.GTextView
+        android:id="@+id/rank_update_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/rank_update_time"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="12dp"
+        tools:ignore="SpUsage" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/jiang_bei_1" />
+
+        <ImageView
+            android:id="@+id/rank_one_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/bg_rank_avatar_1"
+            android:padding="2dp" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/rank_one_name"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+
+            android:layout_marginStart="32dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/rank_one_score"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/jiang_bei_2" />
+
+        <ImageView
+            android:id="@+id/rank_two_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/bg_rank_avatar_2"
+            android:padding="2dp" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/rank_two_name"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+
+            android:layout_marginStart="32dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/rank_two_score"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/jiang_bei_3" />
+
+        <ImageView
+            android:id="@+id/rank_three_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/bg_rank_avatar_3"
+            android:padding="2dp" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/rank_three_name"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+
+            android:layout_marginStart="32dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/rank_three_score"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rank_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp" />
+
+</LinearLayout>

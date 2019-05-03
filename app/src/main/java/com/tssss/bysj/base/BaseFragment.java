@@ -12,7 +12,7 @@ import com.tssss.bysj.mvp.view.LifeCircleMvpFragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public abstract class BaseFragment extends LifeCircleMvpFragment {
+public abstract class BaseFragment extends LifeCircleMvpFragment implements View.OnClickListener {
     private View contentView;
 
     @Nullable
@@ -43,6 +43,10 @@ public abstract class BaseFragment extends LifeCircleMvpFragment {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 
     protected abstract void afterBindView();
 

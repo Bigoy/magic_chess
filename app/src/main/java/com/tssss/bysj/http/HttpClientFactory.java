@@ -11,8 +11,8 @@ public class HttpClientFactory {
      */
     public static OkHttpClient okHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true)
+                .connectTimeout(3, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(false)
                 .build();
     }
 }

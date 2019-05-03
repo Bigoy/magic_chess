@@ -1,6 +1,5 @@
 package com.tssss.bysj.game.core;
 
-import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
 
 import java.io.File;
@@ -14,14 +13,22 @@ public class GameRole {
      * 游戏角色对应的账户
      */
     private User user;
-    private String avatar;
+    private String avatarStr;
     private File avatarFile;
     private String name;
     private String sex;
     private String signature;
-    private String level = Constant.ROLE_SX_I;
-    private int exp = 0;
+    private String level;
+    private int exp;
+    private int score;
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public String getChessmanCamp() {
         return chessmanCamp;
@@ -52,47 +59,22 @@ public class GameRole {
     public GameRole() {
     }
 
-    public GameRole(String avatar,
-                    String name,
-                    String sex,
-                    String signature,
-                    String level) {
-        this.avatar = avatar;
-        this.name = name;
-        this.sex = sex;
-        this.signature = signature;
-        this.level = level;
-    }
-
-    public GameRole(User user,
-                    String avatar,
-                    String name,
-                    String sex,
-                    String signature,
-                    String level) {
-        this.user = user;
-        this.avatar = avatar;
-        this.name = name;
-        this.sex = sex;
-        this.signature = signature;
-        this.level = level;
-
-    }
-
     public GameRole(User user,
                     String avatar,
                     String name,
                     String sex,
                     String signature,
                     String level,
-                    int exp) {
+                    int exp,
+                    int score) {
         this.user = user;
-        this.avatar = avatar;
+        this.avatarStr = avatar;
         this.name = name;
         this.sex = sex;
         this.signature = signature;
         this.level = level;
         this.exp = exp;
+        this.score = score;
 
     }
 
@@ -102,7 +84,8 @@ public class GameRole {
                     String sex,
                     String signature,
                     String level,
-                    int exp) {
+                    int exp,
+                    int score) {
         this.user = user;
         this.avatarFile = avatar;
         this.name = name;
@@ -110,6 +93,7 @@ public class GameRole {
         this.signature = signature;
         this.level = level;
         this.exp = exp;
+        this.score = score;
 
     }
 
@@ -121,12 +105,12 @@ public class GameRole {
         this.user = user;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarStr() {
+        return avatarStr;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarStr(String avatarStr) {
+        this.avatarStr = avatarStr;
     }
 
     public String getName() {

@@ -83,7 +83,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
 
                                 GameRole myRole = new GameRole();
                                 myRole.setUser(user);
-                                myRole.setAvatar(roleMap.get(Constant.ROLE_AVATAR));
+                                myRole.setAvatarStr(roleMap.get(Constant.ROLE_AVATAR));
                                 myRole.setName(roleMap.get(Constant.ROLE_NICK_NAME));
                                 myRole.setSex(roleMap.get(Constant.ROLE_SEX));
                                 myRole.setSignature(roleMap.get(Constant.ROLE_SIGNATURE));
@@ -138,11 +138,11 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
 
                             GameRole gameRole = new GameRole();
                             gameRole.setUser(user);
-                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_AVATAR));
-                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_NICK_NAME));
-                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SEX));
-                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SIGNATURE));
-                            gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_LEVEL));
+                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_AVATAR));
+                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_NICK_NAME));
+                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SEX));
+                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SIGNATURE));
+                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_LEVEL));
                             UserDataCache.saveAccount(user);
                             UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
                             AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
@@ -184,11 +184,11 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                     } else {
                                         GameRole gameRole = new GameRole();
                                         gameRole.setUser(user);
-                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_AVATAR));
-                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_NICK_NAME));
-                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SEX));
-                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_SIGNATURE));
-                                        gameRole.setAvatar(userInfo.getExtra(Constant.ROLE_LEVEL));
+                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_AVATAR));
+                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_NICK_NAME));
+                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SEX));
+                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SIGNATURE));
+                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_LEVEL));
                                         UserDataCache.saveAccount(user);
                                         UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
                                         AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
@@ -250,7 +250,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                             if (Constant.LOGIN_STATE_SUCCESS.equals(finalLoginState)) {
                                 JSONObject roleJson = realLoginResult.getJSONObject(Constant.JSON_KEY_ROLE);
                                 GameRole role = new GameRole();
-                                role.setAvatar(roleJson.getString(Constant.ROLE_AVATAR));
+                                role.setAvatarStr(roleJson.getString(Constant.ROLE_AVATAR));
                                 role.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
                                 role.setSex(roleJson.getString(Constant.ROLE_SEX));
                                 role.setSignature(roleJson.getString(Constant.ROLE_SIGNATURE));
@@ -297,7 +297,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                     @Override
                                     public void run() {
                                         GameRole debugRole = new GameRole();
-                                        debugRole.setAvatar("");
+                                        debugRole.setAvatarStr("");
                                         debugRole.setName("debug");
                                         debugRole.setSex(Constant.ROLE_SEX_MAN);
                                         debugRole.setSignature("");

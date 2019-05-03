@@ -62,7 +62,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         public void fillData(GameRole data) {
             if (null != data) {
                 Glide.with(getContext())
-                        .load(data.getAvatar())
+                        .load(data.getAvatarStr())
                         .into(avatar);
                 name.setText(data.getName());
 

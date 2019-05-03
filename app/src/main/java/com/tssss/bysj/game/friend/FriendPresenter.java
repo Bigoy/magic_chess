@@ -38,7 +38,7 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
                         Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
                         GameRole role = new GameRole();
                         role.setUser(new User(userInfo.getUserName(), null));
-                        role.setAvatar(userInfo.getAvatar());
+                        role.setAvatarStr(userInfo.getAvatar());
                         role.setAvatarFile(userInfo.getAvatarFile());
                         role.setName(map.get(Constant.ROLE_NICK_NAME));
                         role.setSex(map.get(Constant.ROLE_SEX));

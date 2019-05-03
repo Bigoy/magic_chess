@@ -13,6 +13,7 @@ import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
+import com.tssss.bysj.game.rank.RankActivity;
 import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.game.friend.FriendsActivity;
 import com.tssss.bysj.game.im.ChatListActivity;
@@ -33,7 +34,7 @@ import cn.jpush.im.android.api.model.UserInfo;
 public class HallActivity extends BaseActivity implements OnMenuItemClickListener {
     private ImageView gameNews;
     private ImageView myFriends;
-    private ImageView msg;
+    private ImageView rank;
     private ImageView gameSetting;
     private ImageButton matchGame;
 
@@ -43,7 +44,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
     protected void findViews() {
         gameNews = findViewById(R.id.hall_game_news);
         myFriends = findViewById(R.id.hall_friends);
-        msg = findViewById(R.id.hall_msg);
+        rank = findViewById(R.id.hall_rank);
         gameSetting = findViewById(R.id.hall_game_setting);
         matchGame = findViewById(R.id.hall_match_game);
     }
@@ -52,7 +53,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
     protected void setEventListeners() {
         gameNews.setOnClickListener(this);
         myFriends.setOnClickListener(this);
-        msg.setOnClickListener(this);
+        rank.setOnClickListener(this);
         gameSetting.setOnClickListener(this);
         matchGame.setOnClickListener(this);
     }
@@ -91,8 +92,8 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
             case R.id.hall_friends:
                 openActivity(FriendsActivity.class);
                 break;
-            case R.id.hall_msg:
-                openActivity(ChatListActivity.class);
+            case R.id.hall_rank:
+                openActivity(RankActivity.class);
                 break;
             case R.id.hall_game_setting:
                 openActivity(SettingActivity.class);

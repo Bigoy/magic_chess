@@ -51,7 +51,7 @@ public class Constant {
     public static final String JSON_KEY_FRIEND_LEVEL = "FRIEND_LEVEL";
 
 
-    // recommend role
+   /* // recommend role
     public static final String JSON_KEY_FRIEND_ADD_RECOMMEND = "FRIEND_ADD_RECOMMEND_LIST";
     public static final String JSON_KEY_FRIEND_ADD_ID = "FRIEND_ADD_RECOMMEND_ID";
     public static final String JSON_KEY_FRIEND_ADD_AVATAR = "FRIEND_ADD_AVATAR";
@@ -59,7 +59,8 @@ public class Constant {
     public static final String JSON_KEY_FRIEND_ADD_SEX = "FRIEND_ADD_SEX";
     public static final String JSON_KEY_FRIEND_ADD_SIGNATURE = "FRIEND_ADD_SIGNATURE";
     public static final String JSON_KEY_FRIEND_ADD_LEVEL = "FRIEND_ADD_LEVEL";
-
+    public static final String JSON_KEY_FRIEND_ADD_SCORE = "FRIEND_ADD_SCORE";
+*/
 
     /**
      * 数据持久化 KEY
@@ -151,6 +152,7 @@ public class Constant {
     public static final String ROLE_DJQS_III = "顶级棋手III";
 
     public static final String ROLE_EXP = "ROLE_EXP";
+    public static final String ROLE_SCORE = "ROLE_SCORE";
 
     /**
      * 用户偏好设置

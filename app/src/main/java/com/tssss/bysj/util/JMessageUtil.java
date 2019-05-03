@@ -1,15 +1,12 @@
 package com.tssss.bysj.util;
 
-import com.tssss.bysj.db.table.ChatHistoryTable;
 import com.tssss.bysj.game.core.GameRole;
-import com.tssss.bysj.game.im.ChatMessage;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 
 public class JMessageUtil {
@@ -23,7 +20,9 @@ public class JMessageUtil {
                     jsonObject.getString(Constant.ROLE_NICK_NAME),
                     jsonObject.getString(Constant.ROLE_SEX),
                     jsonObject.getString(Constant.ROLE_SIGNATURE),
-                    jsonObject.getString(Constant.ROLE_LEVEL)
+                    jsonObject.getString(Constant.ROLE_LEVEL),
+                    jsonObject.getInt(Constant.ROLE_EXP),
+                    jsonObject.getInt(Constant.ROLE_SCORE)
             );
         } catch (JSONException e) {
             return null;

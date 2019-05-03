@@ -133,6 +133,7 @@ public class NewRoleActivity extends BaseActivity {
             userRole.put(Constant.ACCOUNT_PASSWORD, intent.getStringExtra(Constant.ACCOUNT_PASSWORD));
             userRole.put(Constant.ROLE_EXP, "0");
             userRole.put(Constant.ROLE_LEVEL, Constant.ROLE_SX_I);
+            userRole.put(Constant.ROLE_SCORE, "0");
             updateUserInfo = JMessageClient.getMyInfo();
             updateUserInfo.setSignature(JSON.toJSONString(userRole));
             JMessageClient.updateMyInfo(UserInfo.Field.signature, updateUserInfo, new BasicCallback() {
@@ -162,10 +163,12 @@ public class NewRoleActivity extends BaseActivity {
                     }
                 }
             });
+        } else {
+            ToastUtil.showToast(this, "头像上传失败", ToastUtil.TOAST_ERROR);
         }
         /*GameRole gameRole = new GameRole();
         gameRole.setRoleExperience(0);
-        gameRole.setAvatar(userRole.get(Constant.ROLE_AVATAR));
+        gameRole.setAvatarStr(userRole.get(Constant.ROLE_AVATAR));
         gameRole.setName(userRole.get(Constant.ROLE_NICK_NAME));
         gameRole.setSex(userRole.get(Constant.ROLE_SEX));
         gameRole.setLevel(Constant.ROLE_SX_I);
@@ -202,11 +205,11 @@ public class NewRoleActivity extends BaseActivity {
                                             updateUserInfo = JMessageClient.getMyInfo();
                                             GameRole gameRole = new GameRole();
                                             gameRole.setUser(new User(userRole.get(Constant.ACCOUNT_ID), userRole.get(Constant.ACCOUNT_PASSWORD)));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_AVATAR));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_NICK_NAME));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_SEX));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_SIGNATURE));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_LEVEL));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_AVATAR));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_NICK_NAME));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_SEX));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_SIGNATURE));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_LEVEL));
                                             gameRole.setRoleExperience(0);
                                             AppDataCache.keepRole(gameRole);
                                             UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
@@ -221,11 +224,11 @@ public class NewRoleActivity extends BaseActivity {
                                         } else {
                                             *//*GameRole gameRole = new GameRole();
                                             gameRole.setUser(new User(userRole.get(Constant.ACCOUNT_ID), userRole.get(Constant.ACCOUNT_PASSWORD)));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_AVATAR));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_NICK_NAME));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_SEX));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_SIGNATURE));
-                                            gameRole.setAvatar(userRole.get(Constant.ROLE_LEVEL));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_AVATAR));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_NICK_NAME));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_SEX));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_SIGNATURE));
+                                            gameRole.setAvatarStr(userRole.get(Constant.ROLE_LEVEL));
                                             UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());*//*
 
                                         }
@@ -240,11 +243,11 @@ public class NewRoleActivity extends BaseActivity {
                             } else {
                                 GameRole gameRole = new GameRole();
                                 gameRole.setUser(new User(userRole.get(Constant.ACCOUNT_ID), userRole.get(Constant.ACCOUNT_PASSWORD)));
-                                gameRole.setAvatar(userRole.get(Constant.ROLE_AVATAR));
-                                gameRole.setAvatar(userRole.get(Constant.ROLE_NICK_NAME));
-                                gameRole.setAvatar(userRole.get(Constant.ROLE_SEX));
-                                gameRole.setAvatar(userRole.get(Constant.ROLE_SIGNATURE));
-                                gameRole.setAvatar(userRole.get(Constant.ROLE_LEVEL));
+                                gameRole.setAvatarStr(userRole.get(Constant.ROLE_AVATAR));
+                                gameRole.setAvatarStr(userRole.get(Constant.ROLE_NICK_NAME));
+                                gameRole.setAvatarStr(userRole.get(Constant.ROLE_SEX));
+                                gameRole.setAvatarStr(userRole.get(Constant.ROLE_SIGNATURE));
+                                gameRole.setAvatarStr(userRole.get(Constant.ROLE_LEVEL));
                                 UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
                                 UserDataCache.keepRole(gameRole);
                                 handler.post(new Runnable() {
@@ -272,7 +275,7 @@ public class NewRoleActivity extends BaseActivity {
                                 userRole.get(Constant.ACCOUNT_ID)).getHistoryTable().createChatHistoryTable();
                         JSONObject roleJson = jsonObject.getJSONObject(Constant.JSON_KEY_ROLE);
                         GameRole gameRole = new GameRole();
-                        gameRole.setAvatar(roleJson.getString(Constant.ROLE_AVATAR));
+                        gameRole.setAvatarStr(roleJson.getString(Constant.ROLE_AVATAR));
                         gameRole.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
                         gameRole.setSex(roleJson.getString(Constant.ROLE_SEX));
                         gameRole.setSignature(roleJson.getString(Constant.ROLE_SIGNATURE));

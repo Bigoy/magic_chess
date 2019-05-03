@@ -51,4 +51,9 @@ public class HttpUrl {
      */
     public static final String URL_BATTLE_RECORD = host + "/battlerecord";
 
+    /**
+     * 排行榜
+     */
+    public static final String URL_RANK = host + "/rank";
+
 }

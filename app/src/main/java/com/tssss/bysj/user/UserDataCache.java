@@ -57,7 +57,7 @@ public class UserDataCache {
 
     public static void keepRole(GameRole gameRole) {
         if (null != gameRole) {
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_AVATAR, gameRole.getAvatar());
+            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_AVATAR, gameRole.getAvatarStr());
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_NICK_NAME, gameRole.getName());
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SEX, gameRole.getSex());
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SIGNATURE, gameRole.getSignature());
@@ -79,7 +79,7 @@ public class UserDataCache {
         } else {
             gameRole = new GameRole();
             gameRole.setUser(new User(readAccount(Constant.ACCOUNT_ID), readAccount(Constant.ACCOUNT_PASSWORD)));
-            gameRole.setAvatar(avatar);
+            gameRole.setAvatarStr(avatar);
             gameRole.setName(name);
             gameRole.setSex(sex);
             gameRole.setSignature(signature);

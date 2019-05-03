@@ -54,7 +54,7 @@ public class ChatPresenter extends BaseMvpPresenter<IChatContract.IView> impleme
                     chatMessage.setMessageFrom(ChatMessage.MESSAGE_ME);
                 }
                 chatMessage.setTime(message.getContent().getStringExtra("msg_time"));
-//            chatMessage.setUserAvatar(message.getFromUser().getAvatar());
+//            chatMessage.setUserAvatar(message.getFromUser().getAvatarStr());
                 chatMessageList.add(chatMessage);
 
             }

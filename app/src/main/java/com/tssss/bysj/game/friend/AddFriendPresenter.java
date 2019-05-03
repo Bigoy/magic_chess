@@ -52,7 +52,7 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
         OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_FRIEND_ADD_RECOMMEND, paraMap, new HttpCallback() {
             @Override
             public void onSuccess(String result) {
-                if (!cancel) {
+                /*if (!cancel) {
                     if (!StringUtil.isBlank(result)) {
                         List<GameRole> gameRoleList = new ArrayList<>();
                         try {
@@ -67,7 +67,8 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                                         sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_NAME),
                                         sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_SEX),
                                         sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_SIGNATURE),
-                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_LEVEL)
+                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_LEVEL),
+                                        sigleRoleJson.getString(Constant.JSO)
                                 ));
                             }
 
@@ -99,7 +100,7 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                 } else {
                     Logger.log("操作取消，丢弃数据");
 
-                }
+                }*/
             }
 
             @Override

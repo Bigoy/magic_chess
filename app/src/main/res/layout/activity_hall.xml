@@ -33,12 +33,12 @@
             tools:ignore="ContentDescription" />
 
         <ImageView
-            android:id="@+id/hall_msg"
+            android:id="@+id/hall_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@null"
-            android:src="@drawable/ic_btn_message"
+            android:src="@drawable/ic_btn_rank"
             tools:ignore="ContentDescription" />
 
         <ImageView

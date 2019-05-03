@@ -6,7 +6,7 @@
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
         android:toXDelta="0%" />
 
-    <alpha
+    <!--<alpha
         android:fromAlpha="0.8"
-        android:toAlpha="1.0" />
+        android:toAlpha="1.0" />-->
 </set>
