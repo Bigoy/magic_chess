@@ -108,7 +108,7 @@ public class Constant {
     public static final String ROLE_SEX = "ROLE_SEX";
     public static final String ROLE_SEX_MAN = "♂";
     public static final String ROLE_SEX_WOMAN = "♀";
-    public static final String ROLE_SEX_SECRET = "SECRET";
+    public static final String ROLE_SEX_SECRET = "保密";
 
     public static final String ROLE_NICK_NAME = "ROLE_NICK_NAME";
     public static final String ROLE_SIGNATURE = "ROLE_SIGNATURE";

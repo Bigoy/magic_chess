@@ -146,7 +146,7 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.setting_edit:
                 startColorAnimation(edit);
-                openActivity(NewRoleActivity.class);
+                openActivityDelay(NewRoleActivity.class, 110);
                 break;
             default:
 
@@ -168,27 +168,27 @@ public class SettingActivity extends BaseActivity {
 
     private void startColorAnimation(GTextView view) {
         initSettingTabState();
-        view.setTextColor(Color.WHITE);
         ValueAnimator va = ObjectAnimator.ofInt(view, "backgroundColor",
                 0x00000000, 0xFF7E561B);
         va.setDuration(100);
         va.setEvaluator(new ArgbEvaluator());
         va.start();
+        view.setTextColor(Color.WHITE);
     }
 
     private void initSettingTabState() {
-        accountDetail.setTextColor(0xFF7E561B);
-        alterPassword.setTextColor(0xFF7E561B);
-        version.setTextColor(0xFF7E561B);
-        versionDescription.setTextColor(0xFF7E561B);
-        about.setTextColor(0xFF7E561B);
-        edit.setTextColor(0xFF7E561B);
-
         accountDetail.setBackgroundColor(0x00000000);
         alterPassword.setBackgroundColor(0x00000000);
         version.setBackgroundColor(0x00000000);
         versionDescription.setBackgroundColor(0x00000000);
         about.setBackgroundColor(0x00000000);
         edit.setBackgroundColor(0x00000000);
+
+        accountDetail.setTextColor(0xFF7E561B);
+        alterPassword.setTextColor(0xFF7E561B);
+        version.setTextColor(0xFF7E561B);
+        versionDescription.setTextColor(0xFF7E561B);
+        about.setTextColor(0xFF7E561B);
+        edit.setTextColor(0xFF7E561B);
     }
 }
