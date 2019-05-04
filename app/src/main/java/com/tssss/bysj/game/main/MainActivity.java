@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ac_main_login_ib:
-                openActivity(LoginActivity.class);
+                openActivityDelay(LoginActivity.class, 300);
                 /*if (AppDataCache.readAccountState().equals(Constant.ACCOUNT_STATE_LOGIN)) {
 //                    openActivity(HallActivity.class);
                     // 本地已经登录，那么登录到极光Message
