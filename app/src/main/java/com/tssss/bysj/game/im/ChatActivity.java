@@ -72,6 +72,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
     @Override
     protected void setEventListeners() {
         sendMsg.setOnClickListener(this);
+
     }
 
     @Override
@@ -202,7 +203,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             }
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setMessageFrom(ChatMessage.MESSAGE_ME);
-            chatMessage.setUserAvatar("");
+            chatMessage.setAvatarFile(JMessageClient.getMyInfo().getAvatarFile());
             chatMessage.setTime(SystemUtil.getCurrentTime());
             chatMessage.setMessage(msg);
             if (this.chatMessageList == null) {
@@ -212,7 +213,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             chatMessageList.add(chatMessage);
             loadingTv.setVisibility(View.GONE);
             chatRv.setVisibility(View.VISIBLE);
-//            adapter.notifyItemInserted(adapter.getItemCount());
+            adapter.notifyItemInserted(adapter.getItemCount());
             adapter.notifyDataSetChanged();
             chatRv.smoothScrollToPosition(adapter.getItemCount());
             chatMsgEt.setText("");
