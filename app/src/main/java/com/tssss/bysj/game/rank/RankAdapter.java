@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.user.UserDataCache;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,6 +80,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         @Override
         public void fillData(Rank data) {
             if (null != data) {
+                String accountID = data.getRole().getUser().getUserId();
                 score.setText("积分：" + data.getRole().getScore());
                 int rankNum = data.getRankNum();
                 if (rankNum == 1) {
@@ -103,24 +106,24 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
                 }
 
-                name.setText(data.getRole().getName());
-                JMessageClient.getUserInfo(data.getRole().getUser().getUserId(), new GetUserInfoCallback() {
+                JMessageClient.getUserInfo(accountID, new GetUserInfoCallback() {
                     @Override
                     public void gotResult(int i, String s, UserInfo userInfo) {
                         if (i == 0) {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Glide.with(getContext())
-                                            .load(userInfo.getAvatarFile())
-                                            .into(avatar);
-                                }
-                            });
+                            handler.post(() -> Glide.with(getContext())
+                                    .load(userInfo.getAvatarFile())
+                                    .into(avatar));
 
                         }
                     }
                 });
+                if (accountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
+                    name.setText("我");
 
+                } else {
+                    name.setText(data.getRole().getName());
+
+                }
             }
         }
 

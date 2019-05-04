@@ -47,6 +47,7 @@ public class RankActivity extends BaseActivity implements IRankContract.IView {
     @Override
     protected int getTopBarCenterViewStyle() {
         return R.drawable.rank_title;
+
     }
 
     @SuppressLint("SetTextI18n")
