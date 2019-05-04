@@ -15,17 +15,19 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import androidx.recyclerview.widget.SortedList;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> implements IRankContract.IPresenter {
     private Handler handler;
     private RankSortedListCallBack rankSortedListCallBack;
     private RankAdapter rankAdapter;
     private RankAdapter.RankViewHolder.OnRankItemClickListener onRankItemClickListener;
-    static boolean viewDestroyed;
+    private boolean viewDestroyed;
 
 
     public RankPresenter(Context context, IRankContract.IView view) {
@@ -57,7 +59,6 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
                     JSONObject roleJson = JSON.parseObject(usersJsonArray.getJSONObject(i).getString("signature"));
                     role = new GameRole();
                     role.setUser(new User(usersJsonArray.getJSONObject(i).getString("username"), null));
-                    role.setAvatarStr(usersJsonArray.getJSONObject(i).getString("avatar"));
                     role.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
                     role.setSex(roleJson.getString(Constant.ROLE_SEX));
                     role.setSignature(roleJson.getString(Constant.ROLE_SIGNATURE));
@@ -79,94 +80,25 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
 
                 rankAdapter.setRankSortedList(rankSortedList);
                 rankAdapter.setOnRankItemClickListener(onRankItemClickListener);
-                handler.post(() -> getView().showRank(rankAdapter));
+                if (!viewDestroyed) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getView().showRank(rankAdapter);
 
-//                if (roleList.size() > 0) {
-//                    // 已经排好序的列表
-//                    List<GameRole> orderedList = new ArrayList<>();
-//                    // 积分相同
-//                    List<GameRole> sameScoreList = new ArrayList<>();
-//
-//                    for (int j = 0; j < roleList.size() - 1; j++) {
-//                        for (int o = 0; o < roleList.size() - j - 1; o++) {
-//                            int temp;
-//                            int oScore = roleList.get(o).getScore();
-//                            int o1Score = roleList.get(o + 1).getScore();
-//                            if (oScore > o1Score) {
-//                                orderedList.add(roleList.get(o + 1));
-//
-//                            } else if (oScore < o1Score) {
-//                                orderedList.add(roleList.get(o));
-//
-//                            } else if (oScore == o1Score) {
-//                                // 积分相同的 加入到 sameScoreList 等待其它策略排序
-//                                if (!sameScoreList.contains(roleList.get(o))) {
-//                                    sameScoreList.add(roleList.get(o));
-//
-//                                }
-//                            }
-//
-//                        }
-//                    }
-//
-//                    // 判断是否有没有排序的对象   积分相同  比较手机号码
-//                    if (sameScoreList.size() > 0) {
-//                        for (int x = 0; x < sameScoreList.size() - 1; x++) {
-//                            for (int z = 0; z < sameScoreList.size() - x - 1; z++) {
-//                                long temp;
-//                                long oID = Long.valueOf(sameScoreList.get(z).getUser().getUserId());
-//                                long o1ID = Long.valueOf(sameScoreList.get(z + 1).getUser().getUserId());
-//                                if (oID > o1ID) {
-//                                    if (!orderedList.contains(sameScoreList.get(z + 1))) {
-//                                        orderedList.add(sameScoreList.get(z + 1));
-//                                    }
-//
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//
-//
-//                    // 将最终全部排好序的列表显示在界面上
-//                    List<Rank> finalOrderRankList = new ArrayList<>();
-//                    for (int g = 0; g < orderedList.size(); g++) {
-//                        // 排序从 1 开始， 所以 g + 1
-//                        finalOrderRankList.add(new Rank(orderedList.get(g), g + 1));
-//
-//                    }
-//
-//                    if (finalOrderRankList.size() > 0) {
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                // 第一名
-//                                getView().showOne(finalOrderRankList.get(0).getRole());
-//                                // 第二名
-//                                getView().showOne(finalOrderRankList.get(1).getRole());
-//                                // 第三名
-//                                getView().showOne(finalOrderRankList.get(2).getRole());
-//                                // 以后的玩家
-//                                getView().showRank(finalOrderRankList);
-//                            }
-//                        });
-//
-//                    } else {
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                getView().loadError();
-//                            }
-//                        });
-//
-//                    }
-//                }
+                        }
+                    });
+                }
+
             }
 
             @Override
             public void onFailure(String errorMsg) {
                 Logger.log("加载失败" + errorMsg);
-                handler.post(() -> getView().loadError());
+                if (!viewDestroyed) {
+                    handler.post(() -> getView().loadError());
+
+                }
             }
         });
     }

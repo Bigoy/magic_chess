@@ -14,6 +14,7 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 
@@ -120,17 +121,23 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
                 }
 
-                JMessageClient.getUserInfo(accountID, new GetUserInfoCallback() {
+                JMessageClient.getUserInfo(data.getRole().getUser().getUserId(), new GetUserInfoCallback() {
                     @Override
                     public void gotResult(int i, String s, UserInfo userInfo) {
-                        if (i == 0) {
-                            if (!RankPresenter.viewDestroyed) {
-                                handler.post(() -> Glide.with(getContext())
-                                        .load(userInfo.getAvatarFile())
-                                        .into(avatar));
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Glide.with(getContext())
+                                            .load(userInfo.getAvatarFile())
+                                            .into(avatar);
+                                } catch (Exception e) {
+                                    Logger.log("activity destroyed");
 
+                                }
                             }
-                        }
+                        });
+
                     }
                 });
                 if (accountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
