@@ -50,6 +50,7 @@ public class UserInfoActivity extends BaseActivity {
 
     public String getUserAccount() {
         return this.userAccount;
+
     }
 
     @Override
@@ -226,6 +227,7 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     protected int getTopBarCenterViewStyle() {
         return R.drawable.user_info_title;
+
     }
 
 }

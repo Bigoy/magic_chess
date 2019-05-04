@@ -6,9 +6,11 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/item_rank_container"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
+        android:visibility="visible"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -46,7 +48,6 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:background="@drawable/bg_rank_avatar_other"
             android:padding="2dp"
             tools:ignore="ContentDescription" />
 
@@ -71,6 +72,48 @@
             android:gravity="center_vertical"
             android:textSize="14dp"
             tools:ignore="SpUsage" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_rank_container_operation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_rank_add_friend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="添加好友"
+            android:textSize="18dp"
+            android:visibility="visible"
+            tools:ignore="HardcodedText,SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_rank_look_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ta_info"
+            android:textSize="18dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_rank_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="#D55E5E"
+            android:textSize="18dp"
+            tools:ignore="SpUsage" />
+
 
     </LinearLayout>
 

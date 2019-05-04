@@ -33,6 +33,7 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
 
     private Handler handler;
     private AddFriendPresenter presenter;
+    private AlertDialog.Builder sendingBuilder;
 
     @Override
     protected void findViews() {
@@ -73,7 +74,7 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
 
     @Override
     protected void afterBindView() {
-        presenter = new AddFriendPresenter(this);
+        presenter = new AddFriendPresenter(this, this);
         handler = new Handler();
     }
 
@@ -105,28 +106,31 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
 
     @Override
     public void showRequesting() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        sendingBuilder = new AlertDialog.Builder(this)
                 .operationType(AlertDialog.OPERATION_TYPE_SIMPLE)
                 .subDesc("正在发送请求");
-        builder.display();
+        sendingBuilder.display();
     }
 
     @Override
     public void showRequestSucceed() {
-        ToastUtil.showToast(this, "发送成功", ToastUtil.TOAST_DEFAULT);
-        finish();
+        sendingBuilder.dismiss();
+        ToastUtil.showToast(this, "发送成功，慢慢等待TA回复吧", ToastUtil.TOAST_DEFAULT);
+//        finish();
     }
 
     @Override
     public void showRequestFailed(String s) {
-        finish();
+//        finish();
+        sendingBuilder.dismiss();
         ToastUtil.showToast(this, s, ToastUtil.TOAST_ERROR);
     }
 
     @Override
     public void showNotUser() {
-        ToastUtil.showToast(this, "你输入的用户不存在", ToastUtil.TOAST_ERROR);
-        finish();
+        sendingBuilder.dismiss();
+        ToastUtil.showToast(this, "用户不存在", ToastUtil.TOAST_ERROR);
+//        finish();
     }
 
 

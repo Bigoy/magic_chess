@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
@@ -14,6 +15,7 @@ import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.UserDataCache;
+import com.tssss.bysj.util.AnimationUtil;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
     private SortedList<Rank> rankSortedList;
     private Context context;
     private Rank data;
+    private RankViewHolder.OnRankItemClickListener onRankItemClickListener;
 
 
     public RankAdapter(Context context, SortedList<Rank> rankSortedList) {
@@ -35,6 +38,11 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
     public void setRankSortedList(SortedList<Rank> rankSortedList) {
         this.rankSortedList = rankSortedList;
+
+    }
+
+    public void setOnRankItemClickListener(RankViewHolder.OnRankItemClickListener onRankItemClickListener) {
+        this.onRankItemClickListener = onRankItemClickListener;
 
     }
 
@@ -50,6 +58,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         data = rankSortedList.get(position);
         data.setRankNum(position + 1);
         holder.fillData(data);
+        holder.setListeners(onRankItemClickListener, data.getRole().getUser().getUserId());
     }
 
     @Override
@@ -63,6 +72,11 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         private ImageView rankIv;
         private GTextView name;
         private GTextView score;
+        private GTextView addFriend;
+        private GTextView cancelOperation;
+        private GTextView lookInfo;
+        private LinearLayout operationContainer;
+        private LinearLayout rankContainer;
 
         private Handler handler;
 
@@ -134,6 +148,56 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             name = findGTextView(R.id.item_rank_name);
             score = findGTextView(R.id.item_rank_score);
             rankIv = findImageView(R.id.item_rank_num_iv);
+            operationContainer = findLinearLayout(R.id.item_rank_container_operation);
+            rankContainer = findLinearLayout(R.id.item_rank_container);
+            addFriend = findGTextView(R.id.item_rank_add_friend);
+            lookInfo = findGTextView(R.id.item_rank_look_info);
+            cancelOperation = findGTextView(R.id.item_rank_cancel);
+
+        }
+
+        public void setListeners(OnRankItemClickListener onRankItemClickListener, String accountID) {
+
+            rankContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AnimationUtil.switchViewsTraslate(getContext(), operationContainer, rankContainer);
+
+                }
+            });
+            cancelOperation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AnimationUtil.switchViewsTraslate(getContext(), rankContainer, operationContainer);
+
+                }
+            });
+            addFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != onRankItemClickListener) {
+                        onRankItemClickListener.onAddFriend(accountID);
+
+                    }
+                }
+            });
+            lookInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != onRankItemClickListener) {
+                        onRankItemClickListener.onLookInfo(accountID);
+
+                    }
+                }
+            });
+
+        }
+
+
+        public interface OnRankItemClickListener {
+            void onAddFriend(String accountID);
+
+            void onLookInfo(String accountID);
 
         }
     }

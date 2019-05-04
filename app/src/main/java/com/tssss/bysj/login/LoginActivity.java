@@ -183,7 +183,6 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 //            UserDataCache.keepString("history_account", account_et.getText().toString());
 //            UserDataCache.keepString("history_password", password_et.getText().toString());
             AnimationUtil.flipView(this, login_ib, logging_gtv);
-            UserDataCache.saveAccount(mLoginUser);
             mLoginPresenter.confirmAccountOperation(account_et.getText().toString(), password_et.getText().toString());
         }
     }

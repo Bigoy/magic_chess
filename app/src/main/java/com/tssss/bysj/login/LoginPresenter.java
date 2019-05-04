@@ -41,7 +41,6 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
 
     @Override
     public void verifyAccountFormat(User user) {
-        UserDataCache.saveAccount(user);
         if (!AccountUtil.validPhoneNumber(user.getUserId())) {
             getView().onAccountFormatError();
         }
@@ -56,6 +55,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
         }
         if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
             this.user = user;
+            UserDataCache.saveAccount(user);
             getView().onProcess();
         }
     }

@@ -2,39 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
-    android:layout_marginBottom="4dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/item_recommend_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="4dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_rank_avatar_other"
+            android:padding="2dp"
             tools:ignore="ContentDescription" />
 
         <com.tssss.bysj.componet.GTextView
             android:id="@+id/item_recommend_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp"
+            tools:ignore="SpUsage" />
+
+        <com.tssss.bysj.componet.GTextView
+            android:id="@+id/item_recommend_level"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:textSize="24dp"
+            android:textSize="12dp"
             tools:ignore="SpUsage" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:background="#cbcbcb" />
+    <!--
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="#cbcbcb" />-->
 
 </LinearLayout>

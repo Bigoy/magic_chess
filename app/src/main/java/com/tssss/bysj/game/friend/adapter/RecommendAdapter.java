@@ -16,6 +16,9 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetUserInfoCallback;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder> {
 
@@ -48,9 +51,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     public static class RecommendViewHolder extends BaseRvViewHolder<GameRole> {
         private ImageView avatar;
         private GTextView name;
+        private GTextView level;
 
         public RecommendViewHolder(@NonNull View itemView) {
             super(itemView);
+
         }
 
         @Override
@@ -61,11 +66,20 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         @Override
         public void fillData(GameRole data) {
             if (null != data) {
-                Glide.with(getContext())
-                        .load(data.getAvatarStr())
-                        .into(avatar);
                 name.setText(data.getName());
+                level.setText(data.getLevel());
+                JMessageClient.getUserInfo(data.getUser().getUserId(), new GetUserInfoCallback() {
+                    @Override
+                    public void gotResult(int i, String s, UserInfo userInfo) {
+                        if (i == 0) {
+                            Glide.with(getContext())
+                                    .load(userInfo.getAvatarFile())
+                                    .into(avatar);
 
+                        }
+
+                    }
+                });
             }
         }
 
@@ -73,6 +87,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         protected void findViews() {
             avatar = findImageView(R.id.item_recommend_avatar);
             name = findGTextView(R.id.item_recommend_name);
+            level = findGTextView(R.id.item_recommend_level);
         }
     }
 }

@@ -24,6 +24,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
     private Handler handler;
     private RankSortedListCallBack rankSortedListCallBack;
     private RankAdapter rankAdapter;
+    private RankAdapter.RankViewHolder.OnRankItemClickListener onRankItemClickListener;
 
 
     public RankPresenter(Context context, IRankContract.IView view) {
@@ -33,6 +34,10 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
         rankSortedListCallBack = new RankSortedListCallBack(rankAdapter);
     }
 
+    public void setOnRankItemClickListener(RankAdapter.RankViewHolder.OnRankItemClickListener onRankItemClickListener) {
+        this.onRankItemClickListener = onRankItemClickListener;
+
+    }
     @Override
     public void loadRankData() {
         Map<String, Integer> paramMap = new HashMap<>();
@@ -71,6 +76,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
                 Logger.log("获取到的玩家个数" + rankSortedList.size());
 
                 rankAdapter.setRankSortedList(rankSortedList);
+                rankAdapter.setOnRankItemClickListener(onRankItemClickListener);
                 handler.post(() -> getView().showRank(rankAdapter));
 
 //                if (roleList.size() > 0) {

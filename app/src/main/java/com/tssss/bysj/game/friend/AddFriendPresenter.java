@@ -1,8 +1,13 @@
 package com.tssss.bysj.game.friend;
 
+import android.content.Context;
 import android.os.Handler;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
 import com.tssss.bysj.http.OkHttpProvider;
@@ -11,11 +16,7 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
-import com.tssss.bysj.util.StringUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,64 +24,95 @@ import java.util.List;
 import java.util.Map;
 
 import cn.jpush.im.android.api.ContactManager;
-import cn.jpush.im.api.BasicCallback;
+import cn.jpush.im.android.api.callback.GetUserInfoListCallback;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IView>
         implements IAddFriendContract.IPresenter {
 
     private boolean cancel;
     private Handler handler;
+    private Context context;
 
-    public AddFriendPresenter(IAddFriendContract.IView view) {
+    public AddFriendPresenter(Context context, IAddFriendContract.IView view) {
         super(view);
+        this.context = context;
         handler = new Handler();
     }
 
     @Override
     public void loadRecommendRoles() {
-        /*JMessageClient.getUserInfo("a16d4094af87e2e8", null, new GetUserInfoCallback() {
+        Map<String, Integer> paramMap = new HashMap<>();
+        paramMap.put("start", 0);
+        // 默认加载五个推荐玩家
+        paramMap.put("count", 100);
+        ContactManager.getFriendList(new GetUserInfoListCallback() {
             @Override
-            public void gotResult(int i, String s, UserInfo userInfo) {
-                Logger.log(i + s);
+            public void gotResult(int i, String s, List<UserInfo> list) {
                 if (i == 0) {
+                    List<String> accountIDList = new ArrayList<>();
+                    for (int x = 0; x < list.size(); x++) {
+                        accountIDList.add(list.get(x).getUserName());
 
-                }
-            }
-        });*/
-        Map<String, String> paraMap = new HashMap<>();
-        paraMap.put(Constant.ACCOUNT_ID, UserDataCache.readAccount(Constant.ACCOUNT_ID));
-        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_FRIEND_ADD_RECOMMEND, paraMap, new HttpCallback() {
-            @Override
-            public void onSuccess(String result) {
-                /*if (!cancel) {
-                    if (!StringUtil.isBlank(result)) {
-                        List<GameRole> gameRoleList = new ArrayList<>();
-                        try {
-                            JSONObject resultJson = new JSONObject(result);
+                    }
 
-                            JSONArray recommendRoleList = resultJson.getJSONArray(Constant.JSON_KEY_FRIEND_ADD_RECOMMEND);
-                            for (int i = 0; i < recommendRoleList.length(); i++) {
-                                JSONObject sigleRoleJson = recommendRoleList.getJSONObject(i);
-                                gameRoleList.add(new GameRole(
-                                        new User(sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_ID), null),
-                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_AVATAR),
-                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_NAME),
-                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_SEX),
-                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_SIGNATURE),
-                                        sigleRoleJson.getString(Constant.JSON_KEY_FRIEND_ADD_LEVEL),
-                                        sigleRoleJson.getString(Constant.JSO)
-                                ));
-                            }
+                    // 请求app用户列表
+                    OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_IM_USER, paramMap, new HttpCallback() {
+                        @Override
+                        public void onSuccess(String result) {
 
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().showRecommendRoles(gameRoleList);
+                            List<GameRole> recommendRoleList = new ArrayList<>();
+                            if (!cancel) {
+                                Logger.log(result);
+                                JSONObject resultJson = JSON.parseObject(result);
+                                JSONArray usersJsonArray = resultJson.getJSONArray("users");
+                                GameRole role;
+                                String accountID;
+                                for (int i = 0; i < usersJsonArray.size(); i++) {
+                                    JSONObject roleJson = JSON.parseObject(usersJsonArray.getJSONObject(i).getString("signature"));
+                                    role = new GameRole();
+                                    accountID = usersJsonArray.getJSONObject(i).getString("username");
+                                    role.setUser(new User(accountID, null));
+                                    role.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
+                                    role.setSex(roleJson.getString(Constant.ROLE_SEX));
+                                    role.setSignature(roleJson.getString(Constant.ROLE_SIGNATURE));
+                                    role.setLevel(roleJson.getString(Constant.ROLE_LEVEL));
+
+                                    try {
+                                        role.setRoleExperience(Integer.getInteger(roleJson.getString(Constant.ROLE_EXP)));
+                                        role.setScore(Integer.getInteger(roleJson.getString(Constant.ROLE_SCORE)));
+
+                                    } catch (Exception e) {
+                                        role.setRoleExperience(0);
+                                        role.setScore(0);
+
+                                    }
+                                    // 玩家不能是自己也不能已经是好友
+                                    if (!accountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
+                                        if (!accountIDList.contains(accountID)) {
+                                            recommendRoleList.add(role);
+
+                                        }
+                                    }
 
                                 }
-                            });
 
-                        } catch (JSONException e) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getView().showRecommendRoles(recommendRoleList);
+
+                                    }
+                                });
+
+                            } else {
+                                Logger.log("操作取消，丢弃数据");
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String errorMsg) {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -88,29 +120,10 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                                 }
                             });
                         }
+                    });
 
-                    } else {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                getView().showRecommendRoles(null);
-                            }
-                        });
-                    }
-                } else {
-                    Logger.log("操作取消，丢弃数据");
 
-                }*/
-            }
-
-            @Override
-            public void onFailure(String errorMsg) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().showRecommendRoles(null);
-                    }
-                });
+                }
             }
         });
 
@@ -119,55 +132,73 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
 
     @Override
     public void sendAddFriendRequest(String targetUserAccountID) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getView().showRequesting();
-            }
-        });
-        ContactManager.sendInvitationRequest(targetUserAccountID,
-                Constant.JMESSAGE_APP_KEY,
-                UserDataCache.readAccount("id 为 " + Constant.ACCOUNT_ID) + " 的玩家希望和你成为朋友", new BasicCallback() {
-                    @Override
-                    public void gotResult(int i, String s) {
-                        if (i == 0) {
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().showRequestSucceed();
-                                }
-                            }, 1000);
-                        } else if (i == 898002) {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().showNotUser();
-                                }
-                            });
-                        } else if (i == 805002) {
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().showRequestFailed("你们已经是好友了哟");
-                                    Logger.log(i + s);
-                                }
-                            }, 1000);
 
-                        } else {
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().showRequestFailed(s);
-                                    Logger.log(i + s);
-                                }
-                            }, 1000);
-                        }
+        JMessageManager.addFriend(targetUserAccountID, new JMessageManager.AddFriendCallBack() {
+            @Override
+            public void requesting() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().showRequesting();
+
                     }
                 });
+
+            }
+
+            @Override
+            public void success() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().showRequestSucceed();
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void notUser() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().showNotUser();
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void fail(String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(context, errorMsg, ToastUtil.TOAST_ERROR);
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void isFriend() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().showRequestFailed("你们已经是好友了哦");
+
+                    }
+                });
+
+            }
+        });
     }
 
     @Override
     protected IAddFriendContract.IView getEmptyView() {
         return IAddFriendContract.emptyView;
+
     }
 }

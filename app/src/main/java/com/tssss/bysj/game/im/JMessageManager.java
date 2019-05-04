@@ -2,17 +2,21 @@ package com.tssss.bysj.game.im;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.core.view.GameActivity;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.Map;
 
+import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.content.TextContent;
@@ -23,7 +27,13 @@ import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.api.BasicCallback;
 
 public class JMessageManager {
+    private static Handler handler;
     private static AlertDialog.Builder builder;
+
+    public JMessageManager() {
+        handler = new Handler();
+
+    }
 
     public static void registerEvent(BaseActivity context) {
         JMessageClient.registerEventReceiver(context);
@@ -232,5 +242,52 @@ public class JMessageManager {
                 }
             }
         }
+    }
+
+    public static void addFriend(String targetUserAccountID, AddFriendCallBack addFriendCallBack) {
+        if (null != addFriendCallBack) {
+            addFriendCallBack.requesting();
+
+        }
+        ContactManager.sendInvitationRequest(targetUserAccountID,
+                Constant.JMESSAGE_APP_KEY,
+                UserDataCache.readAccount("id 为 " + Constant.ACCOUNT_ID) + " 的玩家希望和你成为朋友", new BasicCallback() {
+                    @Override
+                    public void gotResult(int i, String s) {
+                        if (i == 0) {
+                            addFriendCallBack.success();
+
+
+                        } else if (i == 898002) {
+                            addFriendCallBack.notUser();
+
+
+                        } else if (i == 805002) {
+                            addFriendCallBack.isFriend();
+
+
+                        } else if (i == 871317) {
+                            addFriendCallBack.fail("不能添加自己哦!");
+
+                        } else {
+                            addFriendCallBack.fail(s);
+                            Logger.log(i + s);
+
+                        }
+                    }
+                });
+    }
+
+    public interface AddFriendCallBack {
+        void requesting();
+
+        void success();
+
+        void notUser();
+
+        void fail(String errorMsg);
+
+        void isFriend();
+
     }
 }
