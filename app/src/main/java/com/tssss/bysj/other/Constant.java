@@ -7,6 +7,7 @@ public class Constant {
      * 三方
      */
     public static final String JMESSAGE_APP_KEY = "e0ae5aeb8eda030f9e338f64";
+    public static final String JMESSAGE_MASTER_SECRET = "0127f78c4b04ccb654ab7144";
     public static final String JMESSAGE_MESSAGE_KEY = "MAGIC_CHESS";
 
     /**

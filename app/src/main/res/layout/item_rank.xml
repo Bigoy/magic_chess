@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="vertical">
@@ -7,36 +8,58 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
-        <com.tssss.bysj.componet.GTextView
-            android:id="@+id/item_rank_num"
+        <LinearLayout
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20dp" />
+            android:orientation="vertical">
+
+            <com.tssss.bysj.componet.GTextView
+                android:id="@+id/item_rank_num"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"
+                android:visibility="gone"
+                tools:ignore="SpUsage" />
+
+            <ImageView
+                android:id="@+id/item_rank_num_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/item_rank_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:background="@drawable/bg_rank_avatar_other"
-            android:padding="2dp" />
+            android:padding="2dp"
+            tools:ignore="ContentDescription" />
 
         <com.tssss.bysj.componet.GTextView
             android:id="@+id/item_rank_name"
             android:layout_width="80dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:gravity="center_vertical"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            tools:ignore="SpUsage" />
 
         <com.tssss.bysj.componet.GTextView
             android:id="@+id/item_rank_score"
@@ -46,7 +69,8 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:textSize="18dp" />
+            android:textSize="14dp"
+            tools:ignore="SpUsage" />
 
     </LinearLayout>
 

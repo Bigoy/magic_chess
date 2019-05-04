@@ -56,4 +56,9 @@ public class HttpUrl {
      */
     public static final String URL_RANK = host + "/rank";
 
+    /**
+     * 极光 获取用户列表
+     */
+    public static final String URL_IM_USER = "https://api.im.jpush.cn/users/";
+
 }

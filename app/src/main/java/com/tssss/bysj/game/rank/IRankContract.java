@@ -7,17 +7,15 @@ import com.tssss.bysj.mvp.MvpController;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.SortedList;
+
 public interface IRankContract {
 
     interface IView extends IMvpView {
 
-        void showOne(GameRole role);
+        void showRank(RankAdapter rankAdapter);
 
-        void showTwo(GameRole role);
-
-        void showThree(GameRole role);
-
-        void showOther(List<Rank> rankList);
+        void loadError();
     }
 
     interface IPresenter extends ILifeCircle {
@@ -26,23 +24,14 @@ public interface IRankContract {
     }
 
     IView emptyView = new IView() {
+
         @Override
-        public void showOne(GameRole role) {
+        public void showRank(RankAdapter rankAdapter) {
 
         }
 
         @Override
-        public void showTwo(GameRole role) {
-
-        }
-
-        @Override
-        public void showThree(GameRole role) {
-
-        }
-
-        @Override
-        public void showOther(List<Rank> rankList) {
+        public void loadError() {
 
         }
 

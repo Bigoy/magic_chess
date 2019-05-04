@@ -1,6 +1,8 @@
 package com.tssss.bysj.game.rank;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +12,29 @@ import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
-import com.tssss.bysj.other.Logger;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetUserInfoCallback;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder> {
-    private List<Rank> roleList;
+    private SortedList<Rank> rankSortedList;
     private Context context;
+    private Rank data;
 
 
-    public RankAdapter(Context context, List<Rank> roleList) {
+    public RankAdapter(Context context, SortedList<Rank> rankSortedList) {
         this.context = context;
-        this.roleList = roleList;
+        this.rankSortedList = rankSortedList;
     }
 
+    public void setRankSortedList(SortedList<Rank> rankSortedList) {
+        this.rankSortedList = rankSortedList;
+
+    }
 
     @NonNull
     @Override
@@ -37,29 +45,28 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RankViewHolder holder, int position) {
-        // 1、2、3名不用显示
-        if (position == 0 || position == 1 || position == 2) {
-            Logger.log("放弃显示" + position);
-
-        } else {
-            holder.fillData(roleList.get(position));
-
-        }
+        data = rankSortedList.get(position);
+        data.setRankNum(position + 1);
+        holder.fillData(data);
     }
 
     @Override
     public int getItemCount() {
-        return null == this.roleList ? 0 : roleList.size();
+        return null == this.rankSortedList ? 0 : rankSortedList.size();
     }
 
     public static class RankViewHolder extends BaseRvViewHolder<Rank> {
         private GTextView rank;
         private ImageView avatar;
+        private ImageView rankIv;
         private GTextView name;
         private GTextView score;
 
+        private Handler handler;
+
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);
+            handler = new Handler();
         }
 
         @Override
@@ -67,15 +74,52 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void fillData(Rank data) {
             if (null != data) {
-                rank.setText(data.getRankNum());
-                Glide.with(getContext())
-                        .load(data.getRole().getAvatarFile())
-                        .into(avatar);
-                name.setText(data.getRole().getName());
                 score.setText("积分：" + data.getRole().getScore());
+                int rankNum = data.getRankNum();
+                if (rankNum == 1) {
+                    rankIv.setVisibility(View.VISIBLE);
+                    rankIv.setImageResource(R.drawable.jiang_bei_1);
+                    avatar.setBackgroundResource(R.drawable.bg_rank_avatar_1);
+
+                } else if (rankNum == 2) {
+                    rankIv.setVisibility(View.VISIBLE);
+                    rankIv.setImageResource(R.drawable.jiang_bei_2);
+                    avatar.setBackgroundResource(R.drawable.bg_rank_avatar_2);
+
+                } else if (rankNum == 3) {
+                    rankIv.setVisibility(View.VISIBLE);
+                    rankIv.setImageResource(R.drawable.jiang_bei_3);
+                    avatar.setBackgroundResource(R.drawable.bg_rank_avatar_3);
+
+                } else if (rankNum > 3) {
+                    rankIv.setVisibility(View.GONE);
+                    rank.setVisibility(View.VISIBLE);
+                    rank.setText(String.valueOf(rankNum));
+                    avatar.setBackgroundResource(R.drawable.bg_rank_avatar_other);
+
+                }
+
+                name.setText(data.getRole().getName());
+                JMessageClient.getUserInfo(data.getRole().getUser().getUserId(), new GetUserInfoCallback() {
+                    @Override
+                    public void gotResult(int i, String s, UserInfo userInfo) {
+                        if (i == 0) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(getContext())
+                                            .load(userInfo.getAvatarFile())
+                                            .into(avatar);
+                                }
+                            });
+
+                        }
+                    }
+                });
 
             }
         }
@@ -86,6 +130,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             avatar = findImageView(R.id.item_rank_avatar);
             name = findGTextView(R.id.item_rank_name);
             score = findGTextView(R.id.item_rank_score);
+            rankIv = findImageView(R.id.item_rank_num_iv);
 
         }
     }
