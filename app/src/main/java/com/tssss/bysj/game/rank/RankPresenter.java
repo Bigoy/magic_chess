@@ -25,6 +25,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
     private RankSortedListCallBack rankSortedListCallBack;
     private RankAdapter rankAdapter;
     private RankAdapter.RankViewHolder.OnRankItemClickListener onRankItemClickListener;
+    static boolean viewDestroyed;
 
 
     public RankPresenter(Context context, IRankContract.IView view) {
@@ -38,6 +39,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
         this.onRankItemClickListener = onRankItemClickListener;
 
     }
+
     @Override
     public void loadRankData() {
         Map<String, Integer> paramMap = new HashMap<>();
@@ -167,6 +169,24 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
                 handler.post(() -> getView().loadError());
             }
         });
+    }
+
+    @Override
+    public void onViewDestroy() {
+        super.onViewDestroy();
+        viewDestroyed = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewDestroyed = true;
+    }
+
+    @Override
+    public void destroyView() {
+        super.destroyView();
+        viewDestroyed = true;
     }
 
     @Override

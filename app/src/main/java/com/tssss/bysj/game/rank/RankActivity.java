@@ -49,6 +49,7 @@ public class RankActivity extends BaseActivity implements IRankContract.IView, R
         rankPresenter = new RankPresenter(this, this);
         rankPresenter.loadRankData();
         rankPresenter.setOnRankItemClickListener(this);
+        RankPresenter.viewDestroyed = false;
     }
 
     @Override

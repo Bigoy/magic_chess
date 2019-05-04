@@ -124,10 +124,12 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
                     @Override
                     public void gotResult(int i, String s, UserInfo userInfo) {
                         if (i == 0) {
-                            handler.post(() -> Glide.with(getContext())
-                                    .load(userInfo.getAvatarFile())
-                                    .into(avatar));
+                            if (!RankPresenter.viewDestroyed) {
+                                handler.post(() -> Glide.with(getContext())
+                                        .load(userInfo.getAvatarFile())
+                                        .into(avatar));
 
+                            }
                         }
                     }
                 });
