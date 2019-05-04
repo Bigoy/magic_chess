@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
-import com.tssss.bysj.util.StringUtil;
 
 import androidx.annotation.NonNull;
 
@@ -27,17 +26,11 @@ public class ChatSendViewHolder extends BaseRvViewHolder<ChatMessage> {
 
     @Override
     public void fillData(ChatMessage data) {
-        if (null != data) {
-            /*String avatarStr = data.getUserAvatar();
-            if (!StringUtil.isBlank(avatarStr)) {
-                Glide.with(getContext())
-                        .load(avatarStr)
-                        .into(sendAvatorIv);
-
-            }*/
-            sendMessageTv.setText(data.getMessage());
-            sendTimeTv.setText(data.getTime());
-        }
+        Glide.with(getContext())
+                .load(data.getAvatarFile())
+                .into(sendAvatorIv);
+        sendMessageTv.setText(data.getMessage());
+        sendTimeTv.setText(data.getTime());
     }
 
     @Override
@@ -45,5 +38,24 @@ public class ChatSendViewHolder extends BaseRvViewHolder<ChatMessage> {
         sendAvatorIv = findImageView(R.id.item_chat_send_head_iv);
         sendMessageTv = findGTextView(R.id.item_chat_send_msg_gtv);
         sendTimeTv = findGTextView(R.id.item_chat_send_time_gtv);
+    }
+
+    public void setListeners(ChatSendClickListener chatSendClickListener,String accountID) {
+       if (null != chatSendClickListener) {
+           sendAvatorIv.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   chatSendClickListener.lookMyInfo(accountID);
+
+               }
+           });
+
+       }
+    }
+
+
+    public interface ChatSendClickListener {
+        void lookMyInfo(String accountID);
+
     }
 }

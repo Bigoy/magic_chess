@@ -27,13 +27,9 @@ public class ChatReceiverViewHolder extends BaseRvViewHolder<ChatMessage> {
 
     @Override
     public void fillData(ChatMessage data) {
-        /*String avatarStr = data.getUserAvatar();
-        if (!StringUtil.isBlank(avatarStr)) {
-            Glide.with(getContext())
-                    .load(avatarStr)
-                    .into(receiverAvatorIv);
-
-        }*/
+        Glide.with(getContext())
+                .load(data.getAvatarFile())
+                .into(receiverAvatorIv);
         receiverMessageTv.setText(data.getMessage());
         receiverTimeTv.setText(data.getTime());
     }
@@ -43,5 +39,23 @@ public class ChatReceiverViewHolder extends BaseRvViewHolder<ChatMessage> {
         receiverAvatorIv = findImageView(R.id.item_chat_receive_head_iv);
         receiverMessageTv = findGTextView(R.id.item_chat_receive_msg_gtv);
         receiverTimeTv = findGTextView(R.id.item_chat_receive_time_gtv);
+    }
+
+    public void setListeners(OnChatReceiveClickListener onChatReceiveClickListener, String accountID) {
+        if (null != onChatReceiveClickListener) {
+            receiverAvatorIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onChatReceiveClickListener.lookFromUserInfo(accountID);
+
+                }
+            });
+
+        }
+    }
+
+    public interface OnChatReceiveClickListener {
+        void lookFromUserInfo(String fromAccountID);
+
     }
 }

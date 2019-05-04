@@ -25,13 +25,6 @@ public class ChatPresenter extends BaseMvpPresenter<IChatContract.IView> impleme
 
     @Override
     public void loadChatHistory(String targetAccountID) {
-       /* // 从本地数据库加载聊天历史记录
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getEmptyView().showHistory(null);
-            }
-        }, 1000);*/
         List<ChatMessage> chatMessageList = new ArrayList<>();
         Conversation conversation = JMessageClient.getSingleConversation(targetAccountID);
         if (null == conversation) {
@@ -53,8 +46,9 @@ public class ChatPresenter extends BaseMvpPresenter<IChatContract.IView> impleme
                 } else {
                     chatMessage.setMessageFrom(ChatMessage.MESSAGE_ME);
                 }
+                chatMessage.setFromAccountID(msgMap.get("from_id"));
                 chatMessage.setTime(message.getContent().getStringExtra("msg_time"));
-//            chatMessage.setUserAvatar(message.getFromUser().getAvatarStr());
+                chatMessage.setAvatarFile(message.getFromUser().getAvatarFile());
                 chatMessageList.add(chatMessage);
 
             }

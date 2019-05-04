@@ -15,6 +15,7 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.game.role.NewRoleActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.AnimationUtil;
@@ -30,6 +31,7 @@ public class SettingActivity extends BaseActivity {
     private GTextView version;
     private GTextView versionDescription;
     private GTextView about;
+    private GTextView edit;
     private LinearLayout voiceLl;
     private LinearLayout verboseLl;
     private ImageView voiceIv;
@@ -76,6 +78,7 @@ public class SettingActivity extends BaseActivity {
         voiceIv = findViewById(R.id.setting_voice_iv);
         verboseIv = findViewById(R.id.setting_verbose_iv);
         scrollView = findViewById(R.id.setting_scroll);
+        edit = findViewById(R.id.setting_edit);
     }
 
     @Override
@@ -87,6 +90,7 @@ public class SettingActivity extends BaseActivity {
         about.setOnClickListener(this);
         voiceLl.setOnClickListener(this);
         verboseLl.setOnClickListener(this);
+        edit.setOnClickListener(this);
     }
 
     @Override
@@ -105,6 +109,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected int getTopBarCenterViewStyle() {
         return R.drawable.setting_title;
+
     }
 
     @Override
@@ -138,6 +143,10 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.setting_scroll:
                 scrollView.smoothScrollTo(0, 0);
+                break;
+            case R.id.setting_edit:
+                startColorAnimation(edit);
+                openActivity(NewRoleActivity.class);
                 break;
             default:
 
@@ -173,11 +182,13 @@ public class SettingActivity extends BaseActivity {
         version.setTextColor(0xFF7E561B);
         versionDescription.setTextColor(0xFF7E561B);
         about.setTextColor(0xFF7E561B);
+        edit.setTextColor(0xFF7E561B);
 
         accountDetail.setBackgroundColor(0x00000000);
         alterPassword.setBackgroundColor(0x00000000);
         version.setBackgroundColor(0x00000000);
         versionDescription.setBackgroundColor(0x00000000);
         about.setBackgroundColor(0x00000000);
+        edit.setBackgroundColor(0x00000000);
     }
 }

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="32dp"
+        android:scrollbars="none"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -63,10 +64,21 @@
                             android:id="@+id/setting_alter_psd"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/setting_person_alter_psd"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="28dp"
+                            tools:ignore="SpUsage" />
+
+                        <com.tssss.bysj.componet.GTextView
+                            android:id="@+id/setting_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
                             android:layout_marginBottom="16dp"
                             android:gravity="start|center_vertical"
                             android:paddingStart="16dp"
-                            android:text="@string/setting_person_alter_psd"
+                            android:text="@string/user_info_edit"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="28dp"
                             tools:ignore="SpUsage" />

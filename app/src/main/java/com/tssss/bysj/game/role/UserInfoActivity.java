@@ -36,7 +36,6 @@ public class UserInfoActivity extends BaseActivity {
     private GTextView sex;
     private GTextView level;
     private GTextView exp;
-    private LinearLayout edit;
     private GTextView signature;
     private GTextView battleRecord;
     private GTextView news;
@@ -60,7 +59,6 @@ public class UserInfoActivity extends BaseActivity {
         sex = findViewById(R.id.user_info_sex);
         level = findViewById(R.id.user_info_level);
         exp = findViewById(R.id.user_info_exp);
-        edit = findViewById(R.id.user_info_edit);
         signature = findViewById(R.id.user_info_signature);
         battleRecord = findViewById(R.id.user_info_battle_record);
         news = findViewById(R.id.user_info_news);
@@ -68,7 +66,6 @@ public class UserInfoActivity extends BaseActivity {
 
     @Override
     protected void setEventListeners() {
-        edit.setOnClickListener(this);
         signature.setOnClickListener(this);
         battleRecord.setOnClickListener(this);
         news.setOnClickListener(this);
@@ -78,9 +75,6 @@ public class UserInfoActivity extends BaseActivity {
     protected void afterBindView() {
         Intent intent = getIntent();
         userAccount = intent.getStringExtra(Constant.ACCOUNT_ID);
-        if (UserDataCache.readAccount(Constant.ACCOUNT_ID).equals(userAccount)) {
-            edit.setVisibility(View.VISIBLE);
-        }
         loadUserInfo();
 
         signatureFragment = new SignatureFragment();
@@ -94,9 +88,6 @@ public class UserInfoActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.user_info_edit:
-                openActivity(NewRoleActivity.class);
-                break;
             case R.id.user_info_signature:
                 startColorAnimation(signature);
                 replaceFragment(R.id.user_info_fragment_container, signatureFragment);

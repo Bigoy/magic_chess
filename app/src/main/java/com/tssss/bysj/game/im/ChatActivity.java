@@ -14,6 +14,7 @@ import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
+import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.util.AnimationUtil;
@@ -41,7 +42,8 @@ import cn.jpush.im.api.BasicCallback;
 
 @ViewInject(layoutId = R.layout.activity_chat)
 public class ChatActivity extends BaseActivity implements OnMenuItemClickListener,
-        IChatContract.IView {
+        IChatContract.IView, ChatReceiverViewHolder.OnChatReceiveClickListener,
+        ChatSendViewHolder.ChatSendClickListener {
     private ImageButton sendMsg;
     private RecyclerView chatRv;
     private EditText chatMsgEt;
@@ -219,6 +221,9 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
 
     private void initAdapter() {
         this.adapter = new ChatRvAdapter(this, chatMessageList);
+        adapter.setChatReceiveClickListener(this);
+        adapter.setChatSendClickListener(this);
+
     }
 
     @Override
@@ -335,5 +340,20 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
 
     public void onEvent(NotificationClickEvent event) {
         JMessageManager.handlerNotificationEvent(event, this, false);
+    }
+
+    @Override
+    public void lookFromUserInfo(String fromAccountID) {
+        Intent intent = new Intent(ChatActivity.this, UserInfoActivity.class);
+        intent.putExtra(Constant.ACCOUNT_ID, fromAccountID);
+        startActivity(intent);
+    }
+
+    @Override
+    public void lookMyInfo(String accountID) {
+        Intent intent = new Intent(ChatActivity.this, UserInfoActivity.class);
+        intent.putExtra(Constant.ACCOUNT_ID, accountID);
+        startActivity(intent);
+
     }
 }
