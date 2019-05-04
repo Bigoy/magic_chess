@@ -115,45 +115,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                 }
                             });
                         }
-                        /*if (userInfo.getExtras().size() <= 0 || StringUtil.isBlank(extrasInfo)) {
-                            GameRole role = AppDataCache.readRole();
-                            if (null == role) {
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getView().onNullRoleInfo(user);
-                                    }
-                                });
-                            } else {
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getView().onSuccess(user, AppDataCache.readRole());
-                                    }
-                                });
 
-                            }
-
-                        } else {
-
-                            GameRole gameRole = new GameRole();
-                            gameRole.setUser(user);
-                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_AVATAR));
-                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_NICK_NAME));
-                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SEX));
-                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SIGNATURE));
-                            gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_LEVEL));
-                            UserDataCache.saveAccount(user);
-                            UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
-                            AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().onSuccess(user, gameRole);
-                                }
-                            });
-
-                        }*/
                     } else if (i == 871105 || i == 898002 || i == 801003) {
                         // 用户不存在
                         JMessageClient.register(user.getUserId(), user.getUserPassword(), new BasicCallback() {
@@ -172,34 +134,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                             });
                                         }
                                     });
-                                    /*UserInfo userInfo = JMessageClient.getMyInfo();
-                                    if (userInfo.getExtras().size() <= 0) {
-                                        handler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                getView().onAccountNotFound(user);
-                                            }
-                                        });
 
-                                    } else {
-                                        GameRole gameRole = new GameRole();
-                                        gameRole.setUser(user);
-                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_AVATAR));
-                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_NICK_NAME));
-                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SEX));
-                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_SIGNATURE));
-                                        gameRole.setAvatarStr(userInfo.getExtra(Constant.ROLE_LEVEL));
-                                        UserDataCache.saveAccount(user);
-                                        UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
-                                        AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
-                                        handler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                getView().onSuccess(user, gameRole);
-                                            }
-                                        });
-
-                                    }*/
 
                                 } else {
                                     handler.post(new Runnable() {
@@ -211,12 +146,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                 }
                             }
                         });
-                        /*handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                getView().onAccountNotFound(user);
-                            }
-                        });*/
+
                     } else if (i == 871304) {
                         handler.post(new Runnable() {
                             @Override
@@ -236,92 +166,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                     }
                 }
             });
-            /*Map<String, String> userMap = new HashMap<>();
-            userMap.put("userID", user.getUserId());
-            userMap.put("userPassword", user.getUserPassword());
-            OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_LOGIN, userMap, new HttpCallback() {
 
-                @Override
-                public void onSuccess(String result) {
-                    if (!cancelLogin) {
-                        try {
-                            JSONObject realLoginResult = new JSONObject(result);
-                            String finalLoginState = realLoginResult.getString(Constant.LOGIN_STATE);
-                            if (Constant.LOGIN_STATE_SUCCESS.equals(finalLoginState)) {
-                                JSONObject roleJson = realLoginResult.getJSONObject(Constant.JSON_KEY_ROLE);
-                                GameRole role = new GameRole();
-                                role.setAvatarStr(roleJson.getString(Constant.ROLE_AVATAR));
-                                role.setName(roleJson.getString(Constant.ROLE_NICK_NAME));
-                                role.setSex(roleJson.getString(Constant.ROLE_SEX));
-                                role.setSignature(roleJson.getString(Constant.ROLE_SIGNATURE));
-                                role.setLevel(roleJson.getString(Constant.ROLE_LEVEL));
-                                JMessageClient.login(user.getUserId(), user.getUserPassword(), new BasicCallback() {
-                                    @Override
-                                    public void gotResult(int i, String s) {
-                                        Logger.log(isRunInUIThread());
-                                        // 0 表示JMessage登录成功
-                                        if (i == 0) {
-                                            UserDataCache.saveAccount(user);
-                                            UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
-                                            AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
-                                            handler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    getView().onSuccess(user, role);
-                                                }
-                                            });
-                                        } else {
-                                            Logger.log(s);
-                                            updateUi(Constant.LOGIN_STATE_FAILED);
-                                        }
-                                    }
-                                });
-                            } else if (Constant.LOGIN_STATE_NOT_REGISTER.equals(finalLoginState)) {
-                                updateUi(Constant.LOGIN_STATE_NOT_REGISTER);
-                            } else if (Constant.LOGIN_STATE_ERROR_PASSWORD.equals(finalLoginState)) {
-                                updateUi(Constant.LOGIN_STATE_ERROR_PASSWORD);
-                            } else {
-                                updateUi(Constant.LOGIN_STATE_FAILED);
-                                Logger.log("服务端出现了问题!");
-                            }
-                        } catch (JSONException e) {
-                            if (!Constant.DEBUG) {
-                                Logger.log("json 对象解析异常，请检查服务端返回的内容！");
-                                updateUi(Constant.LOGIN_STATE_FAILED);
-
-                            } else {
-                                UserDataCache.saveAccount(user);
-                                UserDataCache.keepLastLoginTime(SystemUtil.getCurrentTime());
-                                AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        GameRole debugRole = new GameRole();
-                                        debugRole.setAvatarStr("");
-                                        debugRole.setName("debug");
-                                        debugRole.setSex(Constant.ROLE_SEX_MAN);
-                                        debugRole.setSignature("");
-                                        debugRole.setLevel(Constant.ROLE_LEVEL);
-                                        getView().onSuccess(user, debugRole);
-                                    }
-                                });
-                            }
-                        }
-
-                    } else {
-                        Logger.log("登录取消");
-                    }
-                }
-
-                @Override
-                public void onFailure(String errorMsg) {
-                    if (!cancelLogin) {
-                        updateUi(Constant.LOGIN_STATE_FAILED);
-                    } else {
-                        Logger.log("登录取消");
-                    }
-                }
-            });*/
         }
     }
 

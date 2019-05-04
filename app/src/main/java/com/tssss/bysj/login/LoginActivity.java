@@ -13,9 +13,9 @@ import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
-import com.tssss.bysj.game.role.NewRoleActivity;
 import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.game.hall.HallActivity;
+import com.tssss.bysj.game.role.NewRoleActivity;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
@@ -183,7 +183,17 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
 //            UserDataCache.keepString("history_account", account_et.getText().toString());
 //            UserDataCache.keepString("history_password", password_et.getText().toString());
             AnimationUtil.flipView(this, login_ib, logging_gtv);
-            mLoginPresenter.confirmAccountOperation(account_et.getText().toString(), password_et.getText().toString());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(300);
+                        mLoginPresenter.confirmAccountOperation(account_et.getText().toString(), password_et.getText().toString());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 

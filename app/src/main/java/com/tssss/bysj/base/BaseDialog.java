@@ -2,6 +2,7 @@ package com.tssss.bysj.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -49,9 +50,25 @@ public abstract class BaseDialog extends Dialog {
         super.setContentView(layoutResID);
         window = getWindow();
         if (null != window) {
+            hideStatusBarAndNavigationBar();
             View decor = window.getDecorView();
             decor.setBackgroundColor(0x00ffffff);
         }
+    }
+
+    /**
+     * 隐藏状态栏和导航栏，实现全屏
+     */
+    protected void hideStatusBarAndNavigationBar() {
+        int option = View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        getWindow().getDecorView().setSystemUiVisibility(option);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
 
     @Override

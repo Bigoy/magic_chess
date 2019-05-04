@@ -1,6 +1,7 @@
 package com.tssss.bysj.componet.dialog;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,6 +52,7 @@ public class AlertDialog extends BaseDialog {
     protected AlertDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
+
 
     @Override
     protected void instantiateObject() {
