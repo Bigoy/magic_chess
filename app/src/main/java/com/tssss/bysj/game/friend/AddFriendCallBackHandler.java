@@ -21,7 +21,7 @@ public class AddFriendCallBackHandler implements JMessageManager.AddFriendCallBa
     @Override
     public void requesting() {
         builder = new AlertDialog.Builder(context)
-                .subDesc("")
+                .subDesc("正在发送请求...")
                 .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
         builder.display();
 
