@@ -94,7 +94,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
 
             @Override
             public void onFailure(String errorMsg) {
-                Logger.log("加载失败" + errorMsg);
+                Logger.log(errorMsg);
                 if (!viewDestroyed) {
                     handler.post(() -> getView().loadError());
 

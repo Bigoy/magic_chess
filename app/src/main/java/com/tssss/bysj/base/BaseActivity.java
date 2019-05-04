@@ -317,4 +317,9 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
