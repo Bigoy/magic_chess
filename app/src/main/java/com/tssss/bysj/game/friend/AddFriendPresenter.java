@@ -132,68 +132,7 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
 
     @Override
     public void sendAddFriendRequest(String targetUserAccountID) {
-
-        JMessageManager.addFriend(targetUserAccountID, new JMessageManager.AddFriendCallBack() {
-            @Override
-            public void requesting() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().showRequesting();
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void success() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().showRequestSucceed();
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void notUser() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().showNotUser();
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void fail(String errorMsg) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast(context, errorMsg, ToastUtil.TOAST_ERROR);
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void isFriend() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().showRequestFailed("你们已经是好友了哦");
-
-                    }
-                });
-
-            }
-        });
+        JMessageManager.addFriend(targetUserAccountID, new AddFriendCallBackHandler(context));
     }
 
     @Override

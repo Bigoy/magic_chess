@@ -8,6 +8,7 @@ import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
+import com.tssss.bysj.game.friend.AddFriendCallBackHandler;
 import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
@@ -77,44 +78,7 @@ public class RankActivity extends BaseActivity implements IRankContract.IView, R
 
     @Override
     public void onAddFriend(String accountID) {
-        JMessageManager.addFriend(accountID, new JMessageManager.AddFriendCallBack() {
-            @Override
-            public void requesting() {
-                friendBuilder = new AlertDialog.Builder(RankActivity.this)
-                        .subDesc("发送请求中...")
-                        .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
-                friendBuilder.display();
-
-            }
-
-            @Override
-            public void success() {
-                friendBuilder.dismiss();
-                ToastUtil.showToast(RankActivity.this, "发送成功，慢慢等待TA的回复吧!", ToastUtil.TOAST_DEFAULT);
-
-            }
-
-            @Override
-            public void notUser() {
-
-            }
-
-            @Override
-            public void fail(String errorMsg) {
-                friendBuilder.dismiss();
-                ToastUtil.showToast(RankActivity.this, errorMsg, ToastUtil.TOAST_DEFAULT);
-
-
-            }
-
-            @Override
-            public void isFriend() {
-                friendBuilder.dismiss();
-                ToastUtil.showToast(RankActivity.this, "你们已经是好友关系了!", ToastUtil.TOAST_DEFAULT);
-
-
-            }
-        });
+        JMessageManager.addFriend(accountID, new AddFriendCallBackHandler(RankActivity.this));
 
     }
 

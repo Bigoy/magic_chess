@@ -114,7 +114,6 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
         super.clickTopBarRight();
         List<String> items = new ArrayList<>();
         items.add("清空与TA的聊天记录");
-        items.add("查看更多历史记录");
         items.add("加入黑名单");
         menu = new Menu.Builder(this, this)
                 .items(items)
@@ -267,11 +266,10 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                 }
                 break;
             case 1:
+                // 加入黑名单
                 menu.dismiss();
                 break;
-            case 2:
-                menu.dismiss();
-                break;
+
             default:
         }
     }
