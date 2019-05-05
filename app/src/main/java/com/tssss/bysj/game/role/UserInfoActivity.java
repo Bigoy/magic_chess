@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
@@ -12,14 +11,13 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.role.fragment.battle_record.BattleRecordFragment;
 import com.tssss.bysj.game.role.fragment.NewsFragment;
 import com.tssss.bysj.game.role.fragment.SignatureFragment;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
-import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.StringUtil;
 

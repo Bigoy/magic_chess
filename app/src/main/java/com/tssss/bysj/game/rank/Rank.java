@@ -1,6 +1,6 @@
 package com.tssss.bysj.game.rank;
 
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 
 public class Rank {
     private GameRole role;

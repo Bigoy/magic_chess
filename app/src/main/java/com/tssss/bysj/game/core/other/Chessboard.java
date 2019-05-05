@@ -1,4 +1,4 @@
-package com.tssss.bysj.game;
+package com.tssss.bysj.game.core.other;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,8 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.tssss.bysj.R;
-import com.tssss.bysj.game.core.AnchorManager;
-import com.tssss.bysj.game.core.GameUtil;
 
 /*
  * 棋盘类。

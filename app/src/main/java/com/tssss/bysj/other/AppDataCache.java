@@ -1,6 +1,6 @@
 package com.tssss.bysj.other;
 
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.SharedPreferencesUtil;

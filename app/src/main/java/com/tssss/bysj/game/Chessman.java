@@ -5,15 +5,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.tssss.bysj.game.core.Anchor;
-import com.tssss.bysj.game.core.AnchorManager;
-import com.tssss.bysj.game.core.GameRoleManager;
-import com.tssss.bysj.game.core.GameUtil;
+import com.tssss.bysj.game.core.other.Anchor;
+import com.tssss.bysj.game.core.other.AnchorManager;
+import com.tssss.bysj.game.core.other.GameRoleManager;
+import com.tssss.bysj.game.core.other.GameUtil;
 
 public class Chessman {
     // 棋子所属的阵营。
-    public static String CAMP_SELF = "CAMP_SELF";
-    public static String CAMP_ARMY = "CAMP_ARMY";
+    public static String CAMP_LEFT = "CAMP_LEFT";
+    public static String CAMP_RIGHT = "CAMP_RIGHT";
     private String mCamp;
     private String mPosition;
     private boolean isChecked;
@@ -55,7 +55,7 @@ public class Chessman {
         paint.setStyle(Paint.Style.FILL);
 
         Anchor anchor = am.getAnchor(mPosition);
-        if (mCamp.equals(CAMP_SELF)) {
+        if (mCamp.equals(CAMP_LEFT)) {
             paint.setColor(Color.BLUE);
 
             /*if (pm.getPlayer(GameRoleManager.SELF).getSex().equals(Constant.ROLE_SEX_MAN)) {
@@ -63,7 +63,7 @@ public class Chessman {
             } else if (pm.getPlayer(GameRoleManager.SELF).getSex().equals(Constant.ROLE_SEX_WOMAN)) {
 //                src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_girl);
             }*/
-        } else if (mCamp.equals(CAMP_ARMY)) {
+        } else if (mCamp.equals(CAMP_RIGHT)) {
             paint.setColor(Color.YELLOW);
            /* if (pm.getPlayer(GameRoleManager.ARMY).getSex().equals(Constant.ROLE_SEX_MAN)) {
 //                src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_boy);

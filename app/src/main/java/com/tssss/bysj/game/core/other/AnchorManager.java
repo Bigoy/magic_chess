@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.core;
+package com.tssss.bysj.game.core.other;
 
 import java.util.HashMap;
 import java.util.Map;

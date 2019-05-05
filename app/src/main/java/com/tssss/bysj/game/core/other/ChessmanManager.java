@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.core;
+package com.tssss.bysj.game.core.other;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
@@ -79,13 +79,13 @@ public class ChessmanManager {
     }
 
     public void initChessmanCamp() {
-        chessmen.get(SELF_A).setCamp(Chessman.CAMP_SELF);
-        chessmen.get(SELF_B).setCamp(Chessman.CAMP_SELF);
-        chessmen.get(SELF_C).setCamp(Chessman.CAMP_SELF);
+        chessmen.get(SELF_A).setCamp(Chessman.CAMP_LEFT);
+        chessmen.get(SELF_B).setCamp(Chessman.CAMP_LEFT);
+        chessmen.get(SELF_C).setCamp(Chessman.CAMP_LEFT);
 
-        chessmen.get(ARMY_A).setCamp(Chessman.CAMP_ARMY);
-        chessmen.get(ARMY_B).setCamp(Chessman.CAMP_ARMY);
-        chessmen.get(ARMY_C).setCamp(Chessman.CAMP_ARMY);
+        chessmen.get(ARMY_A).setCamp(Chessman.CAMP_RIGHT);
+        chessmen.get(ARMY_B).setCamp(Chessman.CAMP_RIGHT);
+        chessmen.get(ARMY_C).setCamp(Chessman.CAMP_RIGHT);
     }
 
     public Chessman getChessman(String key) {

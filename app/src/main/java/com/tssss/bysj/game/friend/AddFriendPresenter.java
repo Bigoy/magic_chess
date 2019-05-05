@@ -6,7 +6,7 @@ import android.os.Handler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
@@ -16,7 +16,6 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
-import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

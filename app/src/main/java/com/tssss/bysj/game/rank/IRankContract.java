@@ -1,13 +1,8 @@
 package com.tssss.bysj.game.rank;
 
-import com.tssss.bysj.game.core.GameRole;
 import com.tssss.bysj.mvp.ILifeCircle;
 import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
-
-import java.util.List;
-
-import androidx.recyclerview.widget.SortedList;
 
 public interface IRankContract {
 

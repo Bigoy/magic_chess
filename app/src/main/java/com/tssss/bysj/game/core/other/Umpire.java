@@ -1,6 +1,4 @@
-package com.tssss.bysj.game.core;
-
-import com.tssss.bysj.game.core.view.GameSurfaceView;
+package com.tssss.bysj.game.core.other;
 
 /*
 裁判官类。
@@ -11,14 +9,12 @@ public class Umpire {
     public Umpire() {
     }
 
-    /*
-    裁判判定游戏结果，有结果时，返回胜利的玩家对象的key值；无结果时，返回GamerResult.COMPETING。
-    有关玩家的获取操作请使用PlayerManager类。
+    /**
+     * 裁判判定游戏结果，有结果时，返回胜利的玩家对象的key值；无结果时，返回GamerResult.COMPETING。
      */
     public String umpire() {
         ChessmanManager cm = ChessmanManager.getChessmanManager();
         AnchorManager am = AnchorManager.getAnchorManager();
-        GameRoleManager pm = GameRoleManager.getGameRoleManager();
 
         GameUtil gameUtil = GameUtil.getGameUtil();
         int tempA = gameUtil.getSurfaceSize() / 4 * 3;
@@ -30,7 +26,7 @@ public class Umpire {
             if (am.getAnchor(cm.getChessman(ChessmanManager.ARMY_A).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.ARMY_B).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.ARMY_C).getPosition()).getY() == tempB) {
-                return GameRoleManager.ARMY;
+                return GameResult.LOSE;
             }
         } else if (am.getAnchor(cm.getChessman(ChessmanManager.ARMY_A).getPosition()).getY() == tempA &&
                 am.getAnchor(cm.getChessman(ChessmanManager.ARMY_B).getPosition()).getY() == tempA &&
@@ -38,18 +34,25 @@ public class Umpire {
             if (am.getAnchor(cm.getChessman(ChessmanManager.SELF_A).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.SELF_B).getPosition()).getY() == tempB &&
                     am.getAnchor(cm.getChessman(ChessmanManager.SELF_C).getPosition()).getY() == tempB) {
-                return GameRoleManager.SELF;
+                return GameResult.WIN;
             }
         }
         return GameResult.COMPETING;
     }
 
-    /*
-    游戏结束。
+    /**
+     * 发布游戏结果 胜利
      */
-    private void stop() {
-        // 停止绘制。
-        GameSurfaceView.isDrawing = false;
-        // 游戏结果弹窗。
+    public void win() {
+
+
+    }
+
+    /**
+     * 发布游戏结果 失败
+     */
+    public void lose() {
+
+
     }
 }

@@ -1,4 +1,4 @@
-package com.tssss.bysj.game;
+package com.tssss.bysj.game.core.other;
 
 public class GameController {
     private static GameController gameController;

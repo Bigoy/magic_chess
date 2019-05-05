@@ -2,11 +2,9 @@ package com.tssss.bysj.game.core.view;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
@@ -15,54 +13,31 @@ import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.Chessman;
-import com.tssss.bysj.game.core.GameRole;
-import com.tssss.bysj.game.core.GameRoleManager;
+import com.tssss.bysj.game.core.GamePresenter;
+import com.tssss.bysj.game.core.IGameContract;
+import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.User;
-import com.tssss.bysj.util.StringUtil;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.callback.GetUserInfoCallback;
-import cn.jpush.im.android.api.content.MessageContent;
-import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.event.MessageEvent;
-import cn.jpush.im.android.api.model.Conversation;
-import cn.jpush.im.android.api.model.Message;
-import cn.jpush.im.android.api.model.UserInfo;
-import cn.jpush.im.android.api.options.MessageSendingOptions;
-import cn.jpush.im.api.BasicCallback;
+import cn.jpush.im.android.api.exceptions.JMessageException;
 
 @ViewInject(layoutId = R.layout.activity_game)
 public class GameActivity extends BaseActivity implements View.OnTouchListener,
-        CountDownTimer.ICountTime, OnMenuItemClickListener {
+        OnMenuItemClickListener, IGameContract.IView {
 
     private GameSurfaceView mGameView;
     private GTextView name;
     private GTextView timeTv;
-
-    private GameRole armyRole;
-    private GameRole selfRole;
-
-    private String armyId;
-    private Conversation gameConversation;
-    private Handler handler;
-
     private Menu gameMenu;
+    private AlertDialog.Builder prepareDialog;
 
-    private boolean exitNormal = true;
-
-    /**
-     * id 小的先下
-     */
-    public static boolean first;
-
+    GamePresenter gamePresenter;
 
     @Override
     protected void findViews() {
@@ -86,17 +61,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
                 .operationListener(new AlertDialog.OnDialogOperationListener() {
                     @Override
                     public void ok() {
-                        Map<String, String> map = new HashMap<>();
-                        map.put("operation", "result");
-                        map.put("final", "lose");
-                        map.put("exp", "-50");
-                        sendMessage(JSON.toJSONString(map));
-
-                        Intent intent = new Intent(GameActivity.this, GameResultActivity.class);
-                        intent.putExtra("result", "你输了");
-                        intent.putExtra("exp", "经验值 -50");
-                        intent.putExtra("desc", "不要灰心，总会赢的");
-                        startActivity(intent);
+                        gamePresenter.surrender();
                     }
 
                     @Override
@@ -110,89 +75,28 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @SuppressLint("SetTextI18n")
     @Override
     protected void afterBindView() {
+        JMessageClient.registerEventReceiver(this);
+        gamePresenter = new GamePresenter(this, this);
+        mGameView.setGamePresenter(this.gamePresenter);
+        initMenu();
+        Intent intent = getIntent();
+        if (null != intent) {
+            gamePresenter.prepareGame(UserDataCache.readAccount(Constant.ACCOUNT_ID),
+                    intent.getStringExtra(Constant.ACCOUNT_ID));
+        }
+    }
+
+    /**
+     * 更多菜单
+     */
+    private void initMenu() {
         List<String> gameMenuItems = new ArrayList<>();
         gameMenuItems.add("投降");
         gameMenuItems.add("催一下对方");
-        gameMenuItems.add("需要让棋子");
+        gameMenuItems.add("需要让棋");
         gameMenu = new Menu(this, this);
         gameMenu.setMenuItems(gameMenuItems);
 
-        armyRole = new GameRole();
-        selfRole = new GameRole();
-        handler = new Handler();
-        Intent intent = getIntent();
-
-        if (null != intent) {
-            JMessageClient.registerEventReceiver(this);
-            armyId = intent.getStringExtra(Constant.ACCOUNT_ID);
-
-
-            JMessageClient.getUserInfo(armyId, new GetUserInfoCallback() {
-                @Override
-                public void gotResult(int i, String s, UserInfo userInfo) {
-                    if (i == 0) {
-                        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
-                        armyRole.setUser(new User(armyId, null));
-                        armyRole.setName(map.get(Constant.ROLE_NICK_NAME));
-                        armyRole.setSex(map.get(Constant.ROLE_SEX));
-                        String level = intent.getStringExtra(Constant.ROLE_LEVEL);
-                        if (StringUtil.isBlank(level)) {
-                            level = Constant.ROLE_SX_I;
-                        }
-                        armyRole.setLevel(level);
-                        armyRole.setSignature(map.get(Constant.ROLE_SIGNATURE));
-                        armyRole.setRoleExperience(Integer.valueOf(map.get(Constant.ROLE_EXP)));
-
-                        ToastUtil.showToast(GameActivity.this, "准备中， 5 秒后开始", ToastUtil.TOAST_DEFAULT);
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                long me = Long.parseLong(JMessageClient.getMyInfo().getUserName());
-                                long army = Long.valueOf(armyId);
-
-
-                                if (me < army) {
-                                    first = true;
-                                    // 分配棋子
-                                    selfRole.setChessmanCamp(Chessman.CAMP_SELF);
-                                    armyRole.setChessmanCamp(Chessman.CAMP_ARMY);
-
-
-                                    Map<String, String> map = new HashMap<>();
-                                    map.put("operation", "prepare");
-                                    map.put("chessman_camp", Chessman.CAMP_ARMY);
-                                    sendMessage(JSON.toJSONString(map));
-
-
-                                    Logger.log(me + "  " + army);
-                                    Map<String, String> map1 = new HashMap<>();
-                                    map1.put("operation", "first");
-                                    map1.put("chessman_index", "");
-                                    map1.put("chessman_position", "");
-
-                                    sendMessage(JSON.toJSONString(map1));
-                                }
-
-                            }
-                        }, 5000);
-                        GameRoleManager.getGameRoleManager().addPlayer(GameRoleManager.SELF, selfRole);
-                        GameRoleManager.getGameRoleManager().addPlayer(GameRoleManager.ARMY, armyRole);
-
-                        name.setText("对手是 " + armyRole.getName());
-                        gameConversation = Conversation.createSingleConversation(armyId);
-                        mGameView.setHost(GameActivity.this);
-                        mGameView.initPlayer(armyRole);
-                        mGameView.initTimer(30, GameActivity.this);
-
-                    } else {
-                        ToastUtil.showToast(GameActivity.this, "进入游戏失败", ToastUtil.TOAST_ERROR);
-                        finish();
-                    }
-                }
-            });
-
-        }
     }
 
     @Override
@@ -204,13 +108,6 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     protected void clickTopBarRight() {
         super.clickTopBarRight();
         gameMenu.display();
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 
@@ -226,123 +123,23 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
         return false;
     }
 
-    @Override
-    public void onTicker(int time) {
-        timeTv.setText(String.valueOf(time));
-        if (time == 10) {
-            ToastUtil.showToast(this, "10 秒后自动认输", ToastUtil.TOAST_DEFAULT);
-        }
-    }
-
-    @Override
-    public void onTimerFinish() {
-        Intent intent = new Intent(this, GameResultActivity.class);
-        intent.putExtra("result", "你输了");
-        intent.putExtra("desc", "唉！好可惜");
-        intent.putExtra("exp", "经验值 -50");
-
-        Map<String, String> map = new HashMap<>();
-        map.put("operation", "result");
-        map.put("result", "你赢了");
-        map.put("desc", "对方超时自动认输");
-        map.put("exp", "经验值 +50");
-        sendMessage(JSON.toJSONString(map));
-
-        startActivity(intent);
-        finish();
-    }
-
-
+    /**
+     * 接受JMessage即时消息
+     */
+    @SuppressWarnings("unused")
     public void onEventMainThread(MessageEvent event) {
-        MessageContent content = event.getMessage().getContent();
-        Map<String, String> map = (Map<String, String>) JSON.parse(content.toJson());
-        String text = map.get("text");
-        Map<String, String> dataMap = (Map<String, String>) JSON.parse(text);
-        String operation = dataMap.get("operation");
-        if ("prepare".equals(operation)) {
-            String camp = dataMap.get("chessman_camp");
-            selfRole.setChessmanCamp(camp);
-            if (Chessman.CAMP_SELF.equals(camp)) {
-                ToastUtil.showToast(this, "你的棋子在左边", ToastUtil.TOAST_DEFAULT);
+        gamePresenter.handlerJMessageEvent(event);
 
-            } else {
-                ToastUtil.showToast(this, "你的棋子在右边", ToastUtil.TOAST_DEFAULT);
-            }
-        } else if ("first".equals(operation)) {
-            mGameView.startGame();
-            ToastUtil.showToast(this, "你先走", ToastUtil.TOAST_DEFAULT);
-        } else if ("update".equals(operation)) {
-            mGameView.updateChessmanPositionWhenCannotTouch(dataMap.get("chessman_index"),
-                    dataMap.get("chessman_position"));
-
-        } else if ("turn".equals(operation)) {
-            mGameView.startGame();
-            ToastUtil.showToast(this, "该你了", ToastUtil.TOAST_DEFAULT);
-        } else if ("result".equals(operation)) {
-            Intent intent = new Intent(GameActivity.this, GameResultActivity.class);
-            intent.putExtra("result", dataMap.get("result"));
-            intent.putExtra("desc", dataMap.get("desc"));
-            intent.putExtra("exp", dataMap.get("exp"));
-            startActivity(intent);
-            finish();
-
-        } else if ("surrender".equals(operation)) {
-            Intent intent = new Intent(GameActivity.this, GameResultActivity.class);
-            intent.putExtra("result", "你赢了");
-            intent.putExtra("desc", "你以奇高的技艺迫使对方投降");
-            intent.putExtra("exp", "+ 50");
-            startActivity(intent);
-        } else if ("come_on".equals(operation)) {
-            ToastUtil.showToast(this, "亲，这边麻烦快点儿呢？", ToastUtil.TOAST_DEFAULT);
-        } else if ("rang_qi".equals(operation)) {
-            mGameView.setCanTouch(true);
-            ToastUtil.showToast(this, "您需要给对方让一步棋", ToastUtil.TOAST_DEFAULT);
-        }
     }
 
+    /**
+     * 页面被强制关闭时，默认判定为投降
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         JMessageClient.unRegisterEventReceiver(this);
-        if (!exitNormal) {
-            // 主动退出游戏
-            Map<String, String> map = new HashMap<>();
-            map.put("operation", "result");
-            sendMessage(JSON.toJSONString(map));
-        }
-    }
-
-    public void sendMessage(String s) {
-        //通过username和appkey拿到会话对象，通过指定appkey可以创建一个和跨应用用户的会话对象，从而实现跨应用的消息发送
-        Conversation mConversation = JMessageClient.getSingleConversation(armyId, null);
-        if (mConversation == null) {
-            mConversation = Conversation.createSingleConversation(armyId, null);
-        }
-
-        //构造message content对象
-        TextContent textContent = new TextContent(s);
-
-        //创建message实体，设置消息发送回调。
-        final Message message = mConversation.createSendMessage(textContent, armyId);
-        message.setOnSendCompleteCallback(new BasicCallback() {
-            @Override
-            public void gotResult(int i, String s) {
-                if (i == 0) {
-                    Logger.log("发送成功`");
-                }
-            }
-        });
-        MessageSendingOptions options = new MessageSendingOptions();
-        options.setShowNotification(false);
-        options.setRetainOffline(false);
-        JMessageClient.sendMessage(message, options);
-
-    }
-
-
-    public void gameOver() {
-
-
+        gamePresenter.surrender();
     }
 
     @Override
@@ -350,26 +147,124 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
         switch (position) {
             case 0:
                 // 投降
-                Map<String, String> surrender = new HashMap<>();
-                surrender.put("operation", "surrender");
-                sendMessage(JSON.toJSONString(surrender));
+                gamePresenter.surrender();
                 gameMenu.dismiss();
                 break;
             case 1:
-                Map<String, String> come_on = new HashMap<>();
-                come_on.put("operation", "come_on");
-                sendMessage(JSON.toJSONString(come_on));
+                gamePresenter.urge();
                 // 催一下
                 gameMenu.dismiss();
                 break;
             case 2:
-                mGameView.setCanTouch(false);
-                Map<String, String> rang_qi = new HashMap<>();
-                rang_qi.put("operation", "rang_qi");
-                sendMessage(JSON.toJSONString(rang_qi));
+                gamePresenter.stepBack();
                 // 需要让棋
                 gameMenu.dismiss();
                 break;
         }
+    }
+
+    @Override
+    public void prepareGame() {
+        prepareDialog = new AlertDialog.Builder(this)
+                .desc("准备游戏中，请等候...")
+                .subDesc("几秒钟就好哦")
+                .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
+        prepareDialog.display();
+
+    }
+
+    @Override
+    public void start() {
+        prepareDialog.dismiss();
+        mGameView.touchTrue();
+
+    }
+
+    @Override
+    public void syncChessmanPosition(String chessmanKey, String position) {
+        mGameView.syncChessmen(chessmanKey, position);
+
+    }
+
+    @Override
+    public void turnMe() {
+        mGameView.touchTrue();
+        ToastUtil.showToast(this, "该你了", ToastUtil.TOAST_DEFAULT);
+
+    }
+
+    @Override
+    public void result(GameResult gameResult) {
+        /*Intent intent = new Intent(GameActivity.this, GameResultActivity.class);
+            intent.putExtra("result", dataMap.get("result"));
+            intent.putExtra("desc", dataMap.get("desc"));
+            intent.putExtra("exp", dataMap.get("exp"));
+            startActivity(intent);
+            finish();*/
+
+    }
+
+    @Override
+    public void isNotFirst() {
+        ToastUtil.showToast(this, "对方先手", ToastUtil.TOAST_DEFAULT);
+
+    }
+
+    @Override
+    public void surrender(GameResult gameResult) {
+
+    }
+
+    @Override
+    public void showChessmanCamp(String camp) {
+        if (Chessman.CAMP_LEFT.equals(camp)) {
+            ToastUtil.showToast(this, "你的棋子在左边", ToastUtil.TOAST_DEFAULT);
+
+        } else {
+            ToastUtil.showToast(this, "你的棋子在右边", ToastUtil.TOAST_DEFAULT);
+        }
+
+    }
+
+    @Override
+    public void urge() {
+        ToastUtil.showToast(this, "亲，这边麻烦快点儿呢？", ToastUtil.TOAST_ERROR);
+
+    }
+
+    @Override
+    public void peace() {
+
+    }
+
+    @Override
+    public void stepBack() {
+        mGameView.setCanTouch(true);
+        ToastUtil.showToast(this, "您需要给对方让一步棋", ToastUtil.TOAST_DEFAULT);
+
+    }
+
+    @Override
+    public void timer(int time) {
+        timeTv.setText(String.valueOf(time));
+        if (time == 10) {
+            ToastUtil.showToast(this, "10 秒后自动认输", ToastUtil.TOAST_DEFAULT);
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void showArmyInfo(String armyName) {
+        name.setText("对方是：" + armyName);
+
+    }
+
+    @Override
+    public void error() {
+        ToastUtil.showToast(this, "进入游戏失败，退出", ToastUtil.TOAST_DEFAULT);
+        prepareDialog.dismiss();
+        finish();
+
     }
 }

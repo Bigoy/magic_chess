@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;

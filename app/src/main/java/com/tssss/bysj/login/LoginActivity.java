@@ -13,7 +13,7 @@ import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.hall.HallActivity;
 import com.tssss.bysj.game.role.NewRoleActivity;
 import com.tssss.bysj.other.AppDataCache;

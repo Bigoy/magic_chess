@@ -6,7 +6,7 @@ import android.os.Handler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
 import com.tssss.bysj.http.OkHttpProvider;
@@ -15,12 +15,10 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import androidx.recyclerview.widget.SortedList;
-import cn.jpush.im.android.api.model.UserInfo;
 
 public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> implements IRankContract.IPresenter {
     private Handler handler;

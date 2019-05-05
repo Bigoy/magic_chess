@@ -10,7 +10,7 @@ import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.friend.adapter.RecommendAdapter;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.UserDataCache;

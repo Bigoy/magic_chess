@@ -2,7 +2,7 @@ package com.tssss.bysj.user;
 
 import android.util.Log;
 
-import com.tssss.bysj.game.core.GameRole;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.SharedPreferencesFactory;

@@ -1,7 +1,6 @@
 package com.tssss.bysj.game.core.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -15,25 +14,24 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.alibaba.fastjson.JSON;
-import com.tssss.bysj.game.Chessboard;
-import com.tssss.bysj.game.core.AnchorManager;
-import com.tssss.bysj.game.core.ChessmanManager;
-import com.tssss.bysj.game.core.GameManager;
-import com.tssss.bysj.game.core.GameResult;
-import com.tssss.bysj.game.core.GameRole;
-import com.tssss.bysj.game.core.GameRoleManager;
-import com.tssss.bysj.game.core.GameUtil;
-import com.tssss.bysj.game.core.Rule;
-import com.tssss.bysj.game.core.Umpire;
+import com.tssss.bysj.game.core.GamePresenter;
+import com.tssss.bysj.game.core.other.AnchorManager;
+import com.tssss.bysj.game.core.other.Chessboard;
+import com.tssss.bysj.game.core.other.ChessmanManager;
+import com.tssss.bysj.game.core.other.GameManager;
+import com.tssss.bysj.game.core.other.GameResult;
+import com.tssss.bysj.game.core.other.GameRoleManager;
+import com.tssss.bysj.game.core.other.GameUtil;
+import com.tssss.bysj.game.core.other.Rule;
+import com.tssss.bysj.game.core.other.Umpire;
 import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.UserDataCache;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
-    public static boolean isDrawing = false;
+    public boolean isDrawing = false;
 
     private Canvas gameCanvas;
     private SurfaceHolder gameHolder;
@@ -47,23 +45,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private GameUtil gameUtil;
     private GameManager gm;
     private Map<String, String> chessmanStateMap;
+    private GamePresenter gamePresenter;
 
-    private CountDownTimer timer;
-    private CountDownTimer.ICountTime iCountTime;
-    private GameActivity host;
+    public void setGamePresenter(GamePresenter gamePresenter) {
+        this.gamePresenter = gamePresenter;
 
-    public void initTimer(int time, CountDownTimer.ICountTime iCountTime) {
-        timer = new CountDownTimer(time, iCountTime);
-        this.iCountTime = iCountTime;
-    }
-
-    public void startGame() {
-        timer.start();
-        canTouch = true;
-    }
-
-    public void setHost(GameActivity a) {
-        this.host = a;
     }
 
     public void setCanTouch(boolean canTouch) {
@@ -89,12 +75,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredSurfaceSize = MeasureSpec.getSize(widthMeasureSpec);
-
         gameUtil.setSurfaceSize(measuredSurfaceSize);
         am.createAnchors();
-
-        Logger.log(measuredSurfaceSize);
-
         setMeasuredDimension(measuredSurfaceSize, measuredSurfaceSize);
     }
 
@@ -114,8 +96,23 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        stopGame();
+        Logger.log("surfaceView destroyed");
+    }
+
+    public void stopGame() {
+        canTouch = false;
         isDrawing = false;
-        Log.wtf(getClass().getSimpleName(), "surfaceView destroyed");
+    }
+
+    public void touchTrue() {
+        canTouch = true;
+
+    }
+
+    public void touchFalse() {
+        canTouch = false;
+
     }
 
     @Override
@@ -124,7 +121,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         // 绘制。
         while (isDrawing) {
             try {
-                draw();
+                mainDraw();
                 Log.i("GameSurfaceView", "drawing");
                 Thread.sleep(40);
             } catch (InterruptedException e) {
@@ -133,15 +130,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
+    /**
+     * 初始化GameSurfaceView
+     */
     private void init() {
         gameHolder = getHolder();
         gameHolder.addCallback(this);
         setFocusable(true);
         setFocusableInTouchMode(true);
-        // surfaceView背景透明。
         setZOrderOnTop(true);
         gameHolder.setFormat(PixelFormat.TRANSLUCENT);
-
         gameUtil = GameUtil.getGameUtil();
         am = AnchorManager.getAnchorManager();
         cm = ChessmanManager.getChessmanManager();
@@ -150,36 +148,30 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         chessboard = new Chessboard();
         gm = new GameManager();
         chessmanStateMap = new HashMap<>();
-
         gameUtil.setContext(getContext());
     }
 
     /*
     总绘制方法。
      */
-    private void draw() {
+    private void mainDraw() {
         try {
-            // 获取游戏画布对象。
             gameCanvas = gameHolder.lockCanvas();
-            // 重置画布，绘制下一帧。
             clear(gameCanvas);
             chessboard.draw(gameCanvas);
             cm.drawChessmen(gameCanvas);
             if (cm.whoChecked() != null) {
                 cm.drawMark(gameCanvas, cm.whoChecked());
             }
-//            umpire.umpire();
         } finally {
             if (gameCanvas != null) {
-                // 释放画布并绘制内容。
                 gameHolder.unlockCanvasAndPost(gameCanvas);
-//                canTouch = true;
             }
         }
     }
 
-    /*
-    Clear canvas.
+    /**
+     * 清空画布
      */
     private void clear(Canvas gameCanvas) {
         Paint paint = new Paint();
@@ -188,8 +180,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         gameCanvas.drawPaint(paint);
     }
 
-    /*
-    tackle touch event.
+    /**
+     * 处理用户的触摸事件
      */
     public void doTouch(MotionEvent event) {
         if (canTouch) {
@@ -205,109 +197,46 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             cm.drawMark(gameCanvas, cm.whoChecked());
                             cm.update(event, cm.whoChecked(), am.identifyAnchor((int) event.getX(), (int) event.getY()));
                             canTouch = false;
-                            timer.cacel();
-                            iCountTime.onTicker(30);
+                            gamePresenter.cancelAndResetTimer();
+                            // 判断当前操作后是否有游戏结果
                             String result = umpire.umpire();
                             if (GameResult.COMPETING.equals(result)) {
+                                // 没有游戏结果，交换下棋权
                                 String update_chessman_position = cm.getChessman(chessman_index).getPosition();
-
+                                chessmanStateMap.put("operation", "update");
                                 chessmanStateMap.put("chessman_index", chessman_index);
                                 chessmanStateMap.put("chessman_position", update_chessman_position);
-                                chessmanStateMap.put("operation", "update");
                                 String updateData = JSON.toJSONString(chessmanStateMap);
-                                host.sendMessage(updateData);
+                                gamePresenter.sendMessage(updateData);
                                 cm.resetChessmenCheckedState();
-
                                 chessmanStateMap.put("operation", "turn");
-                                host.sendMessage(JSON.toJSONString(chessmanStateMap));
+                                gamePresenter.sendMessage(JSON.toJSONString(chessmanStateMap));
 
-                            } else {
-                                canTouch = false;
-                                isDrawing = false;
+                            } else if (GameResult.WIN.equals(result)) {
+                                // 游戏胜利
+                                umpire.win();
 
-                                Intent intent = new Intent(host, GameResultActivity.class);
+                            } else if (GameResult.LOSE.equals(result)) {
+                                // 游戏失败
+                                umpire.lose();
 
-                                if (GameActivity.first) {
-                                    if (GameRoleManager.SELF.equals(result)) {
-                                        // 自己胜利
-                                        intent.putExtra("result", "你赢了");
-                                        intent.putExtra("desc", "继续加油");
-                                        intent.putExtra("exp", "经验值 +50");
-
-                                        Map<String, String> map = new HashMap<>();
-                                        map.put("operation", "result");
-                                        map.put("result", "你输了");
-                                        map.put("desc", "唉！好可惜");
-                                        map.put("exp", "经验值 -50");
-
-                                        host.sendMessage(JSON.toJSONString(map));
-
-                                    } else {
-                                        intent.putExtra("result", "你输了");
-                                        intent.putExtra("desc", "唉！好可惜");
-                                        intent.putExtra("exp", "经验值 -50");
-
-                                        Map<String, String> map = new HashMap<>();
-                                        map.put("operation", "result");
-                                        map.put("result", "你赢了");
-                                        map.put("desc", "非常棒，继续加油");
-                                        map.put("exp", "经验值 +50");
-
-                                        host.sendMessage(JSON.toJSONString(map));
-                                    }
-                                }
-                                if (!GameActivity.first) {
-                                    if (GameRoleManager.SELF.equals(result)) {
-                                        // 对方胜利
-                                        intent.putExtra("result", "你输了");
-                                        intent.putExtra("desc", "唉！好可惜");
-                                        intent.putExtra("exp", "经验值 -50");
-
-                                        Map<String, String> map = new HashMap<>();
-                                        map.put("operation", "result");
-                                        map.put("result", "你赢了");
-                                        map.put("desc", "非常棒，继续加油");
-                                        map.put("exp", "经验值 +50");
-
-                                        host.sendMessage(JSON.toJSONString(map));
-
-                                    } else {
-                                        intent.putExtra("result", "你赢了");
-                                        intent.putExtra("desc", "继续加油");
-                                        intent.putExtra("exp", "经验值 +50");
-
-                                        Map<String, String> map = new HashMap<>();
-                                        map.put("operation", "result");
-                                        map.put("result", "你输了");
-                                        map.put("desc", "唉！好可惜");
-                                        map.put("exp", "经验值 -50");
-
-                                        host.sendMessage(JSON.toJSONString(map));
-                                    }
-                                }
-
-                                host.startActivity(intent);
-                                host.finish();
                             }
+                        } else {
+                            // 用户准备选中某一个棋子。
+                            cm.checkChessman(event);
                         }
-                    } else {
-                        // 用户准备选中某一个棋子。
-                        cm.checkChessman(event);
+                        break;
                     }
-                    break;
-                default:
-                    break;
             }
         }
     }
 
-    public void updateChessmanPositionWhenCannotTouch(String chessmanKey, String position) {
+    /**
+     * 同步双方的棋子位置
+     */
+    public void syncChessmen(String chessmanKey, String position) {
         cm.updateArmyPosition(chessmanKey, position);
     }
 
-    public void initPlayer(GameRole army) {
-        pm.addPlayer(GameRoleManager.ARMY, army);
-        pm.addPlayer(GameRoleManager.SELF, UserDataCache.readRole());
-    }
 }
 

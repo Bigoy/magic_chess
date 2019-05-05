@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.core.view;
+package com.tssss.bysj.game.core;
 
 import android.os.Handler;
 
@@ -49,6 +49,11 @@ public class CountDownTimer implements Runnable {
     public void start() {
         isRun = true;
         handler.post(this);
+    }
+
+    public void reset() {
+        iCountTime.onTicker(30);
+
     }
 
     public interface ICountTime {
