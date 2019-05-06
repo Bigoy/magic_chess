@@ -26,7 +26,7 @@ public class CountDownTimer implements Runnable {
                 iCountTime.onTicker(countTime);
             }
             if (countTime == 0) {
-                cacel();
+                cancelTimer();
                 if (iCountTime != null) {
                     iCountTime.onTimerFinish();
 
@@ -39,21 +39,19 @@ public class CountDownTimer implements Runnable {
 
     }
 
-    public void cacel() {
+    public void cancelTimer() {
         time = 30;
         isRun = false;
         handler.removeCallbacks(this);
     }
 
-
-    public void start() {
+    public void startTimer() {
         isRun = true;
         handler.post(this);
     }
 
-    public void reset() {
+    public void resetTimer() {
         iCountTime.onTicker(30);
-
     }
 
     public interface ICountTime {

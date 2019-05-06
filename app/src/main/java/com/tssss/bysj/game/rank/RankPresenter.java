@@ -43,7 +43,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
     @Override
     public void loadRankData() {
         Map<String, Integer> paramMap = new HashMap<>();
-        paramMap.put("start", 0);
+        paramMap.put("startTimer", 0);
         paramMap.put("count", 100);
         SortedList<Rank> rankSortedList = new SortedList<>(Rank.class, rankSortedListCallBack);
         OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_IM_USER, paramMap, new HttpCallback() {

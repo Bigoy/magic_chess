@@ -46,6 +46,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private GameManager gm;
     private Map<String, String> chessmanStateMap;
     private GamePresenter gamePresenter;
+    private Thread drawThread;
 
     public void setGamePresenter(GamePresenter gamePresenter) {
         this.gamePresenter = gamePresenter;
@@ -82,11 +83,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        isDrawing = true;
-        // 开启绘制线程。
-        Thread drawThread = new Thread(this);
-        drawThread.setPriority(Thread.MAX_PRIORITY);
-        drawThread.start();
+
     }
 
     @Override
@@ -149,6 +146,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         gm = new GameManager();
         chessmanStateMap = new HashMap<>();
         gameUtil.setContext(getContext());
+        drawThread = new Thread(this);
+        drawThread.setPriority(Thread.MAX_PRIORITY);
     }
 
     /*
@@ -185,16 +184,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      */
     public void doTouch(MotionEvent event) {
         if (canTouch) {
-            ChessmanManager cm = ChessmanManager.getChessmanManager();
-            AnchorManager am = AnchorManager.getAnchorManager();
             Rule rule = Rule.getRule();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (cm.hasChessmanChecked()) {
                         // 用户选中了棋子，准备移动。
                         if (rule.canMoveChessman(event)) {
-                            String chessman_index = cm.whoChecked();
-                            cm.drawMark(gameCanvas, cm.whoChecked());
                             cm.update(event, cm.whoChecked(), am.identifyAnchor((int) event.getX(), (int) event.getY()));
                             canTouch = false;
                             gamePresenter.cancelAndResetTimer();
@@ -202,33 +197,42 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             String result = umpire.umpire();
                             if (GameResult.COMPETING.equals(result)) {
                                 // 没有游戏结果，交换下棋权
-                                String update_chessman_position = cm.getChessman(chessman_index).getPosition();
-                                chessmanStateMap.put("operation", "update");
-                                chessmanStateMap.put("chessman_index", chessman_index);
-                                chessmanStateMap.put("chessman_position", update_chessman_position);
-                                String updateData = JSON.toJSONString(chessmanStateMap);
-                                gamePresenter.sendMessage(updateData);
-                                cm.resetChessmenCheckedState();
-                                chessmanStateMap.put("operation", "turn");
-                                gamePresenter.sendMessage(JSON.toJSONString(chessmanStateMap));
+                                turn("update");
+                                turn("turn");
 
                             } else if (GameResult.WIN.equals(result)) {
+                                turn("result");
                                 // 游戏胜利
                                 umpire.win();
 
                             } else if (GameResult.LOSE.equals(result)) {
+                                turn("result");
                                 // 游戏失败
                                 umpire.lose();
 
                             }
-                        } else {
-                            // 用户准备选中某一个棋子。
-                            cm.checkChessman(event);
                         }
-                        break;
+                    } else {
+                        // 用户正准备选择一个棋子
+                        cm.checkChessman(event);
                     }
+                    break;
             }
         }
+    }
+
+    /**
+     * 交换下棋权
+     */
+    private void turn(String type) {
+        cm.resetChessmenCheckedState();
+        String updateChessmanIndex = cm.whoChecked();
+        String updateChessmanPosition = cm.getChessman(cm.whoChecked()).getPosition();
+        chessmanStateMap.put("chessman_index", updateChessmanIndex);
+        chessmanStateMap.put("chessman_position", updateChessmanPosition);
+        chessmanStateMap.put("operation", type);
+        gamePresenter.sendMessage(JSON.toJSONString(chessmanStateMap));
+
     }
 
     /**
@@ -238,5 +242,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         cm.updateArmyPosition(chessmanKey, position);
     }
 
+    public void startDrawing() {
+        isDrawing = true;
+        // 开启绘制线程。
+        drawThread.start();
+    }
 }
 

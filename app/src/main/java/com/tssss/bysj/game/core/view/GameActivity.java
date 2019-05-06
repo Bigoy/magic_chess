@@ -18,6 +18,7 @@ import com.tssss.bysj.game.core.IGameContract;
 import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.UserDataCache;
+import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -75,14 +76,24 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @SuppressLint("SetTextI18n")
     @Override
     protected void afterBindView() {
+        prepareDialog = new AlertDialog.Builder(this)
+                .desc("准备游戏中，请等候...")
+                .subDesc("几秒钟就好哦")
+                .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
+        prepareDialog.display();
         JMessageClient.registerEventReceiver(this);
         gamePresenter = new GamePresenter(this, this);
         mGameView.setGamePresenter(this.gamePresenter);
         initMenu();
         Intent intent = getIntent();
         if (null != intent) {
-            gamePresenter.prepareGame(UserDataCache.readAccount(Constant.ACCOUNT_ID),
-                    intent.getStringExtra(Constant.ACCOUNT_ID));
+            String armyID = intent.getStringExtra(Constant.ACCOUNT_ID);
+            if (StringUtil.isBlank(armyID)) {
+                throw new IllegalArgumentException("不能获取到游戏对方的accountID");
+
+            }else {
+                gamePresenter.prepareGame(UserDataCache.readAccount(Constant.ACCOUNT_ID), armyID);
+            }
         }
     }
 
@@ -126,7 +137,6 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     /**
      * 接受JMessage即时消息
      */
-    @SuppressWarnings("unused")
     public void onEventMainThread(MessageEvent event) {
         gamePresenter.handlerJMessageEvent(event);
 
@@ -165,19 +175,17 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
 
     @Override
     public void prepareGame() {
-        prepareDialog = new AlertDialog.Builder(this)
-                .desc("准备游戏中，请等候...")
-                .subDesc("几秒钟就好哦")
-                .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
-        prepareDialog.display();
+
 
     }
 
     @Override
-    public void start() {
+    public void start(boolean isFirst) {
         prepareDialog.dismiss();
-        mGameView.touchTrue();
-
+        mGameView.startDrawing();
+        if (isFirst) {
+            mGameView.touchTrue();
+        }
     }
 
     @Override
@@ -194,14 +202,15 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     }
 
     @Override
-    public void result(GameResult gameResult) {
+    public void result(String chessmanKey, String position, GameResult gameResult) {
         /*Intent intent = new Intent(GameActivity.this, GameResultActivity.class);
             intent.putExtra("result", dataMap.get("result"));
             intent.putExtra("desc", dataMap.get("desc"));
             intent.putExtra("exp", dataMap.get("exp"));
             startActivity(intent);
             finish();*/
-
+        // 同步最后一步棋子的位置
+        mGameView.syncChessmen(chessmanKey, position);
     }
 
     @Override

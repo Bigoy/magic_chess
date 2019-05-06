@@ -24,6 +24,7 @@ import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.NotificationClickEvent;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
 
 public class JMessageManager {
@@ -217,8 +218,6 @@ public class JMessageManager {
                                         Map<String, String> map = (Map<String, String>) JSON.parse(message.getFromUser().getSignature());
                                         Intent gameIntent = new Intent(activity, GameActivity.class);
                                         gameIntent.putExtra(Constant.ACCOUNT_ID, map.get(Constant.ACCOUNT_ID));
-
-
                                         activity.startActivity(gameIntent);
                                         activity.finish();
                                     }
@@ -276,6 +275,56 @@ public class JMessageManager {
                         }
                     }
                 });
+    }
+
+    /**
+     * 发送JMessage文本消息 无回调
+     */
+    public static void sendTextMessage(String targetId, String content) {
+        sendTextMessage(targetId, content, null);
+
+    }
+
+    /**
+     * 发送JMessage文本消息
+     */
+    public static void sendTextMessage(String targetId, String content, OnSendCompleteCallBack callBack) {
+        //通过username和appkey拿到会话对象，通过指定appkey可以创建一个和跨应用用户的会话对象，从而实现跨应用的消息发送
+        Conversation conversation = JMessageClient.getSingleConversation(targetId);
+        if (conversation == null) {
+            conversation = Conversation.createSingleConversation(targetId);
+        }
+        //构造message content对象
+        TextContent textContent = new TextContent(content);
+        //创建message实体，设置消息发送回调。
+        final Message message = conversation.createSendMessage(textContent, targetId);
+        if (null != callBack) {
+            message.setOnSendCompleteCallback(new BasicCallback() {
+                @Override
+                public void gotResult(int i, String s) {
+                    if (i == 0) {
+                        callBack.onSuccess();
+                    }else {
+                        Logger.log("发送文本消息失败：" + i + s);
+                        callBack.onFailure(s);
+                    }
+                }
+            });
+        }
+        MessageSendingOptions options = new MessageSendingOptions();
+        options.setShowNotification(false);
+        options.setRetainOffline(false);
+        JMessageClient.sendMessage(message, options);
+    }
+
+    /**
+     * 消息发送结果回调接口
+     */
+    public interface OnSendCompleteCallBack {
+        void onSuccess();
+
+        void onFailure(String errorMsg);
+
     }
 
     public interface AddFriendCallBack {

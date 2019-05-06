@@ -42,7 +42,7 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
     @Override
     public void loadRecommendRoles() {
         Map<String, Integer> paramMap = new HashMap<>();
-        paramMap.put("start", 0);
+        paramMap.put("startTimer", 0);
         // 默认加载五个推荐玩家
         paramMap.put("count", 100);
         ContactManager.getFriendList(new GetUserInfoListCallback() {

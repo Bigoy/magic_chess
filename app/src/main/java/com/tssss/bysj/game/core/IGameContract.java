@@ -12,13 +12,13 @@ public interface IGameContract {
     interface IView extends IMvpView {
         void prepareGame();
 
-        void start();
+        void start(boolean isFirst);
 
         void syncChessmanPosition(String chessmanKey, String position);
 
         void turnMe();
 
-        void result(GameResult gameResult);
+        void result(String chessmanKey, String position, GameResult gameResult);
 
         void isNotFirst();
 
@@ -65,7 +65,7 @@ public interface IGameContract {
         }
 
         @Override
-        public void start() {
+        public void start(boolean isFirst) {
 
         }
 
@@ -80,7 +80,7 @@ public interface IGameContract {
         }
 
         @Override
-        public void result(GameResult gameResult) {
+        public void result(String chessmanKey, String position, GameResult gameResult) {
 
         }
 

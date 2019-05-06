@@ -20,15 +20,10 @@ public class UserDataCache {
      * 保存用户信息
      */
     public static void saveAccount(User user) {
-        if (null == user) {
-            Log.w("UserDataCache", "user == null");
-        } else {
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_ID, user.getUserId());
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_PASSWORD, user.getUserPassword());
-            Logger.log(readAccount(Constant.ACCOUNT_ID));
-            Logger.log(readAccount(Constant.ACCOUNT_PASSWORD));
-        }
-
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                Constant.ACCOUNT_ID, user.getUserId());
+        SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                Constant.ACCOUNT_PASSWORD, user.getUserPassword());
     }
 
     /**
@@ -55,17 +50,31 @@ public class UserDataCache {
         return SharedPreferencesUtil.readString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ACCOUNT_LOGIN_TIME);
     }
 
+    /**
+     * 缓存的当前账户所持有的GameRole对象
+     */
     public static void keepRole(GameRole gameRole) {
         if (null != gameRole) {
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_AVATAR, gameRole.getAvatarStr());
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_NICK_NAME, gameRole.getName());
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SEX, gameRole.getSex());
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SIGNATURE, gameRole.getSignature());
-            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_LEVEL, gameRole.getLevel());
-            SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_EXP, gameRole.getRoleExperience());
+            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_AVATAR, gameRole.getAvatarStr());
+            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_NICK_NAME, gameRole.getName());
+            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_SEX, gameRole.getSex());
+            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_SIGNATURE, gameRole.getSignature());
+            SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_LEVEL, gameRole.getLevel());
+            SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_EXP, gameRole.getRoleExperience());
+            SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(),
+                    Constant.ROLE_SCORE, gameRole.getScore());
         }
     }
 
+    /**
+     * 读取缓存的当前账户所持有的GameRole对象
+     */
     public static GameRole readRole() {
         String avatar = readString(Constant.ROLE_AVATAR);
         String name = readString(Constant.ROLE_NICK_NAME);
@@ -73,9 +82,13 @@ public class UserDataCache {
         String signature = readString(Constant.ROLE_SIGNATURE);
         String level = readString(Constant.ROLE_LEVEL);
         int exp = readInt(Constant.ROLE_EXP);
-        GameRole gameRole = null;
-        if (StringUtil.isBlank(avatar) || StringUtil.isBlank(name) || StringUtil.isBlank(sex) || StringUtil.isBlank(signature) || StringUtil.isBlank(level)) {
-            return gameRole;
+        GameRole gameRole;
+
+        if (StringUtil.isBlank(name)
+                || StringUtil.isBlank(sex)
+                || StringUtil.isBlank(signature)
+                || StringUtil.isBlank(level)) {
+            return null;
         } else {
             gameRole = new GameRole();
             gameRole.setUser(new User(readAccount(Constant.ACCOUNT_ID), readAccount(Constant.ACCOUNT_PASSWORD)));

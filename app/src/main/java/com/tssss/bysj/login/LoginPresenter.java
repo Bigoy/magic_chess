@@ -55,6 +55,7 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
         }
         if (AccountUtil.validAccount(user.getUserId(), user.getUserPassword())) {
             this.user = user;
+            // 保存用户输入的账户和密码 不管账户与密码是否匹配
             UserDataCache.saveAccount(user);
             getView().onProcess();
         }
@@ -74,6 +75,8 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                     Logger.log(i + "  " + s);
 
                     if (i == 0) {
+                        // 保存用户输入的账户和密码 账户与密码匹配
+                        UserDataCache.saveAccount(new User(account, password));
                         AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
                         UserInfo userInfo = JMessageClient.getMyInfo();
                         if (null != userInfo) {
@@ -90,8 +93,10 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                                 myRole.setLevel(roleMap.get(Constant.ROLE_LEVEL));
                                 try {
                                     myRole.setRoleExperience(Integer.valueOf(roleMap.get(Constant.ROLE_EXP)));
+                                    myRole.setScore(Integer.valueOf(roleMap.get(Constant.ROLE_SCORE)));
                                 } catch (Exception e) {
                                     myRole.setRoleExperience(0);
+                                    myRole.setScore(0);
                                 }
                                 handler.post(new Runnable() {
                                     @Override
