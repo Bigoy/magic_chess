@@ -15,11 +15,9 @@ public class Umpire {
     public String umpire() {
         ChessmanManager cm = ChessmanManager.getChessmanManager();
         AnchorManager am = AnchorManager.getAnchorManager();
-
         GameUtil gameUtil = GameUtil.getGameUtil();
         int tempA = gameUtil.getSurfaceSize() / 4 * 3;
         int tempB = gameUtil.getSurfaceSize() / 4 * 2;
-
         if (am.getAnchor(cm.getChessman(ChessmanManager.SELF_A).getPosition()).getY() == tempA &&
                 am.getAnchor(cm.getChessman(ChessmanManager.SELF_B).getPosition()).getY() == tempA &&
                 am.getAnchor(cm.getChessman(ChessmanManager.SELF_C).getPosition()).getY() == tempA) {
@@ -40,19 +38,4 @@ public class Umpire {
         return GameResult.COMPETING;
     }
 
-    /**
-     * 发布游戏结果 胜利
-     */
-    public void win() {
-
-
-    }
-
-    /**
-     * 发布游戏结果 失败
-     */
-    public void lose() {
-
-
-    }
 }

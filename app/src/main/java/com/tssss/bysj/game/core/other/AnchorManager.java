@@ -87,21 +87,18 @@ public class AnchorManager {
     public void createAnchors() {
         GameUtil gameUtil = GameUtil.getGameUtil();
         int temp = gameUtil.getSurfaceSize() / 4;
-
         one.setX(temp);
         one.setY(temp);
         two.setX(temp * 2);
         two.setY(temp);
         three.setX(temp * 3);
         three.setY(temp);
-
         four.setX(temp);
         four.setY(temp * 2);
         five.setX(temp * 2);
         five.setY(temp * 2);
         six.setX(temp * 3);
         six.setY(temp * 2);
-
         seven.setX(temp);
         seven.setY(temp * 3);
         eight.setX(temp * 2);
