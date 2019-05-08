@@ -31,14 +31,10 @@ public class Rule {
     a 点击在棋盘格子上；
     b 点击的地方必须有棋子存在；
      */
-    public boolean canCheckChessman(MotionEvent event) {
+    public boolean canCheckChessman(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
         ChessmanManager cm = ChessmanManager.getChessmanManager();
         GameRoleManager gm = GameRoleManager.getGameRoleManager();
-
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-
         if (am.inRange(x, y)) {
             if (am.getAnchor(am.identifyAnchor(x, y)).isUsed()) {
                 if (cm.getChessman(cm.identify(am.identifyAnchor(x, y))).getCamp().equals(gm.getPlayer(GameRoleManager.SELF).getChessmanCamp())) {
@@ -68,19 +64,13 @@ public class Rule {
     d 新位置是一个锚点；
     e 两个圆圈之间不能直接走棋。
      */
-    public boolean canMoveChessman(MotionEvent event) {
+    public boolean canMoveChessman(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
         ChessmanManager cm = ChessmanManager.getChessmanManager();
         GameUtil gameUtil = GameUtil.getGameUtil();
-
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-
         String checkedPos = (cm.getChessman(cm.whoChecked()).getPosition());
-
         int oldX = am.getAnchor(checkedPos).getX();
         int oldY = am.getAnchor(checkedPos).getY();
-
         if (am.inRange(x, y)) {
             if (!am.getAnchor(am.identifyAnchor(x, y)).isUsed()) {
                 String oldPos = am.identifyAnchor(oldX, oldY);

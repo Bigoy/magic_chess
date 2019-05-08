@@ -19,12 +19,13 @@ public class ChessmanManager {
     @SuppressLint("StaticFieldLeak")
     private static ChessmanManager mChessmanManager;
 
-    public static String SELF_A = "selfA";
-    public static String SELF_B = "selfB";
-    public static String SELF_C = "selfC";
-    public static String ARMY_A = "armyA";
-    public static String ARMY_B = "armyB";
-    public static String ARMY_C = "armyC";
+    public static String SELF_A = "SELF_A";
+    public static String SELF_B = "SELF_B";
+    public static String SELF_C = "SELF_C";
+    public static String ARMY_A = "ARMY_A";
+    public static String ARMY_B = "ARMY_B";
+    public static String ARMY_C = "ARMY_C";
+    public static String UNKNOWN = "UNKNOWN";
 
     private Chessman selfA;
     private Chessman selfB;
@@ -37,7 +38,6 @@ public class ChessmanManager {
 
     private ChessmanManager() {
         chessmen = new HashMap<>();
-
         initChessmen();
     }
 
@@ -58,8 +58,6 @@ public class ChessmanManager {
         armyA = new Chessman();
         armyB = new Chessman();
         armyC = new Chessman();
-
-        // 保存给棋子管理者。
         chessmen.put(SELF_A, selfA);
         chessmen.put(SELF_B, selfB);
         chessmen.put(SELF_C, selfC);
@@ -69,23 +67,21 @@ public class ChessmanManager {
     }
 
     public void initChessmanPosition() {
-        chessmen.get(SELF_A).setPosition(AnchorManager.ONE);
-        chessmen.get(SELF_B).setPosition(AnchorManager.FOUR);
-        chessmen.get(SELF_C).setPosition(AnchorManager.SEVEN);
-
-        chessmen.get(ARMY_A).setPosition(AnchorManager.THREE);
-        chessmen.get(ARMY_B).setPosition(AnchorManager.SIX);
-        chessmen.get(ARMY_C).setPosition(AnchorManager.NINE);
+        selfA.setPosition(AnchorManager.ONE);
+        selfB.setPosition(AnchorManager.FOUR);
+        selfC.setPosition(AnchorManager.SEVEN);
+        armyA.setPosition(AnchorManager.THREE);
+        armyB.setPosition(AnchorManager.SIX);
+        armyC.setPosition(AnchorManager.NINE);
     }
 
     public void initChessmanCamp() {
-        chessmen.get(SELF_A).setCamp(Chessman.CAMP_LEFT);
-        chessmen.get(SELF_B).setCamp(Chessman.CAMP_LEFT);
-        chessmen.get(SELF_C).setCamp(Chessman.CAMP_LEFT);
-
-        chessmen.get(ARMY_A).setCamp(Chessman.CAMP_RIGHT);
-        chessmen.get(ARMY_B).setCamp(Chessman.CAMP_RIGHT);
-        chessmen.get(ARMY_C).setCamp(Chessman.CAMP_RIGHT);
+        selfA.setCamp(Chessman.CAMP_LEFT);
+        selfB.setCamp(Chessman.CAMP_LEFT);
+        selfC.setCamp(Chessman.CAMP_LEFT);
+        armyA.setCamp(Chessman.CAMP_RIGHT);
+        armyB.setCamp(Chessman.CAMP_RIGHT);
+        armyC.setCamp(Chessman.CAMP_RIGHT);
     }
 
     public Chessman getChessman(String key) {
@@ -96,12 +92,12 @@ public class ChessmanManager {
     Drawing chessmen uniformly.
      */
     public void drawChessmen(Canvas gameCanvas) {
-        chessmen.get(SELF_A).draw(gameCanvas);
-        chessmen.get(SELF_B).draw(gameCanvas);
-        chessmen.get(SELF_C).draw(gameCanvas);
-        chessmen.get(ARMY_A).draw(gameCanvas);
-        chessmen.get(ARMY_B).draw(gameCanvas);
-        chessmen.get(ARMY_C).draw(gameCanvas);
+        selfA.draw(gameCanvas);
+        selfB.draw(gameCanvas);
+        selfC.draw(gameCanvas);
+        armyA.draw(gameCanvas);
+        armyB.draw(gameCanvas);
+        armyC.draw(gameCanvas);
     }
 
     public String identify(String position) {
@@ -118,34 +114,37 @@ public class ChessmanManager {
         } else if (armyC.getPosition().equals(position)) {
             return ARMY_C;
         }
-        return "";
+        return UNKNOWN;
     }
 
     /*
-    更新棋子位置。
+    Update army's chessmen newPosition, which are from the server.
      */
-    public void update(MotionEvent event, String keyChessman, String position) {
+    public void moveChessman(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
         Rule rule = Rule.getRule();
-        if (rule.canMoveChessman(event)) {
-            // 原来的锚点使用状态设为false。
-            am.getAnchor(chessmen.get(keyChessman).getPosition()).setUsed(false);
-            chessmen.get(keyChessman).setPosition(position);
-            am.getAnchor(position).setUsed(true);
+        if (rule.canMoveChessman(x, y)) {
+            Chessman checkedChessman = chessmen.get(whoChecked());
+            updateChessmanPosition(checkedChessman, am.identifyAnchor(x, y));
         }
-
-        // 更新的棋子位置上传到服务器。
-
     }
 
-    /*
-    Update army's chessmen position, which are from the server.
-     */
-    public void updateArmyPosition(String key, String position) {
+    public void syncChessmen(String key, String newPosition) {
+        Chessman checkedChessman = chessmen.get(key);
+        updateChessmanPosition(checkedChessman, newPosition);
+    }
+
+    private void updateChessmanPosition(Chessman chessman, String newPosition) {
         AnchorManager am = AnchorManager.getAnchorManager();
-        am.getAnchor(chessmen.get(key).getPosition()).setUsed(false);
-        chessmen.get(key).setPosition(position);
-        am.getAnchor(position).setUsed(true);
+        if (null == chessman) {
+            throw new NullPointerException();
+        }
+        String oldPosition = chessman.getPosition();
+        Anchor oldAnchor = am.getAnchor(oldPosition);
+        oldAnchor.setUsed(false);
+        chessman.setPosition(newPosition);
+        Anchor newAnchor = am.getAnchor(newPosition);
+        newAnchor.setUsed(true);
     }
 
     /*
@@ -162,10 +161,7 @@ public class ChessmanManager {
             return true;
         } else if (armyB.getChecked()) {
             return true;
-        } else if (armyC.getChecked()) {
-            return true;
-        }
-        return false;
+        } else return armyC.getChecked();
     }
 
     /*
@@ -185,21 +181,24 @@ public class ChessmanManager {
         } else if (armyC.getChecked()) {
             return ARMY_C;
         }
-        return null;
+        return UNKNOWN;
     }
 
     /*
     选中一个棋子。
      */
-    public void checkChessman(MotionEvent event) {
-        int touchX = (int) event.getX();
-        int touchY = (int) event.getY();
+    public void playerPrepareToCheckChessman(int touchX, int touchY) {
 
         AnchorManager am = AnchorManager.getAnchorManager();
         Rule rule = Rule.getRule();
 
-        if (rule.canCheckChessman(event)) {
-            chessmen.get(identify(am.identifyAnchor(touchX, touchY))).setChecked(true);
+        if (rule.canCheckChessman(touchX, touchY)) {
+            Chessman checkedChessman = chessmen.get(identify(am.identifyAnchor(touchX, touchY)));
+            if (null == checkedChessman) {
+                throw new NullPointerException();
+
+            }
+            checkedChessman.setChecked(true);
         }
     }
 
