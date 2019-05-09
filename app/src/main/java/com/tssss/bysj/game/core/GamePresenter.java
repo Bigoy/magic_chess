@@ -91,6 +91,11 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
 
     }
 
+    public void startTimer() {
+        timer.startTimer();
+
+    }
+
     protected void prepareGameScene() {
         anchorManager.createAnchors();
     }
@@ -137,7 +142,9 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                 getView().showArmyInfo(armyRole.getName());
                 getView().showMyChessmenCamp(selfRole.getChessmanCamp());
                 getView().start(isFirst);
-                timer.startTimer();
+                if (isFirst) {
+                    timer.startTimer();
+                }
             }
         }, 3000);
     }
@@ -182,6 +189,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    startTimer();
                     getView().turnMe();
                 }
             });
@@ -269,7 +277,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
        /*
        向对方请求让棋
         */
-       sendStepBackMessage();
+        sendStepBackMessage();
     }
 
     @Override

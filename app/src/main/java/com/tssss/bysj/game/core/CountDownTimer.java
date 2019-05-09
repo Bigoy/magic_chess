@@ -40,7 +40,6 @@ public class CountDownTimer implements Runnable {
     }
 
     public void cancelTimer() {
-        time = 30;
         isRun = false;
         handler.removeCallbacks(this);
     }
@@ -51,7 +50,11 @@ public class CountDownTimer implements Runnable {
     }
 
     public void resetTimer() {
-        iCountTime.onTicker(30);
+        time = 30;
+        this.countTime = time;
+        if (null != iCountTime) {
+            iCountTime.onTicker(countTime);
+        }
     }
 
     public interface ICountTime {
