@@ -1,10 +1,8 @@
 package com.tssss.bysj.game.core.other;
 
-import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.MotionEvent;
 
 import com.tssss.bysj.game.Chessman;
 
@@ -16,9 +14,9 @@ import java.util.Map;
  * 管理棋子的位置，身份。
  */
 public class ChessmanManager {
-    @SuppressLint("StaticFieldLeak")
     private static ChessmanManager mChessmanManager;
-
+    private Paint markPaint;
+    private AnchorManager anchorManager;
     public static String SELF_A = "SELF_A";
     public static String SELF_B = "SELF_B";
     public static String SELF_C = "SELF_C";
@@ -26,19 +24,31 @@ public class ChessmanManager {
     public static String ARMY_B = "ARMY_B";
     public static String ARMY_C = "ARMY_C";
     public static String UNKNOWN = "UNKNOWN";
-
     private Chessman selfA;
     private Chessman selfB;
     private Chessman selfC;
     private Chessman armyA;
     private Chessman armyB;
     private Chessman armyC;
-
     private Map<String, Chessman> chessmen;
+
 
     private ChessmanManager() {
         chessmen = new HashMap<>();
+        anchorManager = AnchorManager.getAnchorManager();
         initChessmen();
+        initChessmanCamp();
+        initChessmanPosition();
+        initMark();
+    }
+
+    private void initMark() {
+        markPaint = new Paint();
+        markPaint.setAntiAlias(true);
+        markPaint.setDither(true);
+        markPaint.setColor(Color.BLACK);
+        markPaint.setStyle(Paint.Style.STROKE);
+        markPaint.setStrokeWidth(4);
     }
 
     public static ChessmanManager getChessmanManager() {
@@ -66,7 +76,7 @@ public class ChessmanManager {
         chessmen.put(ARMY_C, armyC);
     }
 
-    public void initChessmanPosition() {
+    private void initChessmanPosition() {
         selfA.setPosition(AnchorManager.ONE);
         selfB.setPosition(AnchorManager.FOUR);
         selfC.setPosition(AnchorManager.SEVEN);
@@ -75,7 +85,7 @@ public class ChessmanManager {
         armyC.setPosition(AnchorManager.NINE);
     }
 
-    public void initChessmanCamp() {
+    private void initChessmanCamp() {
         selfA.setCamp(Chessman.CAMP_LEFT);
         selfB.setCamp(Chessman.CAMP_LEFT);
         selfC.setCamp(Chessman.CAMP_LEFT);
@@ -188,15 +198,12 @@ public class ChessmanManager {
     选中一个棋子。
      */
     public void playerPrepareToCheckChessman(int touchX, int touchY) {
-
         AnchorManager am = AnchorManager.getAnchorManager();
         Rule rule = Rule.getRule();
-
         if (rule.canCheckChessman(touchX, touchY)) {
             Chessman checkedChessman = chessmen.get(identify(am.identifyAnchor(touchX, touchY)));
             if (null == checkedChessman) {
                 throw new NullPointerException();
-
             }
             checkedChessman.setChecked(true);
         }
@@ -217,27 +224,13 @@ public class ChessmanManager {
     /*
     当棋子选中时在选中的棋子位置绘制稍大的圆圈作为标记。
      */
-    public void drawMark(Canvas gameCanvas, String chessmanKey) {
-        AnchorManager am = AnchorManager.getAnchorManager();
-        GameUtil gameUtil = GameUtil.getGameUtil();
-
-        Paint markPaint = new Paint();
-        markPaint.setAntiAlias(true);
-        markPaint.setDither(true);
-        markPaint.setColor(Color.BLACK);
-        markPaint.setStyle(Paint.Style.STROKE);
-        markPaint.setStrokeWidth(4);
-
-        gameCanvas.drawCircle(am.getAnchor(getChessman(chessmanKey).getPosition()).getX(),
-                am.getAnchor(getChessman(chessmanKey).getPosition()).getY(), 80, markPaint);
-
-       /* Bitmap src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.ic_flag);
-        Bitmap bitmap = Bitmap.createBitmap(src);
-
-        int x = am.getAnchor(chessmen.get(chessmanKey).getPosition()).getX() - (bitmap.getWidth() / 2);
-        int y = am.getAnchor(chessmen.get(chessmanKey).getPosition()).getY() - (bitmap.getHeight() / 2);
-
-        gameCanvas.drawBitmap(bitmap, x, y, markPaint);*/
+    public void drawMark(Canvas gameCanvas) {
+        Chessman checkChessman = chessmen.get(whoChecked());
+        Anchor checkChessmanPosition = anchorManager.getAnchor(checkChessman.getPosition());
+        gameCanvas.drawCircle(checkChessmanPosition.getX(),
+                checkChessmanPosition.getY(),
+                80,
+                markPaint);
     }
 }
 

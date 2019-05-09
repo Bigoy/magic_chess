@@ -116,6 +116,8 @@ public class Menu extends BaseDialog {
     }
 
     public void display() {
+        noTv.setBackgroundColor(0x00000000);
+        noTv.setTextColor(0xFFE7A1A1);
         AnimationUtil.startAlphaSlideIn(context, itemsLl);
         handler.postDelayed(new Runnable() {
             @Override

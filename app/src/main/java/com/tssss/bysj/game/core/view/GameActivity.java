@@ -17,6 +17,7 @@ import com.tssss.bysj.game.core.GamePresenter;
 import com.tssss.bysj.game.core.IGameContract;
 import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
@@ -26,7 +27,6 @@ import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.MessageEvent;
-import cn.jpush.im.android.api.exceptions.JMessageException;
 
 @ViewInject(layoutId = R.layout.activity_game)
 public class GameActivity extends BaseActivity implements View.OnTouchListener,
@@ -82,7 +82,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
                 .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
         prepareDialog.display();
         JMessageClient.registerEventReceiver(this);
-        gamePresenter = new GamePresenter(this, this);
+        gamePresenter = new GamePresenter(this);
         mGameView.setGamePresenter(this.gamePresenter);
         initMenu();
         Intent intent = getIntent();
@@ -91,7 +91,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
             if (StringUtil.isBlank(armyID)) {
                 throw new IllegalArgumentException("不能获取到游戏对方的accountID");
 
-            }else {
+            } else {
                 gamePresenter.prepareGame(UserDataCache.readAccount(Constant.ACCOUNT_ID), armyID);
             }
         }
@@ -176,7 +176,6 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @Override
     public void prepareGame() {
 
-
     }
 
     @Override
@@ -198,34 +197,26 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     public void turnMe() {
         mGameView.touchTrue();
         ToastUtil.showToast(this, "该你了", ToastUtil.TOAST_DEFAULT);
-
     }
 
     @Override
-    public void result(String chessmanKey, String position, GameResult gameResult) {
-        /*Intent intent = new Intent(GameActivity.this, GameResultActivity.class);
-            intent.putExtra("result", dataMap.get("result"));
-            intent.putExtra("desc", dataMap.get("desc"));
-            intent.putExtra("exp", dataMap.get("exp"));
-            startActivity(intent);
-            finish();*/
-        // 同步最后一步棋子的位置
-        mGameView.syncChessmen(chessmanKey, position);
+    public void result(GameResult gameResult) {
+        Logger.log("有了游戏结果");
     }
 
     @Override
     public void isNotFirst() {
         ToastUtil.showToast(this, "对方先手", ToastUtil.TOAST_DEFAULT);
-
+        Logger.log("对方先走");
     }
 
     @Override
     public void surrender(GameResult gameResult) {
-
+        Logger.log("对方投降了，哈哈！！！");
     }
 
     @Override
-    public void showChessmanCamp(String camp) {
+    public void showMyChessmenCamp(String camp) {
         if (Chessman.CAMP_LEFT.equals(camp)) {
             ToastUtil.showToast(this, "你的棋子在左边", ToastUtil.TOAST_DEFAULT);
 
@@ -236,9 +227,9 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     }
 
     @Override
-    public void urge() {
+    public void beingUrged() {
         ToastUtil.showToast(this, "亲，这边麻烦快点儿呢？", ToastUtil.TOAST_ERROR);
-
+        Logger.log("敢催劳资");
     }
 
     @Override
@@ -250,7 +241,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     public void stepBack() {
         mGameView.setCanTouch(true);
         ToastUtil.showToast(this, "您需要给对方让一步棋", ToastUtil.TOAST_DEFAULT);
-
+        Logger.log("让棋");
     }
 
     @Override
@@ -266,7 +257,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @Override
     public void showArmyInfo(String armyName) {
         name.setText("对方是：" + armyName);
-
+        Logger.log("对方是：" + armyName);
     }
 
     @Override
@@ -274,6 +265,5 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
         ToastUtil.showToast(this, "进入游戏失败，退出", ToastUtil.TOAST_DEFAULT);
         prepareDialog.dismiss();
         finish();
-
     }
 }

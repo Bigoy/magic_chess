@@ -12,20 +12,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.game.core.GamePresenter;
-import com.tssss.bysj.game.core.other.AnchorManager;
-import com.tssss.bysj.game.core.other.Chessboard;
-import com.tssss.bysj.game.core.other.ChessmanManager;
-import com.tssss.bysj.game.core.other.GameManager;
-import com.tssss.bysj.game.core.other.GameResult;
-import com.tssss.bysj.game.core.other.GameRoleManager;
 import com.tssss.bysj.game.core.other.GameUtil;
-import com.tssss.bysj.game.core.other.Umpire;
 import com.tssss.bysj.other.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
@@ -34,15 +23,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Canvas gameCanvas;
     private SurfaceHolder gameHolder;
     private boolean canTouch = false;
-
-    private AnchorManager am;
-    private ChessmanManager chessmanManager;
-    private Chessboard chessboard;
-    private GameRoleManager pm;
-    private Umpire umpire;
+    private int measuredSurfaceSize;
     private GameUtil gameUtil;
-    private GameManager gm;
-    private Map<String, String> chessmanStateMap;
     private GamePresenter gamePresenter;
     private Thread drawThread;
 
@@ -73,16 +55,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int measuredSurfaceSize = MeasureSpec.getSize(widthMeasureSpec);
+        measuredSurfaceSize = MeasureSpec.getSize(widthMeasureSpec);
         gameUtil.setSurfaceSize(measuredSurfaceSize);
-        am.createAnchors();
         setMeasuredDimension(measuredSurfaceSize, measuredSurfaceSize);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Logger.log("GameSurfaceView created");
-
     }
 
     @Override
@@ -103,17 +83,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public void touchTrue() {
         canTouch = true;
-
     }
 
     public void touchFalse() {
         canTouch = false;
-
     }
 
     @Override
     public void run() {
-        gm.prepare(am, chessmanManager, pm);
         // 绘制。
         while (isDrawing) {
             drawMainly();
@@ -130,17 +107,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         setFocusableInTouchMode(true);
         setZOrderOnTop(true);
         gameHolder.setFormat(PixelFormat.TRANSLUCENT);
-        gameUtil = GameUtil.getGameUtil();
-        am = AnchorManager.getAnchorManager();
-        chessmanManager = ChessmanManager.getChessmanManager();
-        pm = GameRoleManager.getGameRoleManager();
-        umpire = new Umpire();
-        chessboard = new Chessboard();
-        gm = new GameManager();
-        chessmanStateMap = new HashMap<>();
-        gameUtil.setContext(getContext());
         drawThread = new Thread(this);
         drawThread.setPriority(Thread.MAX_PRIORITY);
+        gameUtil = GameUtil.getGameUtil();
+        gameUtil.setContext(getContext());
     }
 
     /*
@@ -150,11 +120,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         try {
             gameCanvas = gameHolder.lockCanvas();
             clear(gameCanvas);
-            chessboard.draw(gameCanvas);
-            chessmanManager.drawChessmen(gameCanvas);
-            if (chessmanManager.whoChecked() != null) {
-                chessmanManager.drawMark(gameCanvas, chessmanManager.whoChecked());
-            }
+            gamePresenter.drawGame(gameCanvas);
         } finally {
             if (gameCanvas != null) {
                 gameHolder.unlockCanvasAndPost(gameCanvas);
@@ -179,50 +145,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         int x = (int) event.getX();
         int y = (int) event.getY();
         if (canTouch) {
-            canTouch = false;
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (chessmanManager.hasChessmanChecked()) {
-                    chessmanManager.moveChessman(x, y);
-                    gamePresenter.cancelAndResetTimer();
-                    turn("update");
-                    checkResult();
+                if (gamePresenter.hasChessmanChecked()) {
+                    if (gamePresenter.canMoveChessman(x, y)){
+                        gamePresenter.moveChessman(x, y);
+                        canTouch = false;
+                    }
                 } else {
-                    chessmanManager.playerPrepareToCheckChessman(x, y);
+                    gamePresenter.checkChessman(x, y);
                 }
             }
         }
     }
 
-    private void checkResult() {
-        String result = umpire.umpire();
-        if (GameResult.COMPETING.equals(result)) {
-            turn("turn");
-
-        } else if (GameResult.WIN.equals(result)) {
-            turn("result");
-            umpire.win();
-
-        } else if (GameResult.LOSE.equals(result)) {
-            turn("result");
-            umpire.lose();
-
-        }
-
-    }
-
-    private void turn(String type) {
-        chessmanManager.resetChessmenCheckedState();
-        String updateChessmanIndex = chessmanManager.whoChecked();
-        String updateChessmanPosition = chessmanManager.getChessman(chessmanManager.whoChecked()).getPosition();
-        chessmanStateMap.put("chessman_index", updateChessmanIndex);
-        chessmanStateMap.put("chessman_position", updateChessmanPosition);
-        chessmanStateMap.put("operation", type);
-        gamePresenter.sendMessage(JSON.toJSONString(chessmanStateMap));
-
-    }
-
     public void syncChessmen(String chessmanKey, String position) {
-        chessmanManager.syncChessmen(chessmanKey, position);
+        gamePresenter.receivedSyncChessmanMessage(chessmanKey, position);
     }
 
     public void startDrawing() {

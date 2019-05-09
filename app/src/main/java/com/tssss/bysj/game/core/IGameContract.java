@@ -18,18 +18,18 @@ public interface IGameContract {
 
         void turnMe();
 
-        void result(String chessmanKey, String position, GameResult gameResult);
+        void result(GameResult gameResult);
 
         void isNotFirst();
 
         void surrender(GameResult gameResult);
 
-        void showChessmanCamp(String camp);
+        void showMyChessmenCamp(String camp);
 
         /**
          * 被对方催促
          */
-        void urge();
+        void beingUrged();
 
         void peace();
 
@@ -56,8 +56,13 @@ public interface IGameContract {
 
         void stepBack();
 
+        void checkResult();
+
     }
 
+    /**
+     * 空view，防止null pointer
+     */
     IView emptyView = new IView() {
         @Override
         public void prepareGame() {
@@ -80,7 +85,7 @@ public interface IGameContract {
         }
 
         @Override
-        public void result(String chessmanKey, String position, GameResult gameResult) {
+        public void result(GameResult gameResult) {
 
         }
 
@@ -95,12 +100,12 @@ public interface IGameContract {
         }
 
         @Override
-        public void showChessmanCamp(String camp) {
+        public void showMyChessmenCamp(String camp) {
 
         }
 
         @Override
-        public void urge() {
+        public void beingUrged() {
 
         }
 

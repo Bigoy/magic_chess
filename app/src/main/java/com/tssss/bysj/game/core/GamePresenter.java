@@ -1,13 +1,18 @@
 package com.tssss.bysj.game.core;
 
+import android.graphics.Canvas;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.game.Chessman;
+import com.tssss.bysj.game.core.other.AnchorManager;
+import com.tssss.bysj.game.core.other.Chessboard;
+import com.tssss.bysj.game.core.other.ChessmanManager;
 import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.core.other.GameRoleManager;
-import com.tssss.bysj.game.core.view.GameActivity;
+import com.tssss.bysj.game.core.other.Rule;
+import com.tssss.bysj.game.core.other.Umpire;
 import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Constant;
@@ -34,23 +39,21 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     private Handler handler;
     private CountDownTimer timer;
     private boolean isFirst;
-    private GameActivity gameActivity;
+    private Umpire umpire;
+    private ChessmanManager chessmanManager;
+    private Chessboard chessboard;
+    private Rule rule;
+    private AnchorManager anchorManager;
 
-    public GamePresenter(GameActivity gameActivity, IGameContract.IView view) {
+    public GamePresenter(IGameContract.IView view) {
         super(view);
-        this.gameActivity = gameActivity;
         handler = new Handler();
+        umpire = new Umpire();
+        chessboard = new Chessboard();
+        rule = Rule.getRule();
+        anchorManager = AnchorManager.getAnchorManager();
+        chessmanManager = ChessmanManager.getChessmanManager();
         timer = new CountDownTimer(30, GamePresenter.this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        recycler();
-    }
-
-    private void recycler() {
-        gameActivity = null;
     }
 
     @Override
@@ -71,8 +74,10 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             @Override
             public void gotResult(int i, String s, UserInfo userInfo) {
                 if (i == 0) {
-                    prepare(userInfo);
-
+                    prepareGameScene();
+                    prepareArmyRole(userInfo);
+                    preparePlayOrder();
+                    startGame();
                 } else {
                     handler.post(new Runnable() {
                         @Override
@@ -86,18 +91,11 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
 
     }
 
-    /**
-     * 获取对方信息成功后开始准备游戏
-     */
-    private void prepare(UserInfo userInfo) {
-        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
-        armyRole.setUser(new User(armyAccountID, null));
-        armyRole.setName(map.get(Constant.ROLE_NICK_NAME));
-        armyRole.setSex(map.get(Constant.ROLE_SEX));
-        armyRole.setLevel(map.get(Constant.ROLE_LEVEL));
-        armyRole.setSignature(map.get(Constant.ROLE_SIGNATURE));
-        armyRole.setRoleExperience(Integer.valueOf(map.get(Constant.ROLE_EXP)));
-        armyRole.setScore(Integer.valueOf(map.get(Constant.ROLE_SCORE)));
+    protected void prepareGameScene() {
+        anchorManager.createAnchors();
+    }
+
+    protected void preparePlayOrder() {
         long myAccountID = Long.parseLong(this.myAccountID);
         long armyAccountID = Long.valueOf(this.armyAccountID);
         // accountID小的先走
@@ -116,10 +114,19 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             selfRole.setChessmanCamp(Chessman.CAMP_RIGHT);
             armyRole.setChessmanCamp(Chessman.CAMP_LEFT);
         }
-        // 添加游戏双方角色到GameRoleManager
         GameRoleManager.getGameRoleManager().addPlayer(GameRoleManager.SELF, selfRole);
         GameRoleManager.getGameRoleManager().addPlayer(GameRoleManager.ARMY, armyRole);
-        startGame();
+    }
+
+    protected void prepareArmyRole(UserInfo userInfo) {
+        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
+        armyRole.setUser(new User(armyAccountID, null));
+        armyRole.setName(map.get(Constant.ROLE_NICK_NAME));
+        armyRole.setSex(map.get(Constant.ROLE_SEX));
+        armyRole.setLevel(map.get(Constant.ROLE_LEVEL));
+        armyRole.setSignature(map.get(Constant.ROLE_SIGNATURE));
+        armyRole.setRoleExperience(Integer.valueOf(map.get(Constant.ROLE_EXP)));
+        armyRole.setScore(Integer.valueOf(map.get(Constant.ROLE_SCORE)));
     }
 
     private void startGame() {
@@ -128,7 +135,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             @Override
             public void run() {
                 getView().showArmyInfo(armyRole.getName());
-                getView().showChessmanCamp(selfRole.getChessmanCamp());
+                getView().showMyChessmenCamp(selfRole.getChessmanCamp());
                 getView().start(isFirst);
                 timer.startTimer();
             }
@@ -165,7 +172,8 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().syncChessmanPosition(dataMap.get("chessman_index"),
+                    getView().syncChessmanPosition(
+                            dataMap.get("chessman_index"),
                             dataMap.get("chessman_position"));
                 }
             });
@@ -177,48 +185,69 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                     getView().turnMe();
                 }
             });
-        } else if ("result".equals(operation)) {
-            GameResult gameResult = new GameResult();
+        } else if ("win".equals(operation)) {
+            GameResult win = new GameResult();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().result(dataMap.get("chessman_index"),
-                            dataMap.get("chessman_position"),
-                            gameResult);
+                    getView().result(win);
                 }
             });
 
+        } else if ("lose".equals(operation)) {
+            GameResult lose = new GameResult();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    getView().result(lose);
+                }
+            });
         } else if ("surrender".equals(operation)) {
-            GameResult gameResult = new GameResult();
+            /*
+             * 收到对方投降的消息
+             */
+            GameResult surrender = new GameResult();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().surrender(gameResult);
+                    getView().surrender(surrender);
                 }
             });
-
-        } else if ("come_on".equals(operation)) {
+        } else if ("beingUrged".equals(operation)) {
+            /*
+            收到对方发来的催促消息
+             */
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().urge();
+                    getView().beingUrged();
                 }
             });
-        } else if ("rang_qi".equals(operation)) {
+        } else if ("step_back".equals(operation)) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     getView().stepBack();
                 }
             });
-
         }
 
     }
 
     @Override
     public void surrender() {
-
+        /*
+         * 自动判定为失败
+         * 向对方发送选择投降的消息
+         */
+        sendSurrenderMessage();
+        GameResult surrender = new GameResult();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                getView().result(surrender);
+            }
+        });
     }
 
     @Override
@@ -229,23 +258,131 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
 
     @Override
     public void urge() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getView().urge();
-            }
-        });
+        /*
+        发送催促消息给对方
+         */
+        sendUrgeMessage();
     }
 
     @Override
     public void stepBack() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getView().stepBack();
-            }
-        });
+       /*
+       向对方请求让棋
+        */
+       sendStepBackMessage();
+    }
 
+    @Override
+    public void checkResult() {
+        String result = umpire.umpire();
+        if (GameResult.COMPETING.equals(result)) {
+            sendTurnMessage();
+
+        } else if (GameResult.WIN.equals(result)) {
+            sendWinMessage();
+
+        } else if (GameResult.LOSE.equals(result)) {
+            sendLoseMessage();
+        }
+    }
+
+    public void receivedSyncChessmanMessage(String key, String position) {
+        chessmanManager.syncChessmen(key, position);
+    }
+
+    public void checkChessman(int x, int y) {
+        chessmanManager.playerPrepareToCheckChessman(x, y);
+    }
+
+    public void moveChessman(int x, int y) {
+        chessmanManager.moveChessman(x, y);
+        cancelAndResetTimer();
+        sendUpdateChessmanMessage();
+        checkResult();
+    }
+
+    public boolean hasChessmanChecked() {
+        return chessmanManager.hasChessmanChecked();
+    }
+
+    public boolean canMoveChessman(int x, int y) {
+        return rule.canMoveChessman(x, y);
+    }
+
+    public void drawGame(Canvas gameCanvas) {
+        chessboard.draw(gameCanvas);
+        chessmanManager.drawChessmen(gameCanvas);
+        if (!chessmanManager.whoChecked().equals(ChessmanManager.UNKNOWN)) {
+            chessmanManager.drawMark(gameCanvas);
+        }
+    }
+
+    /**
+     * 催促对手
+     */
+    protected void sendUrgeMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "beingUrged");
+        sendMessage(JSON.toJSONString(map));
+    }
+
+    /**
+     * 向对方发送让棋请求
+     */
+    protected void sendStepBackMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "step_back");
+        sendMessage(JSON.toJSONString(map));
+    }
+
+    /**
+     * 通知对手更新棋子的位置
+     */
+    protected void sendUpdateChessmanMessage() {
+        Map<String, String> map = new HashMap<>();
+        String updateChessmanIndex = chessmanManager.whoChecked();
+        String updateChessmanPosition = chessmanManager.getChessman(updateChessmanIndex).getPosition();
+        map.put("chessman_index", updateChessmanIndex);
+        map.put("chessman_position", updateChessmanPosition);
+        map.put("operation", "update");
+        sendMessage(JSON.toJSONString(map));
+        chessmanManager.resetChessmenCheckedState();
+    }
+
+    /**
+     * 通知对手走棋
+     */
+    protected void sendTurnMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "turn");
+        sendMessage(JSON.toJSONString(map));
+    }
+
+    /**
+     * 通知对手在本局比赛中失败
+     */
+    protected void sendWinMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "lose");
+        sendMessage(JSON.toJSONString(map));
+    }
+
+    /**
+     * 通知对手在本局比赛中胜利
+     */
+    protected void sendLoseMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "win");
+        sendMessage(JSON.toJSONString(map));
+    }
+
+    /**
+     * 通知对手我选择投降
+     */
+    protected void sendSurrenderMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "surrender");
+        sendMessage(JSON.toJSONString(map));
     }
 
     @Override
@@ -279,6 +416,5 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             throw new IllegalArgumentException("armyAccountID = null");
         }
         JMessageManager.sendTextMessage(this.armyAccountID, content);
-
     }
 }
