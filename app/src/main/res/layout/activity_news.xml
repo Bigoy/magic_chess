@@ -47,7 +47,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/news_category_recommend"
+                android:text="@string/news_category_friend"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16dp"
                 tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage" />
