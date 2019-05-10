@@ -3,6 +3,8 @@ package com.tssss.bysj.login;
 import android.content.Context;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+
 import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
@@ -17,7 +19,6 @@ import com.tssss.bysj.util.StringUtil;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.RequestCallback;
 import cn.jpush.im.android.api.model.DeviceInfo;
@@ -67,112 +68,108 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
      */
     @Override
     public void confirmAccountOperation(String account, String password) {
-        int aa = 0;
-        if (aa == 0) {
-            JMessageClient.login(account, password, new RequestCallback<List<DeviceInfo>>() {
-                @Override
-                public void gotResult(int i, String s, List<DeviceInfo> deviceInfos) {
-                    Logger.log(i + "  " + s);
+        JMessageClient.login(account, password, new RequestCallback<List<DeviceInfo>>() {
+            @Override
+            public void gotResult(int i, String s, List<DeviceInfo> deviceInfos) {
+                Logger.log(i + "  " + s);
 
-                    if (i == 0) {
-                        // 保存用户输入的账户和密码 账户与密码匹配
-                        UserDataCache.saveAccount(new User(account, password));
-                        AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
-                        UserInfo userInfo = JMessageClient.getMyInfo();
-                        if (null != userInfo) {
-                            String roleInfo = userInfo.getSignature();
-                            if (!StringUtil.isBlank(roleInfo)) {
-                                Map<String, String> roleMap = (Map<String, String>) JSON.parse(roleInfo);
+                if (i == 0) {
+                    // 保存用户输入的账户和密码 账户与密码匹配
+                    UserDataCache.saveAccount(new User(account, password));
+                    AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
+                    UserInfo userInfo = JMessageClient.getMyInfo();
+                    String roleInfo = userInfo.getSignature();
+                    if (!StringUtil.isBlank(roleInfo)) {
+                        Map<String, String> roleMap = (Map<String, String>) JSON.parse(roleInfo);
 
-                                GameRole myRole = new GameRole();
-                                myRole.setUser(user);
-                                myRole.setAvatarStr(roleMap.get(Constant.ROLE_AVATAR));
-                                myRole.setName(roleMap.get(Constant.ROLE_NICK_NAME));
-                                myRole.setSex(roleMap.get(Constant.ROLE_SEX));
-                                myRole.setSignature(roleMap.get(Constant.ROLE_SIGNATURE));
-                                myRole.setLevel(roleMap.get(Constant.ROLE_LEVEL));
-                                try {
-                                    myRole.setRoleExperience(Integer.valueOf(roleMap.get(Constant.ROLE_EXP)));
-                                    myRole.setScore(Integer.valueOf(roleMap.get(Constant.ROLE_SCORE)));
-                                } catch (Exception e) {
-                                    myRole.setRoleExperience(0);
-                                    myRole.setScore(0);
-                                }
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getView().onSuccess(user, myRole);
-                                    }
-                                });
-                            } else {
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getView().onNullRoleInfo(user);
-                                    }
-                                });
-                            }
-                        } else {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getView().onNullRoleInfo(user);
-                                }
-                            });
+                        GameRole myRole = new GameRole();
+                        myRole.setUser(user);
+                        myRole.setAvatarStr(roleMap.get(Constant.ROLE_AVATAR));
+                        myRole.setName(roleMap.get(Constant.ROLE_NICK_NAME));
+                        myRole.setSex(roleMap.get(Constant.ROLE_SEX));
+                        myRole.setSignature(roleMap.get(Constant.ROLE_SIGNATURE));
+                        myRole.setLevel(roleMap.get(Constant.ROLE_LEVEL));
+                        try {
+                            myRole.setRoleExperience(Integer.valueOf(roleMap.get(Constant.ROLE_EXP)));
+                            myRole.setScore(Integer.valueOf(roleMap.get(Constant.ROLE_SCORE)));
+                        } catch (Exception e) {
+                            myRole.setRoleExperience(0);
+                            myRole.setScore(0);
                         }
-
-                    } else if (i == 871105 || i == 898002 || i == 801003) {
-                        // 用户不存在
-                        JMessageClient.register(user.getUserId(), user.getUserPassword(), new BasicCallback() {
+                        handler.post(new Runnable() {
                             @Override
-                            public void gotResult(int i, String s) {
-                                Logger.log(i + s);
-                                if (i == 0) {
-                                    JMessageClient.login(user.getUserId(), user.getUserPassword(), new BasicCallback() {
-                                        @Override
-                                        public void gotResult(int i, String s) {
+                            public void run() {
+                                getView().onSuccess(user, myRole);
+                            }
+                        });
+                    } else {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                getView().onNullRoleInfo(user);
+                            }
+                        });
+                    }
+
+                } else if (i == 871105 || i == 898002 || i == 801003) {
+                    // 用户不存在
+                    JMessageClient.register(user.getUserId(), user.getUserPassword(), new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            Logger.log(i + s);
+                            if (i == 0) {
+                                JMessageClient.login(user.getUserId(), user.getUserPassword(), new BasicCallback() {
+                                    @Override
+                                    public void gotResult(int i, String s) {
+                                        if (i == 0) {
                                             handler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
                                                     getView().onNullRoleInfo(user);
                                                 }
                                             });
+                                        } else {
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    getView().onError(i, s);
+                                                }
+                                            });
                                         }
-                                    });
+                                    }
+                                });
 
 
-                                } else {
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            getView().onError(i, s);
-                                        }
-                                    });
-                                }
+                            } else {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getView().onError(i, s);
+                                    }
+                                });
                             }
-                        });
+                        }
+                    });
 
-                    } else if (i == 871304) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                getView().onPasswordError();
-                            }
-                        });
+                } else if (i == 871304) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getView().onPasswordError();
+                        }
+                    });
 
-                    } else if (i == 801004) {
-                        Logger.log(i + s);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                getView().onPasswordError();
-                            }
-                        });
-                    }
+                } else if (i == 801004) {
+                    Logger.log(i + s);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getView().onPasswordError();
+                        }
+                    });
                 }
-            });
-
-        }
+            }
+        });
     }
 
     @Override
