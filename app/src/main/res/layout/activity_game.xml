@@ -7,13 +7,13 @@
     tools:context=".game.core.view.GameActivity">
 
     <com.tssss.bysj.componet.GTextView
-        android:id="@+id/game_name"
+        android:id="@+id/game_adversary_name"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="48dp"
         android:gravity="center"
-        android:text="TSSSS"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        tools:ignore="SpUsage" />
 
 
     <com.tssss.bysj.componet.GTextView
@@ -22,9 +22,9 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="30"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="32dp" />
+        android:textSize="32dp"
+        tools:ignore="SpUsage" />
 
 
     <com.tssss.bysj.game.core.view.GameSurfaceView

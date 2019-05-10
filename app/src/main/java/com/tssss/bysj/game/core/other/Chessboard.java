@@ -1,13 +1,9 @@
 package com.tssss.bysj.game.core.other;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-
-import com.tssss.bysj.R;
 
 /*
  * 棋盘类。
@@ -22,11 +18,11 @@ public class Chessboard {
         AnchorManager am = AnchorManager.getAnchorManager();
         GameUtil gameUtil = GameUtil.getGameUtil();
 
-        // 绘制棋盘图片背景。
+       /* // 绘制棋盘图片背景。
         Bitmap src = BitmapFactory.decodeResource(gameUtil.getContext().getResources(), R.drawable.bg_game);
         Bitmap bitmap = Bitmap.createBitmap(src);
         int x = am.getAnchor(AnchorManager.FIVE).getX() - bitmap.getWidth() / 2;
-        int y = am.getAnchor(AnchorManager.FIVE).getY() - bitmap.getHeight() / 2;
+        int y = am.getAnchor(AnchorManager.FIVE).getY() - bitmap.getHeight() / 2;*/
 
         int radius = gameUtil.getSurfaceSize() / 16;
 
@@ -60,7 +56,7 @@ public class Chessboard {
         paint.setStrokeJoin(Paint.Join.ROUND);
 
         if (gameCanvas != null) {
-            gameCanvas.drawBitmap(bitmap, x, y, null);
+//            gameCanvas.drawBitmap(bitmap, x, y, null);
             // 绘制棋盘的线条。
             gameCanvas.drawPath(path, paint);
             // 绘制棋盘下方的三个圆圈。

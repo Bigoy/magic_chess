@@ -47,7 +47,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @Override
     protected void findViews() {
         mGameView = findViewById(R.id.game_gsv);
-        name = findViewById(R.id.game_name);
+        name = findViewById(R.id.game_adversary_name);
         timeTv = findViewById(R.id.game_time);
     }
 
