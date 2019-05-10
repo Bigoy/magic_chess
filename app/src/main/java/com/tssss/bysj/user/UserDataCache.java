@@ -1,13 +1,9 @@
 package com.tssss.bysj.user;
 
-import android.util.Log;
-
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.SharedPreferencesFactory;
 import com.tssss.bysj.util.SharedPreferencesUtil;
-import com.tssss.bysj.util.StringUtil;
 
 /**
  * 用户数据缓存
@@ -82,24 +78,14 @@ public class UserDataCache {
         String signature = readString(Constant.ROLE_SIGNATURE);
         String level = readString(Constant.ROLE_LEVEL);
         int exp = readInt(Constant.ROLE_EXP);
-        GameRole gameRole;
-
-        if (StringUtil.isBlank(name)
-                || StringUtil.isBlank(sex)
-                || StringUtil.isBlank(signature)
-                || StringUtil.isBlank(level)) {
-            return null;
-        } else {
-            gameRole = new GameRole();
-            gameRole.setUser(new User(readAccount(Constant.ACCOUNT_ID), readAccount(Constant.ACCOUNT_PASSWORD)));
-            gameRole.setAvatarStr(avatar);
-            gameRole.setName(name);
-            gameRole.setSex(sex);
-            gameRole.setSignature(signature);
-            gameRole.setLevel(level);
-            gameRole.setRoleExperience(exp);
-
-        }
+        GameRole gameRole = new GameRole();
+        gameRole.setUser(new User(readAccount(Constant.ACCOUNT_ID), readAccount(Constant.ACCOUNT_PASSWORD)));
+        gameRole.setAvatarStr(avatar);
+        gameRole.setName(name);
+        gameRole.setSex(sex);
+        gameRole.setSignature(signature);
+        gameRole.setLevel(level);
+        gameRole.setRoleExperience(exp);
         return gameRole;
     }
 

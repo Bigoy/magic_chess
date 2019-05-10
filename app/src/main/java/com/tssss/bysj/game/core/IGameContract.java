@@ -22,8 +22,6 @@ public interface IGameContract {
 
         void isNotFirst();
 
-        void surrender(GameResult gameResult);
-
         void showMyChessmenCamp(String camp);
 
         /**
@@ -41,6 +39,8 @@ public interface IGameContract {
 
         void error();
 
+        void peaceReject(String s);
+
     }
 
     interface IPresenter extends ILifeCircle {
@@ -57,6 +57,8 @@ public interface IGameContract {
         void stepBack();
 
         void checkResult();
+
+        void peace();
 
     }
 
@@ -95,11 +97,6 @@ public interface IGameContract {
         }
 
         @Override
-        public void surrender(GameResult gameResult) {
-
-        }
-
-        @Override
         public void showMyChessmenCamp(String camp) {
 
         }
@@ -131,6 +128,11 @@ public interface IGameContract {
 
         @Override
         public void error() {
+
+        }
+
+        @Override
+        public void peaceReject(String s) {
 
         }
 

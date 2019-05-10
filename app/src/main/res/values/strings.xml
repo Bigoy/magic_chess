@@ -95,7 +95,6 @@
     <string name="user_info_news">动态</string>
     <string name="user_info_edit">编辑资料</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_friend">添加好友</string>
     <string name="ta_info">TA的资料</string>

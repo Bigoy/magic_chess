@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
@@ -23,11 +24,14 @@ import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.MessageEvent;
 
+@SuppressWarnings("unused")
 @ViewInject(layoutId = R.layout.activity_game)
 public class GameActivity extends BaseActivity implements View.OnTouchListener,
         OnMenuItemClickListener, IGameContract.IView {
@@ -38,7 +42,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     private Menu gameMenu;
     private AlertDialog.Builder prepareDialog;
 
-    GamePresenter gamePresenter;
+    private GamePresenter gamePresenter;
 
     @Override
     protected void findViews() {
@@ -105,6 +109,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
         gameMenuItems.add("投降");
         gameMenuItems.add("催一下对方");
         gameMenuItems.add("需要让棋");
+        gameMenuItems.add("请求和棋");
         gameMenu = new Menu(this, this);
         gameMenu.setMenuItems(gameMenuItems);
 
@@ -156,20 +161,19 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     public void onMenuItemClick(View v, int position) {
         switch (position) {
             case 0:
-                // 投降
                 gamePresenter.surrender();
-                gameMenu.dismiss();
                 break;
             case 1:
                 gamePresenter.urge();
-                // 催一下
-                gameMenu.dismiss();
                 break;
             case 2:
                 gamePresenter.stepBack();
-                // 需要让棋
-                gameMenu.dismiss();
                 break;
+            case 3:
+                break;
+            default:
+                gameMenu.dismiss();
+
         }
     }
 
@@ -201,18 +205,19 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
 
     @Override
     public void result(GameResult gameResult) {
-        Logger.log("有了游戏结果");
+        if (null != gameResult) {
+            Intent gameResultIntent = new Intent();
+            String gameResultJsonStr = JSON.toJSONString(gameResult);
+            gameResultIntent.putExtra("game_result", gameResultJsonStr);
+            startActivity(gameResultIntent);
+            finish();
+        }
     }
 
     @Override
     public void isNotFirst() {
         ToastUtil.showToast(this, "对方先手", ToastUtil.TOAST_DEFAULT);
         Logger.log("对方先走");
-    }
-
-    @Override
-    public void surrender(GameResult gameResult) {
-        Logger.log("对方投降了，哈哈！！！");
     }
 
     @Override
@@ -234,7 +239,27 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
 
     @Override
     public void peace() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .desc("对方请求和棋")
+                .subDesc("和棋的话，双方不会有任何经验值加成，只会记录此次对战记录。")
+                .okDesc("同意，放TA一马")
+                .noDesc("想得美,不同意")
+                .operationListener(new AlertDialog.OnDialogOperationListener() {
+                    @Override
+                    public void ok() {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("operation", "peace_agree");
+                        gamePresenter.sendMessage(map);
+                    }
 
+                    @Override
+                    public void no() {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("operation", "peace_reject");
+                        gamePresenter.sendMessage(map);
+                    }
+                });
+        builder.display();
     }
 
     @Override
@@ -248,9 +273,8 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     public void timer(int time) {
         timeTv.setText(String.valueOf(time));
         if (time == 10) {
-            ToastUtil.showToast(this, "10 秒后自动认输", ToastUtil.TOAST_DEFAULT);
+            ToastUtil.showToast(this, "10秒后自动认输", ToastUtil.TOAST_DEFAULT);
         }
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -265,5 +289,10 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
         ToastUtil.showToast(this, "进入游戏失败，退出", ToastUtil.TOAST_DEFAULT);
         prepareDialog.dismiss();
         finish();
+    }
+
+    @Override
+    public void peaceReject(String s) {
+        ToastUtil.showToast(this, s, ToastUtil.TOAST_ERROR);
     }
 }

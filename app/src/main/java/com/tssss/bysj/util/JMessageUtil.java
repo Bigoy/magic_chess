@@ -12,21 +12,25 @@ import cn.jpush.im.android.api.model.UserInfo;
 public class JMessageUtil {
 
     public static GameRole invertUserInfoToGameRole(UserInfo userInfo) {
-        try {
-            JSONObject jsonObject = new JSONObject(userInfo.getSignature());
-            return new GameRole(
-                    new User(userInfo.getUserName(), null),
-                    userInfo.getAvatar(),
-                    jsonObject.getString(Constant.ROLE_NICK_NAME),
-                    jsonObject.getString(Constant.ROLE_SEX),
-                    jsonObject.getString(Constant.ROLE_SIGNATURE),
-                    jsonObject.getString(Constant.ROLE_LEVEL),
-                    jsonObject.getInt(Constant.ROLE_EXP),
-                    jsonObject.getInt(Constant.ROLE_SCORE)
-            );
-        } catch (JSONException e) {
-            return null;
+        if (null != userInfo) {
+            try {
+                JSONObject jsonObject = new JSONObject(userInfo.getSignature());
+                return new GameRole(
+                        new User(userInfo.getUserName(), null),
+                        userInfo.getAvatarFile(),
+                        jsonObject.getString(Constant.ROLE_NICK_NAME),
+                        jsonObject.getString(Constant.ROLE_SEX),
+                        jsonObject.getString(Constant.ROLE_SIGNATURE),
+                        jsonObject.getString(Constant.ROLE_LEVEL),
+                        jsonObject.getInt(Constant.ROLE_EXP),
+                        jsonObject.getInt(Constant.ROLE_SCORE)
+                );
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
+        return new GameRole();
     }
 
   /*  public static ChatMessage invertMessageToChatMessage(Message message) {

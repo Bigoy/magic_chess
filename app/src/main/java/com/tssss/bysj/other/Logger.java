@@ -9,6 +9,9 @@ public class Logger {
         Log.wtf("MagicChess", s);
     }
 
+    public static void log(Object o, String s) {
+        Log.wtf(o.getClass().getSimpleName(), s);
+    }
     public static void log(int s) {
         Log.wtf("MagicChess", String.valueOf(s));
     }

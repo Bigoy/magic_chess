@@ -9,15 +9,16 @@ import com.tssss.bysj.game.core.other.AnchorManager;
 import com.tssss.bysj.game.core.other.Chessboard;
 import com.tssss.bysj.game.core.other.ChessmanManager;
 import com.tssss.bysj.game.core.other.GameResult;
+import com.tssss.bysj.game.core.other.GameResultFactory;
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.core.other.GameRoleManager;
 import com.tssss.bysj.game.core.other.Rule;
 import com.tssss.bysj.game.core.other.Umpire;
 import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
-import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.user.User;
+import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;
+import com.tssss.bysj.util.JMessageUtil;
 import com.tssss.bysj.util.StringUtil;
 
 import java.util.HashMap;
@@ -29,8 +30,9 @@ import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.model.UserInfo;
 
-public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> implements IGameContract.IPresenter,
-        CountDownTimer.ICountTime {
+@SuppressWarnings({"Convert2Lambda", "unchecked"})
+public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> implements
+        IGameContract.IPresenter, CountDownTimer.ICountTime {
     private GameRole armyRole;
     private GameRole selfRole;
 
@@ -63,7 +65,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         // 显示准备游戏中的界面状态
         Map<String, String> prepareMap = new HashMap<>();
         prepareMap.put("operation", "prepare");
-        sendMessage(JSON.toJSONString(prepareMap));
+        sendMessage(prepareMap);
         armyRole = new GameRole();
         selfRole = UserDataCache.readRole();
         if (null == selfRole) {
@@ -83,6 +85,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                         @Override
                         public void run() {
                             getView().error();
+                            Logger.log(this, s);
                         }
                     });
                 }
@@ -113,7 +116,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             // 判定先手
             Map<String, String> firstMap = new HashMap<>();
             firstMap.put("operation", "not_first");
-            sendMessage(JSON.toJSONString(firstMap));
+            sendMessage(firstMap);
         } else if (myAccountID > armyAccountID) {
             isFirst = false;
             selfRole.setChessmanCamp(Chessman.CAMP_RIGHT);
@@ -124,14 +127,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     }
 
     protected void prepareArmyRole(UserInfo userInfo) {
-        Map<String, String> map = (Map<String, String>) JSON.parse(userInfo.getSignature());
-        armyRole.setUser(new User(armyAccountID, null));
-        armyRole.setName(map.get(Constant.ROLE_NICK_NAME));
-        armyRole.setSex(map.get(Constant.ROLE_SEX));
-        armyRole.setLevel(map.get(Constant.ROLE_LEVEL));
-        armyRole.setSignature(map.get(Constant.ROLE_SIGNATURE));
-        armyRole.setRoleExperience(Integer.valueOf(map.get(Constant.ROLE_EXP)));
-        armyRole.setScore(Integer.valueOf(map.get(Constant.ROLE_SCORE)));
+        armyRole = JMessageUtil.invertUserInfoToGameRole(userInfo);
     }
 
     private void startGame() {
@@ -158,6 +154,9 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         Map<String, String> map = (Map<String, String>) JSON.parse(content.toJson());
         String text = map.get("text");
         Map<String, String> dataMap = (Map<String, String>) JSON.parse(text);
+        if (null == dataMap) {
+            throw new NullPointerException("dataMap = null");
+        }
         String operation = dataMap.get("operation");
         if ("prepare".equals(operation)) {
             handler.post(new Runnable() {
@@ -194,31 +193,28 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                 }
             });
         } else if ("win".equals(operation)) {
-            GameResult win = new GameResult();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().result(win);
+                    getView().result(GameResultFactory.win());
                 }
             });
 
         } else if ("lose".equals(operation)) {
-            GameResult lose = new GameResult();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().result(lose);
+                    getView().result(GameResultFactory.lose());
                 }
             });
         } else if ("surrender".equals(operation)) {
             /*
              * 收到对方投降的消息
              */
-            GameResult surrender = new GameResult();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    getView().surrender(surrender);
+                    getView().result(GameResultFactory.win());
                 }
             });
         } else if ("beingUrged".equals(operation)) {
@@ -238,8 +234,28 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                     getView().stepBack();
                 }
             });
+        } else if ("peace".equals(operation)) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    getView().peace();
+                }
+            });
+        } else if ("peace_agree".equals(operation)) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    getView().result(GameResultFactory.peace());
+                }
+            });
+        } else if ("peace_reject".equals(operation)) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    getView().peaceReject("想得美，我不同意和棋！");
+                }
+            });
         }
-
     }
 
     @Override
@@ -249,11 +265,10 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
          * 向对方发送选择投降的消息
          */
         sendSurrenderMessage();
-        GameResult surrender = new GameResult();
         handler.post(new Runnable() {
             @Override
             public void run() {
-                getView().result(surrender);
+                getView().result(GameResultFactory.lose());
             }
         });
     }
@@ -278,6 +293,17 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
        向对方请求让棋
         */
         sendStepBackMessage();
+    }
+
+    @Override
+    public void peace() {
+        sendPeaceMessage();
+    }
+
+    protected void sendPeaceMessage() {
+        Map<String, String> map = new HashMap<>();
+        map.put("operation", "peace");
+        sendMessage(map);
     }
 
     @Override
@@ -331,7 +357,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     protected void sendUrgeMessage() {
         Map<String, String> map = new HashMap<>();
         map.put("operation", "beingUrged");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
     }
 
     /**
@@ -340,7 +366,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     protected void sendStepBackMessage() {
         Map<String, String> map = new HashMap<>();
         map.put("operation", "step_back");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
     }
 
     /**
@@ -353,7 +379,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         map.put("chessman_index", updateChessmanIndex);
         map.put("chessman_position", updateChessmanPosition);
         map.put("operation", "update");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
         chessmanManager.resetChessmenCheckedState();
     }
 
@@ -363,7 +389,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     protected void sendTurnMessage() {
         Map<String, String> map = new HashMap<>();
         map.put("operation", "turn");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
     }
 
     /**
@@ -372,7 +398,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     protected void sendWinMessage() {
         Map<String, String> map = new HashMap<>();
         map.put("operation", "lose");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
     }
 
     /**
@@ -381,7 +407,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     protected void sendLoseMessage() {
         Map<String, String> map = new HashMap<>();
         map.put("operation", "win");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
     }
 
     /**
@@ -390,7 +416,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     protected void sendSurrenderMessage() {
         Map<String, String> map = new HashMap<>();
         map.put("operation", "surrender");
-        sendMessage(JSON.toJSONString(map));
+        sendMessage(map);
     }
 
     @Override
@@ -419,10 +445,13 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     /**
      * 发送即时游戏数据
      */
-    public void sendMessage(String content) {
+    public void sendMessage(Map<String, String> contentMap) {
         if (StringUtil.isBlank(this.armyAccountID)) {
             throw new IllegalArgumentException("armyAccountID = null");
         }
-        JMessageManager.sendTextMessage(this.armyAccountID, content);
+        String contentJson = JSON.toJSONString(contentMap);
+        if (!StringUtil.isBlank(contentJson)) {
+            JMessageManager.sendTextMessage(this.armyAccountID, contentJson);
+        }
     }
 }
