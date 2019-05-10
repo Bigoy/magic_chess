@@ -12,34 +12,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.tssss.bysj.R;
-import com.tssss.bysj.base.annoation.ViewInject;
-import com.tssss.bysj.game.im.JMessageManager;
-import com.tssss.bysj.mvp.base.BaseMvpPresenter;
-import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
-import com.tssss.bysj.util.AnimationUtil;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.tssss.bysj.R;
+import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.mvp.view.LifeCircleMvpActivity;
+import com.tssss.bysj.util.AnimationUtil;
 
+
+@SuppressWarnings({"unused", "Convert2Lambda"})
 public abstract class BaseActivity extends LifeCircleMvpActivity implements
         android.view.View.OnClickListener {
 
-    private ImageButton mLeftBtn, mRightBtn;
+    private ImageButton mLeftBtn;
+    private ImageButton mRightBtn;
     private ImageView mCenterIv;
-
-    private BaseMvpPresenter mPresenter;
-    private BaseApplication mApplication;
-
-    private Handler handler;
-    private BaseActivity activity;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = this;
-
         ViewInject viewInject = this.getClass().getAnnotation(ViewInject.class);
         if (viewInject != null) {
             int layoutId = viewInject.layoutId();
@@ -53,16 +46,14 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         } else {
             throw new RuntimeException("no annotation");
         }
-
         hideStatusBarAndNavigationBar();
         afterBindView();
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        handler = new Handler();
+        mHandler = new Handler();
     }
 
     /**
@@ -75,7 +66,7 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         if (v instanceof ImageButton) {
             AnimationUtil.flipView(this, v);
         }
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
@@ -127,6 +118,9 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (null != mHandler) {
+            mHandler = null;
+        }
     }
 
     /**
@@ -221,7 +215,7 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
     }
 
     protected void openActivityDelay(Class clazz, long ms) {
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 openActivity(clazz);
