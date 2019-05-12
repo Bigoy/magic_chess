@@ -62,7 +62,7 @@ public class UserDataCache {
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(),
                     Constant.ROLE_LEVEL, gameRole.getLevel());
             SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(),
-                    Constant.ROLE_EXP, gameRole.getRoleExperience());
+                    Constant.ROLE_EXP, gameRole.getExp());
             SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(),
                     Constant.ROLE_SCORE, gameRole.getScore());
         }
@@ -85,7 +85,7 @@ public class UserDataCache {
         gameRole.setSex(sex);
         gameRole.setSignature(signature);
         gameRole.setLevel(level);
-        gameRole.setRoleExperience(exp);
+        gameRole.setExp(exp);
         return gameRole;
     }
 

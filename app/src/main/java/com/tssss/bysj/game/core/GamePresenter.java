@@ -30,7 +30,7 @@ import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.model.UserInfo;
 
-@SuppressWarnings({"Convert2Lambda", "unchecked"})
+@SuppressWarnings({"Convert2Lambda"})
 public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> implements
         IGameContract.IPresenter, CountDownTimer.ICountTime {
     private GameRole armyRole;

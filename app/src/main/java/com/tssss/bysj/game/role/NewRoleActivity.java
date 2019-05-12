@@ -103,7 +103,7 @@ public class NewRoleActivity extends BaseActivity {
             oldRole.setSex(oldUserInfoMap.get(Constant.ROLE_SEX));
             oldRole.setSignature(oldUserInfoMap.get(Constant.ROLE_SIGNATURE));
             oldRole.setLevel(oldUserInfoMap.get(Constant.ROLE_LEVEL));
-            oldRole.setRoleExperience(Integer.valueOf(oldUserInfoMap.get(Constant.ROLE_EXP)));
+            oldRole.setExp(Integer.valueOf(oldUserInfoMap.get(Constant.ROLE_EXP)));
             oldRole.setScore(Integer.valueOf(oldUserInfoMap.get(Constant.ROLE_SCORE)));
 
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class NewRoleActivity extends BaseActivity {
         oldRole.setSex(null);
         oldRole.setSignature(null);
         oldRole.setLevel(null);
-        oldRole.setRoleExperience(-1);
+        oldRole.setExp(-1);
         oldRole.setScore(-1);
 
     }
@@ -287,7 +287,7 @@ public class NewRoleActivity extends BaseActivity {
      * 上传经验值
      */
     private void uploadExp() {
-        exp = oldRole.getRoleExperience();
+        exp = oldRole.getExp();
         if (exp == -1) {
             exp = 0;
             newestRoleInfoMap.put(Constant.ROLE_EXP, String.valueOf(exp));

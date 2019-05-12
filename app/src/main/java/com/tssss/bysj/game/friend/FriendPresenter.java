@@ -46,9 +46,9 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
                         role.setSignature(map.get(Constant.ROLE_SIGNATURE));
 
                         try {
-                            role.setRoleExperience(Integer.valueOf(map.get(Constant.ROLE_EXP)));
+                            role.setExp(Integer.valueOf(map.get(Constant.ROLE_EXP)));
                         } catch (Exception e) {
-                            role.setRoleExperience(0);
+                            role.setExp(0);
                         }
                         gameRoleList.add(role);
                     }

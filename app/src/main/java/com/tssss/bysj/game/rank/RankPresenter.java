@@ -3,6 +3,8 @@ package com.tssss.bysj.game.rank;
 import android.content.Context;
 import android.os.Handler;
 
+import androidx.recyclerview.widget.SortedList;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -17,8 +19,6 @@ import com.tssss.bysj.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.recyclerview.widget.SortedList;
 
 public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> implements IRankContract.IPresenter {
     private Handler handler;
@@ -63,11 +63,11 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
                     role.setLevel(roleJson.getString(Constant.ROLE_LEVEL));
 
                     try {
-                        role.setRoleExperience(Integer.getInteger(roleJson.getString(Constant.ROLE_EXP)));
+                        role.setExp(Integer.getInteger(roleJson.getString(Constant.ROLE_EXP)));
                         role.setScore(Integer.getInteger(roleJson.getString(Constant.ROLE_SCORE)));
 
                     } catch (Exception e) {
-                        role.setRoleExperience(0);
+                        role.setExp(0);
                         role.setScore(0);
 
                     }

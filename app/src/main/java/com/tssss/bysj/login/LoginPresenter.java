@@ -90,10 +90,10 @@ public class LoginPresenter extends BaseMvpPresenter<IAccountContract.IView>
                         myRole.setSignature(roleMap.get(Constant.ROLE_SIGNATURE));
                         myRole.setLevel(roleMap.get(Constant.ROLE_LEVEL));
                         try {
-                            myRole.setRoleExperience(Integer.valueOf(roleMap.get(Constant.ROLE_EXP)));
+                            myRole.setExp(Integer.valueOf(roleMap.get(Constant.ROLE_EXP)));
                             myRole.setScore(Integer.valueOf(roleMap.get(Constant.ROLE_SCORE)));
                         } catch (Exception e) {
-                            myRole.setRoleExperience(0);
+                            myRole.setExp(0);
                             myRole.setScore(0);
                         }
                         handler.post(new Runnable() {

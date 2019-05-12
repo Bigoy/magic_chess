@@ -12,9 +12,9 @@ import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.game.core.other.GameRole;
-import com.tssss.bysj.game.role.fragment.battle_record.BattleRecordFragment;
 import com.tssss.bysj.game.role.fragment.NewsFragment;
 import com.tssss.bysj.game.role.fragment.SignatureFragment;
+import com.tssss.bysj.game.role.fragment.battle_record.BattleRecordFragment;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
@@ -124,7 +124,7 @@ public class UserInfoActivity extends BaseActivity {
             name.setText(gameRole.getName());
             sex.setText(gameRole.getSex());
             String levelStr = gameRole.getLevel();
-            String expStr = String.valueOf(gameRole.getRoleExperience());
+            String expStr = String.valueOf(gameRole.getExp());
             level.setText(levelStr);
             if (Constant.ROLE_SX_I.equals(levelStr)) {
                 exp.setText(expStr + " / 50");
@@ -180,7 +180,7 @@ public class UserInfoActivity extends BaseActivity {
                 exp.setText(expStr + " / 600");
 
             } else if (Constant.ROLE_DJQS_III.equals(levelStr)) {
-                exp.setText(expStr + " / 900");
+                exp.setText(expStr + " / 最高级");
 
             }
         }
@@ -200,7 +200,7 @@ public class UserInfoActivity extends BaseActivity {
                             gameRole.setName(userInfoMap.get(Constant.ROLE_NICK_NAME));
                             gameRole.setAvatarFile(userInfo.getAvatarFile());
                             gameRole.setSex(userInfoMap.get(Constant.ROLE_SEX));
-                            gameRole.setRoleExperience(Integer.valueOf(userInfoMap.get(Constant.ROLE_EXP)));
+                            gameRole.setExp(Integer.valueOf(userInfoMap.get(Constant.ROLE_EXP)));
                             gameRole.setLevel(userInfoMap.get(Constant.ROLE_LEVEL));
                             gameRole.setSignature(userInfoMap.get(Constant.ROLE_SIGNATURE));
                             showUserInfo();

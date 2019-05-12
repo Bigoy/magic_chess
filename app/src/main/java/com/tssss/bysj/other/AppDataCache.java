@@ -21,7 +21,7 @@ public class AppDataCache {
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SEX, gameRole.getSex());
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_SIGNATURE, gameRole.getSignature());
             SharedPreferencesUtil.keepString(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_LEVEL, gameRole.getLevel());
-            SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_EXP, gameRole.getRoleExperience());
+            SharedPreferencesUtil.keepInt(SharedPreferencesFactory.getUserSharedPreferences(), Constant.ROLE_EXP, gameRole.getExp());
         }
     }
 
@@ -43,7 +43,7 @@ public class AppDataCache {
             gameRole.setSex(sex);
             gameRole.setSignature(signature);
             gameRole.setLevel(level);
-            gameRole.setRoleExperience(exp);
+            gameRole.setExp(exp);
 
         }
         return gameRole;

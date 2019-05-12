@@ -11,7 +11,7 @@ public class GameResultFactory {
     public static GameResult win() {
         GameResultDesc gameResultDesc = new GameResultDesc();
         GameRole myGameRole = UserDataCache.readRole();
-        myGameRole.setRoleExperience(50);
+        myGameRole.setExp(50);
         GameResult win = new GameResult();
         win.setResult(GameResult.WIN);
         win.setResultDesc(gameResultDesc.getWinDesc());
@@ -23,7 +23,7 @@ public class GameResultFactory {
     public static GameResult lose() {
         GameResultDesc gameResultDesc = new GameResultDesc();
         GameRole myGameRole = UserDataCache.readRole();
-        myGameRole.setRoleExperience(-50);
+        myGameRole.setExp(-50);
         GameResult lose = new GameResult();
         lose.setResult(GameResult.LOSE);
         lose.setResultDesc(gameResultDesc.getLoseDesc());
@@ -35,7 +35,7 @@ public class GameResultFactory {
     public static GameResult peace() {
         GameResultDesc gameResultDesc = new GameResultDesc();
         GameRole myGameRole = UserDataCache.readRole();
-        myGameRole.setRoleExperience(0);
+        myGameRole.setExp(0);
         GameResult peace = new GameResult();
         peace.setResult(GameResult.PEACE);
         peace.setResultDesc(gameResultDesc.getPeaceDesc());

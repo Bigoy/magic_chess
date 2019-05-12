@@ -78,11 +78,11 @@ public class AddFriendPresenter extends BaseMvpPresenter<IAddFriendContract.IVie
                                     role.setLevel(roleJson.getString(Constant.ROLE_LEVEL));
 
                                     try {
-                                        role.setRoleExperience(Integer.getInteger(roleJson.getString(Constant.ROLE_EXP)));
+                                        role.setExp(Integer.getInteger(roleJson.getString(Constant.ROLE_EXP)));
                                         role.setScore(Integer.getInteger(roleJson.getString(Constant.ROLE_SCORE)));
 
                                     } catch (Exception e) {
-                                        role.setRoleExperience(0);
+                                        role.setExp(0);
                                         role.setScore(0);
 
                                     }
