@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
@@ -17,6 +20,7 @@ import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.SystemUtil;
@@ -26,8 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.content.TextContent;

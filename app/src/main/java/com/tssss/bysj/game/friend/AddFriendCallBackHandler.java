@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.tssss.bysj.componet.dialog.AlertDialog;
-import com.tssss.bysj.game.im.JMessageManager;
+import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.util.ToastUtil;
 
 public class AddFriendCallBackHandler implements JMessageManager.AddFriendCallBack {

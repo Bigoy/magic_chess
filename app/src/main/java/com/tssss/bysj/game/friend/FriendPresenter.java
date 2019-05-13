@@ -74,7 +74,7 @@ public class FriendPresenter extends BaseMvpPresenter<IFriendContract.IView> imp
 
         /*Map<String, String> paramMap = new HashMap<>();
         paramMap.put(Constant.ACCOUNT_ID, UserDataCache.readAccount(Constant.ACCOUNT_ID));
-        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_FRIEND, paramMap, new HttpCallback() {
+        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_FRIEND, paramMap, new IHttpCallback() {
             @Override
             public void onSuccess(String result) {
                 if (!cancelLoad) {

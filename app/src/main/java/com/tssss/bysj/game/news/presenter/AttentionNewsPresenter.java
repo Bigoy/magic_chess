@@ -7,8 +7,8 @@ import com.tssss.bysj.game.news.PictureNews;
 import com.tssss.bysj.game.news.TextNews;
 import com.tssss.bysj.game.news.TextPicNews;
 import com.tssss.bysj.game.news.contract.INewsAttentionContract;
-import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
+import com.tssss.bysj.http.IHttpCallback;
 import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Constant;
@@ -64,7 +64,7 @@ public class AttentionNewsPresenter extends BaseMvpPresenter<INewsAttentionContr
     public void loadNews() {
         Map<String, String> paraMap = new HashMap<>();
         paraMap.put(Constant.ACCOUNT_ID, UserDataCache.readAccount(Constant.ACCOUNT_ID));
-        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_NEWS_ATTENTION, paraMap, new HttpCallback() {
+        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_NEWS_ATTENTION, paraMap, new IHttpCallback() {
             @Override
             public void onSuccess(String result) {
                 if (!cancelLoadNews) {

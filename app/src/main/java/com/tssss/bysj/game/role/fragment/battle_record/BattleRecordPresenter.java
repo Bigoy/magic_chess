@@ -2,9 +2,8 @@ package com.tssss.bysj.game.role.fragment.battle_record;
 
 import android.os.Handler;
 
-import com.tssss.bysj.game.role.UserInfoActivity;
-import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
+import com.tssss.bysj.http.IHttpCallback;
 import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Constant;
@@ -44,7 +43,7 @@ public class BattleRecordPresenter extends BaseMvpPresenter<IBattleRecordContrac
         if (!StringUtil.isBlank(accountID)) {
             Map<String, String> paramMap = new HashMap<>();
             paramMap.put(Constant.ACCOUNT_ID, accountID);
-            OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_BATTLE_RECORD, paramMap, new HttpCallback() {
+            OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_BATTLE_RECORD, paramMap, new IHttpCallback() {
                 @Override
                 public void onSuccess(String result) {
                     if (!isCancel) {

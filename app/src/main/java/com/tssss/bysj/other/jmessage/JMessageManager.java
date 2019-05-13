@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.im;
+package com.tssss.bysj.other.jmessage;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.core.view.GameActivity;
+import com.tssss.bysj.game.im.ChatActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;

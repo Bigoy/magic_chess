@@ -3,20 +3,20 @@ package com.tssss.bysj.game.rank;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.friend.AddFriendCallBackHandler;
-import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.util.SystemUtil;
 import com.tssss.bysj.util.ToastUtil;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 @ViewInject(layoutId = R.layout.activity_rank)
 public class RankActivity extends BaseActivity implements IRankContract.IView, RankAdapter.RankViewHolder.OnRankItemClickListener {

@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
@@ -12,21 +15,19 @@ import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
-import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.im.ChatActivity;
-import com.tssss.bysj.game.im.JMessageManager;
+import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.other.jmessage.JMessageHelper;
+import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.util.AnimationUtil;
-import com.tssss.bysj.util.JMessageUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
@@ -366,7 +367,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                         }
                     }
                 });
-        friendList.add(JMessageUtil.invertUserInfoToGameRole(userInfoA[0]));
+        friendList.add(JMessageHelper.toGameRole(userInfoA[0]));
         adapter.notifyItemInserted(0);
         adapter.notifyDataSetChanged();
     }

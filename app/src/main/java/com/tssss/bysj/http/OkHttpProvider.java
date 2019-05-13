@@ -79,7 +79,7 @@ public class OkHttpProvider extends BaseHttpProvider {
     }
 
     @Override
-    public void requestAsyncGet(String url, Map<String, ?> param, HttpCallback callback) {
+    public void requestAsyncGet(String url, Map<String, ?> param, IHttpCallback callback) {
         if (!SystemUtil.checkNet()) {
             if (null != callback) {
                 callback.onFailure("no available net");
@@ -145,7 +145,7 @@ public class OkHttpProvider extends BaseHttpProvider {
     }
 
     @Override
-    public void requestPost(String url, Map<String, ?> param, HttpCallback callback) {
+    public void requestPost(String url, Map<String, ?> param, IHttpCallback callback) {
         if (!SystemUtil.checkNet()) {
             if (null != callback) {
                 callback.onFailure("no available net");

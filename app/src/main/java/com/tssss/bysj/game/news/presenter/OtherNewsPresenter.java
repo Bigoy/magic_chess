@@ -7,8 +7,8 @@ import com.tssss.bysj.game.news.PictureNews;
 import com.tssss.bysj.game.news.TextNews;
 import com.tssss.bysj.game.news.TextPicNews;
 import com.tssss.bysj.game.news.contract.INewsOtherContract;
-import com.tssss.bysj.http.HttpCallback;
 import com.tssss.bysj.http.HttpUrl;
+import com.tssss.bysj.http.IHttpCallback;
 import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Constant;
@@ -59,7 +59,7 @@ public class OtherNewsPresenter extends BaseMvpPresenter<INewsOtherContract.IVew
     public void loadNews() {
         Map<String, String> paraMap = new HashMap<>();
         paraMap.put(Constant.ACCOUNT_ID, UserDataCache.readAccount(Constant.ACCOUNT_ID));
-        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_NEWS_OTHER, paraMap, new HttpCallback() {
+        OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_NEWS_OTHER, paraMap, new IHttpCallback() {
             @Override
             public void onSuccess(String result) {
                 if (!cancelLoadNews) {

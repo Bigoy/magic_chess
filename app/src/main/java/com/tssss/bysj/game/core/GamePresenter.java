@@ -14,11 +14,11 @@ import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.core.other.GameRoleManager;
 import com.tssss.bysj.game.core.other.Rule;
 import com.tssss.bysj.game.core.other.Umpire;
-import com.tssss.bysj.game.im.JMessageManager;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
 import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.other.jmessage.JMessageHelper;
+import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.user.UserDataCache;
-import com.tssss.bysj.util.JMessageUtil;
 import com.tssss.bysj.util.StringUtil;
 
 import java.util.HashMap;
@@ -127,7 +127,7 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     }
 
     protected void prepareArmyRole(UserInfo userInfo) {
-        armyRole = JMessageUtil.invertUserInfoToGameRole(userInfo);
+        armyRole = JMessageHelper.toGameRole(userInfo);
     }
 
     private void startGame() {
