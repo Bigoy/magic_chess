@@ -6,6 +6,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseDialog;
 import com.tssss.bysj.componet.GTextView;
@@ -13,11 +18,6 @@ import com.tssss.bysj.util.AnimationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class Menu extends BaseDialog {
     private LinearLayout itemsLl;
@@ -53,7 +53,7 @@ public class Menu extends BaseDialog {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        window.setGravity(Gravity.BOTTOM);
+        getWindow().setGravity(Gravity.BOTTOM);
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.tssss.bysj.http.HttpUrl;
 import com.tssss.bysj.http.IHttpCallback;
 import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.StringUtil;
 
@@ -89,9 +88,23 @@ public class JMessageHelper {
         }
     }
 
-    public static void listAllGameRoles(IGetAllUsersCallBack callBack) {
-        if (null != callBack) {
-            List<GameRole> gameRoleList = new ArrayList<>();
+    public static void listAllGameRoles(IGetAllGameRoleCallBack callBack) {
+        listUserInfo(new IGetUserInfoObserver() {
+            @Override
+            public void onCompleted(List<UserInfo> userInfoList) {
+                List<GameRole> gameRoleList = new ArrayList<>();
+                for (int k = 0; k < userInfoList.size(); k++) {
+                    UserInfo userInfo = userInfoList.get(k);
+                    gameRoleList.add(toGameRole(userInfo));
+
+                }
+                callBack.onSuccess(gameRoleList);
+            }
+        });
+    }
+
+    public static void listUserInfo(IGetUserInfoObserver observer) {
+        if (null != observer) {
             Map<String, Integer> paramMap = new HashMap<>();
             paramMap.put("start", 0);
             paramMap.put("count", 100);
@@ -99,26 +112,17 @@ public class JMessageHelper {
                 public void onSuccess(String result) {
                     com.alibaba.fastjson.JSONObject resultJson = JSON.parseObject(result);
                     JSONArray usersJsonArray = resultJson.getJSONArray("users");
-                    GetUserInfoCallBackImpl userInfoCallBack = new GetUserInfoCallBackImpl(usersJsonArray.size());
-                    for (int i = 0; i < usersJsonArray.size(); i++) {
+                    int usersJsonArraySize = usersJsonArray.size();
+                    GetUserInfoCallBackImpl userInfoCallBack = new GetUserInfoCallBackImpl(usersJsonArraySize);
+                    for (int i = 0; i < usersJsonArraySize; i++) {
                         String accountID = usersJsonArray.getJSONObject(i).getString("username");
                         JMessageClient.getUserInfo(accountID, userInfoCallBack);
                     }
-                    userInfoCallBack.setIGetUserInfoObserver(userInfoList -> {
-                        for (int k = 0; k < userInfoList.size(); k++) {
-                            UserInfo userInfo = userInfoList.get(k);
-                            gameRoleList.add(toGameRole(userInfo));
-
-                        }
-                        callBack.onSuccess(gameRoleList);
-                    });
-
+                    userInfoCallBack.setIGetUserInfoObserver(observer);
                 }
 
                 @Override
                 public void onFailure(String errorMsg) {
-                    callBack.onFailure(errorMsg);
-                    Logger.log("获取用户列表失败:" + errorMsg);
                 }
             });
         }

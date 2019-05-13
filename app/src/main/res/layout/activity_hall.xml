@@ -9,10 +9,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/hall_match_game"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent"
+        tools:layout_editor_absoluteX="0dp">
 
         <ImageView
             android:id="@+id/hall_game_news"
@@ -65,5 +66,21 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
+
+    <com.tssss.bysj.componet.GTextView
+        android:id="@+id/hall_matching_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:gravity="center"
+        android:text="匹配中"
+        android:textColor="#B1782D"
+        android:textSize="@dimen/font_size_48sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription,HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

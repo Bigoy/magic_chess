@@ -101,6 +101,7 @@
             android:name=".game.core.view.GameResultActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".game.rank.RankActivity" />
+        <activity android:name=".game.help.RuleActivity" />
     </application>
 
 </manifest>

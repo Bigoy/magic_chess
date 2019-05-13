@@ -47,13 +47,13 @@ public abstract class BaseDialog extends Dialog {
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
+        hideStatusBarAndNavigationBar();
         window = getWindow();
         if (null != window) {
-            hideStatusBarAndNavigationBar();
             View decor = window.getDecorView();
             decor.setBackgroundColor(0x00ffffff);
         }
+        super.setContentView(layoutResID);
     }
 
     /**

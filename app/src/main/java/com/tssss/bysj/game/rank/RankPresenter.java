@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.SortedList;
 
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
-import com.tssss.bysj.other.jmessage.IGetAllUsersCallBack;
+import com.tssss.bysj.other.jmessage.IGetAllGameRoleCallBack;
 import com.tssss.bysj.other.jmessage.JMessageHelper;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
     @Override
     public void loadRankData() {
         SortedList<Rank> rankSortedList = new SortedList<>(Rank.class, rankSortedListCallBack);
-        JMessageHelper.listAllGameRoles(new IGetAllUsersCallBack() {
+        JMessageHelper.listAllGameRoles(new IGetAllGameRoleCallBack() {
             @Override
             public void onSuccess(List<GameRole> gameRoleList) {
                 int gameRoleListSize = gameRoleList.size();

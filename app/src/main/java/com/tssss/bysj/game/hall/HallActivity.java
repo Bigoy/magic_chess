@@ -10,16 +10,23 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
+import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
+import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.friend.FriendsActivity;
+import com.tssss.bysj.game.hall.match.IMatchGameContract;
+import com.tssss.bysj.game.hall.match.MatchPresenter;
+import com.tssss.bysj.game.help.RuleActivity;
 import com.tssss.bysj.game.news.veiw.NewsActivity;
 import com.tssss.bysj.game.rank.RankActivity;
 import com.tssss.bysj.game.role.UserInfoActivity;
 import com.tssss.bysj.game.setting.SettingActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.jmessage.JMessageManager;
+import com.tssss.bysj.util.AnimationUtil;
+import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +37,14 @@ import cn.jpush.im.android.api.event.NotificationClickEvent;
 import cn.jpush.im.android.api.model.UserInfo;
 
 @ViewInject(layoutId = R.layout.activity_hall)
-public class HallActivity extends BaseActivity implements OnMenuItemClickListener {
+public class HallActivity extends BaseActivity implements OnMenuItemClickListener,
+        IMatchGameContract.IView {
     private ImageView gameNews;
     private ImageView myFriends;
     private ImageView rank;
     private ImageView gameSetting;
     private ImageButton matchGame;
+    private GTextView matching;
 
     private Menu menu;
 
@@ -46,6 +55,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
         rank = findViewById(R.id.hall_rank);
         gameSetting = findViewById(R.id.hall_game_setting);
         matchGame = findViewById(R.id.hall_match_game);
+        matching = findViewById(R.id.hall_matching_game);
     }
 
     @Override
@@ -61,7 +71,9 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
      * 向 HallPresenter 发送游戏匹配请求
      */
     private void matchGame() {
-
+        MatchPresenter matchPresenter = new MatchPresenter(this);
+        matchPresenter.matchPlayer();
+        AnimationUtil.flipView(this, matchGame, matching);
     }
 
 
@@ -124,7 +136,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
         List<String> items = new ArrayList<>();
         items.add("退出游戏");
         items.add("我的信息");
-//        items.add("游戏帮助");
+        items.add("游戏帮助");
         menu = new Menu.Builder(this, this)
                 .items(items)
                 .build();
@@ -164,10 +176,10 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
                 menu.dismiss();
 
                 break;
-         /*   case 2:
-                Log.i("Menu", "item = " + position);
+            case 2:
+                openActivity(RuleActivity.class);
                 menu.dismiss();
-                break;*/
+                break;
             default:
         }
     }
@@ -179,5 +191,16 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
     public void onEventMainThread(MessageEvent event) {
         JMessageManager.handlerMessageEvent(event, this);
 
+    }
+
+    @Override
+    public void onMatchPlayerSuccess(GameRole role) {
+
+    }
+
+    @Override
+    public void onMatchPlayerFailure(String errorMsg) {
+        AnimationUtil.flipView(this, matching, matchGame);
+        ToastUtil.showToast(this, errorMsg, ToastUtil.TOAST_DEFAULT);
     }
 }
