@@ -2,7 +2,6 @@ package com.tssss.bysj.game.core.other;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-import android.view.MotionEvent;
 
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.util.ToastUtil;
@@ -56,7 +55,7 @@ public class Rule {
         return false;
     }
 
-    /*
+    /**
     棋子移动条件：
     a 新位置不能有棋子；
     b 每次只能移动一格；
@@ -104,18 +103,29 @@ public class Rule {
 
     private boolean canMoveToCircle(String oldPos, String newPos) {
         if (oldPos.equals(AnchorManager.SEVEN)) {
-            if (newPos.equals(AnchorManager.EIGHT)) {
-                return false;
-            }
+            return !newPos.equals(AnchorManager.EIGHT);
+
         } else if (oldPos.equals(AnchorManager.EIGHT)) {
-            if (newPos.equals(AnchorManager.SEVEN) || newPos.equals(AnchorManager.NINE)) {
-                return false;
-            }
+            return !newPos.equals(AnchorManager.SEVEN) && !newPos.equals(AnchorManager.NINE);
+
         } else if (oldPos.equals(AnchorManager.NINE)) {
-            if (newPos.equals(AnchorManager.EIGHT)) {
-                return false;
-            }
+            return !newPos.equals(AnchorManager.EIGHT);
+
         }
         return true;
+    }
+
+    public int calculateExp(String result) {
+        int newExp = 0;
+        if (GameResult.WIN.equals(result)) {
+            newExp = 30;
+        } else if (GameResult.LOSE.equals(result)) {
+            newExp = -20;
+        }
+        return newExp;
+    }
+
+    public int calculateScore(String result) {
+        return 20;
     }
 }

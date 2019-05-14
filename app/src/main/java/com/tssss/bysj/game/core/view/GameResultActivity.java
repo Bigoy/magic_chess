@@ -9,6 +9,7 @@ import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
+import com.tssss.bysj.game.core.GameResultPresenter;
 import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.game.core.other.GameResultFactory;
 import com.tssss.bysj.game.hall.HallActivity;
@@ -23,6 +24,7 @@ public class GameResultActivity extends BaseActivity {
     private ImageButton i_known;
     private RelativeLayout container;
     private GameResult gameResult;
+    private GameResultPresenter gameResultPresenter;
 
 
     @Override
@@ -52,6 +54,7 @@ public class GameResultActivity extends BaseActivity {
 
     @Override
     protected void afterBindView() {
+        gameResultPresenter = new GameResultPresenter();
         Intent intent = getIntent();
         if (null != intent) {
             String gameResultJsonStr = intent.getStringExtra("game_result");
@@ -66,6 +69,7 @@ public class GameResultActivity extends BaseActivity {
                     showPeaceStyle();
                 }
                 fillData();
+                gameResultPresenter.uploadUserInfo(gameResult.getResult());
             }
         }
     }
@@ -74,13 +78,11 @@ public class GameResultActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.game_result_ok) {
-            openActivity(HallActivity.class);
-            finish();
+            openActivityDelayAndFinishSelf(HallActivity.class, 200);
         }
     }
 
     protected void showWinStyle() {
-
 
     }
 
@@ -98,4 +100,5 @@ public class GameResultActivity extends BaseActivity {
         level.setText(gameResult.getLevelDesc());
         exp.setText(gameResult.getExpDesc());
     }
+
 }

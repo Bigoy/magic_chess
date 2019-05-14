@@ -223,6 +223,16 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         }, ms);
     }
 
+    protected void openActivityDelayAndFinishSelf(Class clazz, long ms) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                openActivity(clazz);
+                finish();
+            }
+        }, ms);
+    }
+
     /**
      * Initialize views of top bar.
      */

@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
@@ -17,8 +20,6 @@ import com.tssss.bysj.util.AnimationUtil;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.model.UserInfo;
@@ -86,6 +87,7 @@ public class BattleRecordAdapter extends RecyclerView.Adapter<BattleRecordAdapte
                 result.setText(resultStr);
                 time.setText(data.getTime());
                 JMessageClient.getUserInfo(data.getAccountID(), new GetUserInfoCallback() {
+                    @SuppressWarnings("unchecked")
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void gotResult(int i, String s, UserInfo userInfo) {

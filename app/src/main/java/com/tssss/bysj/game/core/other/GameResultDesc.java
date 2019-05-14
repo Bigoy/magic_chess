@@ -3,6 +3,7 @@ package com.tssss.bysj.game.core.other;
 import java.util.Random;
 
 public class GameResultDesc {
+
     private final static String[] winDesc = new String[]{
             "",
             "",

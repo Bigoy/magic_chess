@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
@@ -20,6 +19,7 @@ import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;
+import com.tssss.bysj.util.IntentUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 
@@ -206,11 +206,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @Override
     public void result(GameResult gameResult) {
         if (null != gameResult) {
-            Intent gameResultIntent = new Intent();
-            String gameResultJsonStr = JSON.toJSONString(gameResult);
-            gameResultIntent.putExtra("game_result", gameResultJsonStr);
-            startActivity(gameResultIntent);
-            finish();
+            IntentUtil.startGameResultIntent(this, gameResult);
         }
     }
 
