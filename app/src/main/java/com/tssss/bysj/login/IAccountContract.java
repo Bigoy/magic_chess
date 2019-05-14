@@ -1,12 +1,11 @@
 package com.tssss.bysj.login;
 
-import com.tssss.bysj.game.core.other.GameRole;
+import androidx.annotation.NonNull;
+
 import com.tssss.bysj.mvp.ILifeCircle;
 import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
 import com.tssss.bysj.user.User;
-
-import androidx.annotation.NonNull;
 
 public interface IAccountContract {
     interface IView extends IMvpView{
@@ -62,12 +61,12 @@ public interface IAccountContract {
          * 账户操作成功，返回用户信息
          */
 
-        void onSuccess(User user, GameRole gameRole);
+        void onSuccess();
 
         /**
          * 其它错误
          */
-        void onError(int i, String s);
+        void onError(String s);
     }
 
     interface IPresenter extends ILifeCircle{
@@ -139,12 +138,12 @@ public interface IAccountContract {
         }
 
         @Override
-        public void onSuccess(User user, GameRole gameRole) {
+        public void onSuccess() {
 
         }
 
         @Override
-        public void onError(int i, String s) {
+        public void onError(String s) {
 
         }
 

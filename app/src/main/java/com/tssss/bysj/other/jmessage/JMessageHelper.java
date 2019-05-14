@@ -7,6 +7,9 @@ import com.tssss.bysj.http.HttpUrl;
 import com.tssss.bysj.http.IHttpCallback;
 import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.jmessage.callback.IGetAllGameRoleCallBack;
+import com.tssss.bysj.other.jmessage.callback.IGetGameRoleCallBack;
+import com.tssss.bysj.other.jmessage.callback.IGetUserInfoCallBack;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.StringUtil;
 
@@ -49,7 +52,7 @@ public class JMessageHelper {
         return role;
     }
 
-    public static void toGameRole(String roleInfoJsonStr, IGetGameRoleObserver observer) {
+    public static void toGameRole(String roleInfoJsonStr, IGetGameRoleCallBack observer) {
         if (null != observer) {
             GameRole role = toGameRoleWithoutAvatarFile(roleInfoJsonStr);
             String accountID = role.getUser().getUserId();
@@ -68,7 +71,7 @@ public class JMessageHelper {
         }
     }
 
-    public static void getGameRoleByAccountID(String accountID, IGetGameRoleObserver observer) {
+    public static void getGameRoleByAccountID(String accountID, IGetGameRoleCallBack observer) {
         if (null != observer) {
             if (StringUtil.isBlank(accountID)) {
                 throw new IllegalArgumentException("AccountID can not be null");
@@ -89,7 +92,7 @@ public class JMessageHelper {
     }
 
     public static void listAllGameRoles(IGetAllGameRoleCallBack callBack) {
-        listUserInfo(new IGetUserInfoObserver() {
+        listUserInfo(new IGetUserInfoCallBack() {
             @Override
             public void onCompleted(List<UserInfo> userInfoList) {
                 List<GameRole> gameRoleList = new ArrayList<>();
@@ -103,7 +106,7 @@ public class JMessageHelper {
         });
     }
 
-    public static void listUserInfo(IGetUserInfoObserver observer) {
+    public static void listUserInfo(IGetUserInfoCallBack observer) {
         if (null != observer) {
             Map<String, Integer> paramMap = new HashMap<>();
             paramMap.put("start", 0);

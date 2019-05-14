@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.SortedList;
 
 import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.mvp.base.BaseMvpPresenter;
-import com.tssss.bysj.other.jmessage.IGetAllGameRoleCallBack;
 import com.tssss.bysj.other.jmessage.JMessageHelper;
+import com.tssss.bysj.other.jmessage.callback.IGetAllGameRoleCallBack;
 
 import java.util.List;
 

@@ -22,6 +22,7 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.jmessage.JMessageHelper;
 import com.tssss.bysj.other.jmessage.JMessageManager;
+import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
 
@@ -31,14 +32,10 @@ import java.util.List;
 import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
-import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.event.ContactNotifyEvent;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.NotificationClickEvent;
-import cn.jpush.im.android.api.model.Conversation;
-import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
-import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
 
 @ViewInject(layoutId = R.layout.activity_friend)
@@ -378,7 +375,6 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
             return;
         }
         GameRole gameRole = friendList.get(position);
-        String myName = JMessageClient.getMyInfo().getUserName();
         itemMenu = new Menu(this, new OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(View v, int position) {
@@ -397,42 +393,30 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                         itemMenu.dismiss();
                         break;
                     case 2:
-                        AlertDialog.Builder builder = new AlertDialog.Builder(FriendsActivity.this)
-                                .operationType(AlertDialog.OPERATION_TYPE_NO)
-                                .desc("请求发送中");
-                        builder.display();
-                        String friendAccountId = gameRole.getUser().getUserId();
-                        Conversation mConversation = JMessageClient.getSingleConversation(friendAccountId, null);
-                        if (mConversation == null) {
-                            mConversation = Conversation.createSingleConversation(friendAccountId, null);
-                        }
-
-                        //构造message content对象
-                        String msg = myName + " 向你发来游戏请求";
-                        TextContent textContent = new TextContent(msg);
-                        textContent.setStringExtra("game_invitation", "game_invitation");
-
-                        //创建message实体，设置消息发送回调。
-                        final Message message = mConversation.createSendMessage(textContent, friendAccountId);
-                        message.setOnSendCompleteCallback(new BasicCallback() {
-                            @Override
-                            public void gotResult(int i, String s) {
-                                if (i == 0) {
-                                    builder.dismiss();
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ToastUtil.showToast(FriendsActivity.this, "发送完成", ToastUtil.TOAST_DEFAULT);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                        MessageSendingOptions options = new MessageSendingOptions();
-                        options.setShowNotification(true);
-                        options.setRetainOffline(false);
-                        JMessageClient.sendMessage(message, options);
                         itemMenu.dismiss();
+                        AlertDialog.Builder gameBuilder = new AlertDialog.Builder(FriendsActivity.this)
+                                .operationType(AlertDialog.OPERATION_TYPE_OK)
+                                .desc("请求发送中")
+                                .subDesc("对方同意后，自动开始游戏");
+                        gameBuilder.display();
+                        String friendAccountId = gameRole.getUser().getUserId();
+                        GameRole myRole = UserDataCache.readRole();
+                        String msg = myRole.getName() + " 向你发来游戏请求";
+                        JMessageManager.sendTextMessage(friendAccountId, msg,
+                                new JMessageManager.OnSendCompleteCallBack() {
+                                    @Override
+                                    public void onSuccess() {
+//                                        gameBuilder.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String errorMsg) {
+                                        gameBuilder.dismiss();
+                                        ToastUtil.showToast(FriendsActivity.this,
+                                                errorMsg,
+                                                ToastUtil.TOAST_ERROR);
+                                    }
+                                });
                         break;
                 }
             }

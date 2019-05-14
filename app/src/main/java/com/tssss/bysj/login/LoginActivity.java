@@ -7,24 +7,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.annotation.Nullable;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
-import com.tssss.bysj.game.core.other.GameRole;
 import com.tssss.bysj.game.hall.HallActivity;
 import com.tssss.bysj.game.role.NewRoleActivity;
-import com.tssss.bysj.other.AppDataCache;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.User;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
-
-import androidx.annotation.Nullable;
 
 
 @ViewInject(layoutId = R.layout.activity_login)
@@ -93,7 +90,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     @Override
     protected void afterBindView() {
         mHandler = new Handler();
-        mLoginPresenter = new LoginPresenter(this, this);
+        mLoginPresenter = new LoginPresenter(this);
         mLoginUser = new User();
     }
 
@@ -241,25 +238,16 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
     }
 
     @Override
-    public void onSuccess(User user, GameRole gameRole) {
+    public void onSuccess() {
         loginCount = 0;
-//        Log.i(getClass().getSimpleName(), "登陆成功");
-//        Log.i("userId", user.getUserId());
-//        Log.i("userPwd", user.getUserPassword());
-//        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getHistoryTable().createChatHistoryTable();
-//        SQLiteFactory.getInstance().getUserDataBase(this, user.getUserId()).getChatListTable().createChatListTable();
-//        UserDataCache.keepRole(gameRole);
-        UserDataCache.keepRole(gameRole);
-        AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGIN);
         openActivityAndFinishSelf(HallActivity.class);
     }
 
     @Override
-    public void onError(int i, String s) {
+    public void onError(String s) {
         AnimationUtil.flipView(this, logging_gtv, login_ib);
         unlockViews();
-        ToastUtil.showToast(this, "登录异常", ToastUtil.TOAST_ERROR);
-        Logger.log(this.getClass(), s);
+        ToastUtil.showToast(this, "登录失败", ToastUtil.TOAST_ERROR);
     }
 
     /**

@@ -42,6 +42,7 @@ import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
 
+@SuppressWarnings("unchecked")
 @ViewInject(layoutId = R.layout.activity_chat)
 public class ChatActivity extends BaseActivity implements OnMenuItemClickListener,
         IChatContract.IView, ChatReceiverViewHolder.OnChatReceiveClickListener,
@@ -56,10 +57,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
     private List<ChatMessage> chatMessageList;
     private ChatRvAdapter adapter;
     private String targetAccountID;
-    private String targetRoleName;
     private ChatPresenter presenter;
-    private boolean historyLoaded;
-    private Conversation conversation;
     private boolean succeed;
 
     @Override
@@ -141,11 +139,8 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()) {
-            case R.id.send_msg_ib:
-                sendMsg();
-                break;
-            default:
+        if (v.getId() == R.id.send_msg_ib) {
+            sendMsg();
         }
     }
 
@@ -275,6 +270,18 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
                 break;
             case 1:
                 // 加入黑名单
+                JMessageManager.addUserToBlackList(targetAccountID, new JMessageManager.IAddBlackListCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        ToastUtil.showToast(ChatActivity.this, "加入黑名单成功", ToastUtil.TOAST_DEFAULT);
+                    }
+
+                    @Override
+                    public void onError(String errorMsg) {
+                        ToastUtil.showToast(ChatActivity.this, errorMsg, ToastUtil.TOAST_DEFAULT);
+
+                    }
+                });
                 menu.dismiss();
                 break;
 
@@ -293,7 +300,6 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             newMessage.setMessageFrom(ChatMessage.MESSAGE_NOT_ME);
             String msgJson = message.getContent().toJson();
             Map<String, String> msgMap = (Map<String, String>) JSON.parse(msgJson);
-//            Map<String, String> timeMap = (Map<String, String>) JSON.parse(msgMap.get("extras"));
             newMessage.setMessage(msgMap.get("text"));
             newMessage.setTime(message.getContent().getStringExtra("msg_time"));
             if (chatRv.getAdapter() == null) {
@@ -307,7 +313,6 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             loadingTv.setVisibility(View.GONE);
             chatRv.setVisibility(View.VISIBLE);
             Logger.log("收到新的消息：" + newMessage.getMessage());
-//        adapter.notifyItemChanged(adapter.getItemCount());
             adapter.notifyDataSetChanged();
             chatRv.smoothScrollToPosition(chatMessageList.size());
         }
@@ -316,7 +321,6 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     public void showHistory(List<ChatMessage> messageList) {
-        historyLoaded = true;
         if (messageList == null || messageList.size() <= 0) {
             if (chatRv.getVisibility() != View.VISIBLE) {
                 loadingTv.setVisibility(View.GONE);

@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
+
 import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
@@ -18,9 +22,6 @@ import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SortedList;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.model.UserInfo;
@@ -80,10 +81,12 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         private LinearLayout rankContainer;
 
         private Handler handler;
+        private String myAccountID;
 
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);
             handler = new Handler();
+            myAccountID = UserDataCache.readAccount(Constant.ACCOUNT_ID);
         }
 
         @Override
@@ -140,7 +143,8 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
                     }
                 });
-                if (accountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
+
+                if (myAccountID.equals(accountID)) {
                     name.setText("我");
 
                 } else {

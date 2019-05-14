@@ -1,5 +1,7 @@
 package com.tssss.bysj.game.core.other;
 
+import androidx.annotation.NonNull;
+
 import com.alibaba.fastjson.JSON;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.user.User;
@@ -326,5 +328,11 @@ public class GameRole {
         void onSuccess();
 
         void onFailure(String errorMsg);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

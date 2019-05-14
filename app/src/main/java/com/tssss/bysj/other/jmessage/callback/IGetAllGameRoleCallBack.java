@@ -1,4 +1,4 @@
-package com.tssss.bysj.other.jmessage;
+package com.tssss.bysj.other.jmessage.callback;
 
 import com.tssss.bysj.game.core.other.GameRole;
 

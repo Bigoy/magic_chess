@@ -1,18 +1,17 @@
 package com.tssss.bysj.componet.dialog;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseDialog;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.util.AnimationUtil;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * 标准弹窗
@@ -34,6 +33,7 @@ public class AlertDialog extends BaseDialog {
     protected OnDialogOperationListener operationListener;
     private boolean supportAnimation = true;
     private Handler handler;
+    private boolean isShowing;
 
     protected String dialogDesc;
     protected String dialogSubDesc;
@@ -90,7 +90,6 @@ public class AlertDialog extends BaseDialog {
                 public void run() {
                     if (null != operationListener) {
                         operationListener.ok();
-                        dismiss();
                     }
                     dismiss();
                 }
@@ -105,7 +104,6 @@ public class AlertDialog extends BaseDialog {
                 public void run() {
                     if (null != operationListener) {
                         operationListener.no();
-                        dismiss();
                     }
                     dismiss();
                 }
@@ -167,6 +165,7 @@ public class AlertDialog extends BaseDialog {
     }
 
     public void display() {
+        isShowing = true;
         dialog_ok.setText(okDesc);
         dialog_no.setText(noDesc);
         super.show();
@@ -174,7 +173,10 @@ public class AlertDialog extends BaseDialog {
 
     @Override
     public void dismiss() {
-        super.dismiss();
+        if (isShowing) {
+            isShowing = false;
+            super.dismiss();
+        }
     }
 
     public interface OnDialogOperationListener {
