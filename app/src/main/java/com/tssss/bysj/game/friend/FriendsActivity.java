@@ -22,6 +22,7 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.jmessage.JMessageHelper;
 import com.tssss.bysj.other.jmessage.JMessageManager;
+import com.tssss.bysj.other.jmessage.TextContentFactory;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
 import com.tssss.bysj.util.ToastUtil;
@@ -32,6 +33,7 @@ import java.util.List;
 import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
+import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.event.ContactNotifyEvent;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.NotificationClickEvent;
@@ -200,7 +202,7 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
     }
 
     public void onEventMainThread(MessageEvent event) {
-        JMessageManager.handlerMessageEvent(event, this);
+        JMessageManager.handlerMessageEvent(event);
     }
 
     public void onEventMainThread(NotificationClickEvent event) {
@@ -402,7 +404,8 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
                         String friendAccountId = gameRole.getUser().getUserId();
                         GameRole myRole = UserDataCache.readRole();
                         String msg = myRole.getName() + " 向你发来游戏请求";
-                        JMessageManager.sendTextMessage(friendAccountId, msg,
+                        TextContent textContent = TextContentFactory.gameInvitation(msg);
+                        JMessageManager.sendTextMessage(friendAccountId, textContent,
                                 new JMessageManager.OnSendCompleteCallBack() {
                                     @Override
                                     public void onSuccess() {

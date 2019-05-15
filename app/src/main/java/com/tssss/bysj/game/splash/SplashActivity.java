@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
-import com.tssss.bysj.base.BaseApplication;
+import com.tssss.bysj.application.MCApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.main.MainActivity;
@@ -44,7 +44,7 @@ public class SplashActivity extends BaseActivity implements ISplashContract.IVie
 
                         @Override
                         public void no() {
-                            BaseApplication.exitApp();
+                            MCApplication.exitApp();
                         }
                     });
             builder.display();

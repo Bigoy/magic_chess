@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
-import com.tssss.bysj.base.BaseApplication;
+import com.tssss.bysj.application.MCApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
@@ -151,7 +151,7 @@ public class LoginActivity extends BaseActivity implements IAccountContract.IVie
             @Override
             public void run() {
                 backLauncher();
-                BaseApplication.exitApp();
+                MCApplication.exitApp();
             }
         }, 1000);
     }

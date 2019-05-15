@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.tssss.bysj.game.Chessman;
+import com.tssss.bysj.other.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -179,18 +180,25 @@ public class ChessmanManager {
      */
     public String whoChecked() {
         if (selfA.getChecked()) {
+            Logger.log("选中的棋子：" + SELF_A);
             return SELF_A;
         } else if (selfB.getChecked()) {
+            Logger.log("选中的棋子：" + SELF_B);
             return SELF_B;
         } else if (selfC.getChecked()) {
+            Logger.log("选中的棋子：" + SELF_C);
             return SELF_C;
         } else if (armyA.getChecked()) {
+            Logger.log("选中的棋子：" + ARMY_A);
             return ARMY_A;
         } else if (armyB.getChecked()) {
+            Logger.log("选中的棋子：" + ARMY_B);
             return ARMY_B;
         } else if (armyC.getChecked()) {
+            Logger.log("选中的棋子：" + ARMY_C);
             return ARMY_C;
         }
+        Logger.log("选中的棋子：" + UNKNOWN);
         return UNKNOWN;
     }
 

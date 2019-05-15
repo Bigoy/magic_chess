@@ -18,7 +18,6 @@ public class CountDownTimer implements Runnable {
         this.iCountTime = iCountTime;
     }
 
-
     @Override
     public void run() {
         if (isRun) {

@@ -16,8 +16,11 @@ import com.tssss.bysj.game.Chessman;
 import com.tssss.bysj.game.core.GamePresenter;
 import com.tssss.bysj.game.core.IGameContract;
 import com.tssss.bysj.game.core.other.GameResult;
+import com.tssss.bysj.game.core.other.GameResultFactory;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.other.jmessage.JMessageManager;
+import com.tssss.bysj.other.jmessage.TextContentFactory;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.IntentUtil;
 import com.tssss.bysj.util.StringUtil;
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.event.MessageEvent;
 
 @SuppressWarnings("unused")
@@ -43,6 +47,10 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     private AlertDialog.Builder prepareDialog;
 
     private GamePresenter gamePresenter;
+
+    public GamePresenter getGamePresenter() {
+        return this.gamePresenter;
+    }
 
     @Override
     protected void findViews() {
@@ -67,6 +75,8 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
                     @Override
                     public void ok() {
                         gamePresenter.surrender();
+                        IntentUtil.startGameResultIntent(GameActivity.this,
+                                GameResultFactory.lose());
                     }
 
                     @Override
@@ -143,8 +153,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
      * 接受JMessage即时消息
      */
     public void onEventMainThread(MessageEvent event) {
-        gamePresenter.handlerJMessageEvent(event);
-
+        JMessageManager.handlerMessageEvent(event);
     }
 
     /**
@@ -194,7 +203,6 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @Override
     public void syncChessmanPosition(String chessmanKey, String position) {
         mGameView.syncChessmen(chessmanKey, position);
-
     }
 
     @Override
@@ -243,16 +251,12 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
                 .operationListener(new AlertDialog.OnDialogOperationListener() {
                     @Override
                     public void ok() {
-                        Map<String, String> map = new HashMap<>();
-                        map.put("operation", "peace_agree");
-                        gamePresenter.sendMessage(map);
+                        gamePresenter.peaceGranted();
                     }
 
                     @Override
                     public void no() {
-                        Map<String, String> map = new HashMap<>();
-                        map.put("operation", "peace_reject");
-                        gamePresenter.sendMessage(map);
+                        gamePresenter.peaceDenied();
                     }
                 });
         builder.display();

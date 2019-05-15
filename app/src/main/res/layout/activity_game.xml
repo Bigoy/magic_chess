@@ -22,9 +22,10 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
+        android:text="30"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="32dp"
-        tools:ignore="SpUsage" />
+        tools:ignore="HardcodedText,SpUsage" />
 
 
     <com.tssss.bysj.game.core.view.GameSurfaceView

@@ -11,22 +11,16 @@ import java.util.Date;
 
 @SuppressWarnings("deprecation")
 public class SystemUtil {
-    @SuppressLint("StaticFieldLeak")
-    private static Context context;
-
-    public static void init(Context c) {
-        context = c;
-    }
 
     /**
      * Get screen size
      * size[0] = width, size[1] = height
      *
-     * @param context context
      * @return result
      */
     @SuppressWarnings("deprecation")
-    public static int[] getScreenSize(Context context) {
+    public static int[] getScreenSize() {
+        Context context = ContextUtil.getApplicationContext();
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
@@ -51,7 +45,7 @@ public class SystemUtil {
 
     public static String chargeSecondsToNowTime(String seconds) {
 
-        long time = Long.parseLong(seconds)*1000-8*3600*1000;
+        long time = Long.parseLong(seconds) * 1000 - 8 * 3600 * 1000;
         SimpleDateFormat format2 = new SimpleDateFormat("MM月dd日 HH:mm");
         return format2.format(new Date(time));
 
@@ -66,9 +60,7 @@ public class SystemUtil {
      * 检查网络是否可用
      */
     public static boolean checkNet() {
-        if (context == null){
-            return false;
-        }
+        Context context = ContextUtil.getApplicationContext();
         ConnectivityManager con = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = con.getActiveNetworkInfo();

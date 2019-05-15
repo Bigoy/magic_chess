@@ -131,4 +131,8 @@ public class JMessageHelper {
         }
     }
 
+    public void sendGameInvitationMessage() {
+
+    }
+
 }

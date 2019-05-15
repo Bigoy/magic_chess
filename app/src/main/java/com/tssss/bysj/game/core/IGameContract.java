@@ -5,7 +5,7 @@ import com.tssss.bysj.mvp.ILifeCircle;
 import com.tssss.bysj.mvp.IMvpView;
 import com.tssss.bysj.mvp.MvpController;
 
-import cn.jpush.im.android.api.event.MessageEvent;
+import java.util.Map;
 
 public interface IGameContract {
 
@@ -24,9 +24,6 @@ public interface IGameContract {
 
         void showMyChessmenCamp(String camp);
 
-        /**
-         * 被对方催促
-         */
         void beingUrged();
 
         void peace();
@@ -46,19 +43,53 @@ public interface IGameContract {
     interface IPresenter extends ILifeCircle {
         void prepareGame(String myAccountID, String armyAccountID);
 
-        void handlerJMessageEvent(MessageEvent event);
-
-        void surrender();
-
+        /**
+         * 正在游戏
+         */
         void cancelAndResetTimer();
 
         void urge();
 
+        void beingUrged();
+
         void stepBack();
+
+        void adversityStepBack();
 
         void checkResult();
 
+        void updateChessmanPosition(Map<String, String> positionMap);
+
+        /**
+         * 游戏顺序
+         */
+
+        void notFirst();
+
+        void turn();
+
+        /**
+         * 游戏结果
+         */
+        void surrender();
+
+        void adversitySurrender();
+
+        void win();
+
+        void lose();
+
         void peace();
+
+        void adversityPeace();
+
+        void peaceGranted();
+
+        void peaceDenied();
+
+        void adversityGrantedPeace();
+
+        void adversityDeniedPeace();
 
     }
 

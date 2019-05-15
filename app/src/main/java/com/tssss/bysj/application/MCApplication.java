@@ -1,4 +1,4 @@
-package com.tssss.bysj.base;
+package com.tssss.bysj.application;
 
 
 import android.app.Application;
@@ -8,11 +8,12 @@ import android.net.NetworkInfo;
 import android.os.Process;
 
 import com.tssss.bysj.other.SharedPreferencesFactory;
+import com.tssss.bysj.util.ContextUtil;
 import com.tssss.bysj.util.SystemUtil;
 
 import cn.jpush.im.android.api.JMessageClient;
 
-public class BaseApplication extends Application {
+public class MCApplication extends Application {
 
     /**
      * 退出app进程
@@ -27,6 +28,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         JMessageClient.init(this, true);
         SharedPreferencesFactory.initSharedPreferencesFactory(this);
-        SystemUtil.init(this);
+        ContextUtil.setApplicationContext(this);
+        registerActivityLifecycleCallbacks(new ActivityLifeCircleCallBackHandler());
     }
 }

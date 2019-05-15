@@ -227,7 +227,7 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                openActivity(clazz);
+                openActivityAndFinishSelf(clazz);
                 finish();
             }
         }, ms);

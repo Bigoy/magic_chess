@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
-import com.tssss.bysj.base.BaseApplication;
+import com.tssss.bysj.application.MCApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
@@ -158,7 +158,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
                             @Override
                             public void ok() {
                                 backLauncher();
-                                BaseApplication.exitApp();
+                                MCApplication.exitApp();
                             }
 
                             @Override
@@ -189,7 +189,7 @@ public class HallActivity extends BaseActivity implements OnMenuItemClickListene
     }
 
     public void onEventMainThread(MessageEvent event) {
-        JMessageManager.handlerMessageEvent(event, this);
+        JMessageManager.handlerMessageEvent(event);
 
     }
 

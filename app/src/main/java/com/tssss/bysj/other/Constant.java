@@ -167,5 +167,7 @@ public class Constant {
     public static final String GAME_RESULT_WIN = "胜利";
     public static final String GAME_RESULT_LOSE = "失败";
 
+    public static final String MESSAGE_GAME_OPERATION = "operation";
 
+    public static final String MESSAGE_TYPE = "message_type";
 }

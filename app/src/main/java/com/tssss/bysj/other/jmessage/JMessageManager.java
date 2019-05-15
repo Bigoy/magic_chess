@@ -14,6 +14,7 @@ import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.jmessage.callback.ILoginCallBack;
 import com.tssss.bysj.user.UserDataCache;
+import com.tssss.bysj.util.ContextUtil;
 import com.tssss.bysj.util.IntentUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
@@ -27,6 +28,7 @@ import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.RequestCallback;
 import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.content.TextContent;
+import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.NotificationClickEvent;
 import cn.jpush.im.android.api.model.Conversation;
@@ -36,7 +38,6 @@ import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
 
-@SuppressWarnings("unchecked")
 public class JMessageManager {
 
     public static void registerEvent(BaseActivity context) {
@@ -65,106 +66,33 @@ public class JMessageManager {
 
     }
 
-
-    public static void handlerMessageEvent(MessageEvent event, Activity activity) {
+    public static void handlerMessageEvent(MessageEvent event) {
         Message message = event.getMessage();
         if (null != message) {
-            MessageContent content = message.getContent();
+            if (message.getContentType() != ContentType.text) {
+                throw new IllegalStateException("接受到不支持的非文本消息");
+            }
+            TextContent content = (TextContent) message.getContent();
             if (null != content) {
-                String targetID = message.getFromUser().getUserName();
-                // 游戏邀请message
-                String extars = content.getStringExtra("game_invitation");
-                if (!StringUtil.isBlank(extars)) {
-                    switch (extars) {
-                        case "game_invitation":
-                            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                                    .subDesc(targetID + " 请求和你来一局游戏")
-                                    .noDesc("拒绝")
-                                    .okDesc("可以")
-                                    .operationListener(new AlertDialog.OnDialogOperationListener() {
-                                        @Override
-                                        public void ok() {
-
-                                            Conversation mConversation = JMessageClient.getSingleConversation(targetID, null);
-                                            if (mConversation == null) {
-                                                mConversation = Conversation.createSingleConversation(targetID, null);
-                                            }
-
-                                            //构造message content对象
-                                            TextContent textContent = new TextContent("对方同意了你的请求" + "\n" + "准备开始游戏");
-                                            textContent.setStringExtra("game_invitation", "ok");
-
-                                            //创建message实体，设置消息发送回调。
-                                            final Message message = mConversation.createSendMessage(textContent, targetID);
-                                            JMessageClient.sendMessage(message);
-                                            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity)
-                                                    .operationType(AlertDialog.OPERATION_TYPE_SIMPLE)
-                                                    .desc("请等待对方开始");
-                                            builder1.display();
-                                        }
-
-                                        @Override
-                                        public void no() {
-                                            Conversation mConversation = JMessageClient.getSingleConversation(targetID, null);
-                                            if (mConversation == null) {
-                                                mConversation = Conversation.createSingleConversation(targetID, null);
-                                            }
-
-                                            //构造message content对象
-                                            TextContent textContent = new TextContent("对方拒绝了你的游戏请求");
-                                            textContent.setStringExtra("game_invitation", "no");
-
-                                            //创建message实体，设置消息发送回调。
-                                            final Message message = mConversation.createSendMessage(textContent, targetID);
-                                            JMessageClient.sendMessage(message);
-                                        }
-                                    });
-                            builder.display();
-
-                            break;
-                        case "ok":
-
-                            Conversation mConversation = JMessageClient.getSingleConversation(targetID, null);
-                            if (mConversation == null) {
-                                mConversation = Conversation.createSingleConversation(targetID, null);
-                            }
-
-                            //构造message content对象
-                            TextContent textContent = new TextContent("");
-                            textContent.setStringExtra("game_invitation", "start_game");
-
-                            //创建message实体，设置消息发送回调。
-                            final Message message1 = mConversation.createSendMessage(textContent, targetID);
-                            message1.setOnSendCompleteCallback(new BasicCallback() {
-                                @Override
-                                public void gotResult(int i, String s) {
-                                    if (i == 0) {
-                                        Map<String, String> map = (Map<String, String>) JSON.parse(message.getFromUser().getSignature());
-                                        Intent gameIntent = new Intent(activity, GameActivity.class);
-                                        gameIntent.putExtra(Constant.ACCOUNT_ID, map.get(Constant.ACCOUNT_ID));
-                                        activity.startActivity(gameIntent);
-                                        activity.finish();
-                                    }
-                                }
-                            });
-                            JMessageClient.sendMessage(message1);
-
-
-                            break;
-                        case "no":
-                            ToastUtil.showToast(activity, "对方拒绝了你的游戏请求", ToastUtil.TOAST_ERROR);
-                            break;
-                        case "start_game":
-
-                            Map<String, String> map = (Map<String, String>) JSON.parse(message.getFromUser().getSignature());
-                            Intent gameIntent = new Intent(activity, GameActivity.class);
-                            gameIntent.putExtra(Constant.ACCOUNT_ID, map.get(Constant.ACCOUNT_ID));
-
-                            activity.startActivity(gameIntent);
-                            activity.finish();
-                            break;
-                    }
+                Map<String, String> extrasMap = content.getStringExtras();
+                String textMsgType = extrasMap.get(Constant.MESSAGE_TYPE);
+                String msgFrom = message.getFromUser().getUserName();
+                TextMessageContent textMessageContent = new TextMessageContent();
+                textMessageContent.setTextContent(content);
+                textMessageContent.setFrom(msgFrom);
+                AbsTextMessageHandler textMessageHandler = null;
+                switch (textMsgType) {
+                    case "game":
+                        textMessageHandler = new GameMessageHandler(textMessageContent);
+                        break;
+                    case "chat":
+                        textMessageHandler = new ChatMessageHandler(textMessageContent);
+                        break;
                 }
+                if (null == textMessageHandler) {
+                    throw new NullPointerException("textMessageHandler is null");
+                }
+                textMessageHandler.handleTextMessage();
             }
         }
     }
@@ -201,34 +129,29 @@ public class JMessageManager {
 
     }
 
-    /**
-     * 发送JMessage文本消息 无回调
-     */
-    public static void sendTextMessage(String targetId, String content) {
-        sendTextMessage(targetId, content, null);
-
+    public static void sendTextMessage(String targetId, TextContent textContent) {
+        sendTextMessage(targetId, textContent, null);
     }
 
-    /**
-     * 发送JMessage文本消息
-     */
-    public static void sendTextMessage(String targetId, String content, OnSendCompleteCallBack callBack) {
+    public static void sendTextMessage(String targetId, TextContent textContent, OnSendCompleteCallBack callBack) {
         //通过username和appkey拿到会话对象，通过指定appkey可以创建一个和跨应用用户的会话对象，从而实现跨应用的消息发送
         Conversation conversation = JMessageClient.getSingleConversation(targetId);
         if (conversation == null) {
             conversation = Conversation.createSingleConversation(targetId);
         }
-        //构造message content对象
-        TextContent textContent = new TextContent(content);
         //创建message实体，设置消息发送回调。
         final Message message = conversation.createSendMessage(textContent, targetId);
-        if (null != callBack) {
-            message.setOnSendCompleteCallback(new BasicCallback() {
-                @Override
-                public void gotResult(int i, String s) {
+        message.setOnSendCompleteCallback(new BasicCallback() {
+            @Override
+            public void gotResult(int i, String s) {
+                if (null != callBack) {
                     if (i == 0) {
                         callBack.onSuccess();
-                        Logger.log("发送文本消息成功" + "\n" + content);
+                        String msg = "发送文本消息状态：成功" +
+                                "\n" +
+                                "文本内容：" +
+                                textContent.getText();
+                        Logger.log(msg);
                     } else if (i == 899017) {
                         Logger.log("发送文本消息失败：" + i + s);
                         callBack.onFailure("你被拉黑了！");
@@ -238,8 +161,8 @@ public class JMessageManager {
                         callBack.onFailure(s);
                     }
                 }
-            });
-        }
+            }
+        });
         MessageSendingOptions options = new MessageSendingOptions();
         options.setShowNotification(false);
         options.setRetainOffline(false);

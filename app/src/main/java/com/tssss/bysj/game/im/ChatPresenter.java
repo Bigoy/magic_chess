@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.content.TextContent;
+import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class ChatPresenter extends BaseMvpPresenter<IChatContract.IView> implements IChatContract.IPresenter {
 
@@ -33,24 +36,28 @@ public class ChatPresenter extends BaseMvpPresenter<IChatContract.IView> impleme
         List<Message> messageList = conversation.getAllMessage();
         for (int i = 0; i < messageList.size(); i++) {
             Message message = messageList.get(i);
-
             // 过滤游戏邀请message
-            if (StringUtil.isBlank(message.getContent().getStringExtra("game_invitation"))) {
+            Map<String, String> contentMap = (Map<String, String>) JSON.parse(message.getContent().toJson());
+            String messageText = contentMap.get("text");
+            if (!StringUtil.isBlank(messageText)) {
+                ContentType contentType = message.getContentType();
+                if (contentType != ContentType.text) {
+                    throw new IllegalStateException("不支持的消息类型");
+                }
+                UserInfo userInfo = message.getFromUser();
+                String targetID = userInfo.getUserName();
                 ChatMessage chatMessage = new ChatMessage();
-                String msgJson = message.toJson();
-                Map<String, String> msgMap = (Map<String, String>) JSON.parse(msgJson);
-                Map<String, String> contentMap = (Map<String, String>) JSON.parse(message.getContent().toJson());
-                chatMessage.setMessage(contentMap.get("text"));
-                if (msgMap.get("from_id").equals(targetAccountID)) {
+                chatMessage.setMessage(messageText);
+                if (targetID.equals(targetAccountID)) {
                     chatMessage.setMessageFrom(ChatMessage.MESSAGE_NOT_ME);
+                    chatMessage.setAvatarFile(userInfo.getAvatarFile());
                 } else {
                     chatMessage.setMessageFrom(ChatMessage.MESSAGE_ME);
+                    chatMessage.setAvatarFile(JMessageClient.getMyInfo().getAvatarFile());
                 }
-                chatMessage.setFromAccountID(msgMap.get("from_id"));
+                chatMessage.setFromAccountID(targetAccountID);
                 chatMessage.setTime(message.getContent().getStringExtra("msg_time"));
-                chatMessage.setAvatarFile(message.getFromUser().getAvatarFile());
                 chatMessageList.add(chatMessage);
-
             }
         }
         handler.post(new Runnable() {

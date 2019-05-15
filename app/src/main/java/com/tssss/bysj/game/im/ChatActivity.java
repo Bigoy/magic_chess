@@ -341,7 +341,7 @@ public class ChatActivity extends BaseActivity implements OnMenuItemClickListene
             }
             adapter.notifyItemRangeInserted(startP, chatMessageList.size());
             adapter.notifyDataSetChanged();
-            chatRv.smoothScrollToPosition(chatMessageList.size());
+            chatRv.scrollToPosition(chatMessageList.size());
         }
     }
 

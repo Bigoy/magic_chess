@@ -7,7 +7,6 @@ import android.widget.ImageButton;
 
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
-import com.tssss.bysj.base.BaseApplication;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
@@ -99,7 +98,7 @@ public class AccountActivity extends BaseActivity {
                                 AppDataCache.keepAccountState(Constant.ACCOUNT_STATE_LOGOUT);
                                 openActivity(MainActivity.class);
                                /* backLauncher();
-                                BaseApplication.exitApp();*/
+                                MCApplication.exitApp();*/
                             }
 
                             @Override
