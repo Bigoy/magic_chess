@@ -1,10 +1,18 @@
 package com.tssss.bysj.game.core.other;
 
+import com.tssss.bysj.game.core.GamePresenter;
+import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.Logger;
+import com.tssss.bysj.user.UserDataCache;
+
 /*
 裁判官类。
 负责判定输赢、友好结束游戏。
  */
 public class Umpire {
+    private boolean iReadyState;
+
+    private boolean adversityReadyState;
 
     public Umpire() {
     }
@@ -36,6 +44,19 @@ public class Umpire {
             }
         }
         return GameResult.COMPETING;
+    }
+
+    public void ready(GamePresenter gamePresenter, String accountID) {
+        String myAccountID = UserDataCache.readAccount(Constant.ACCOUNT_ID);
+        if (myAccountID.equals(accountID)) {
+            iReadyState = true;
+        }else if (!myAccountID.equals(accountID)){
+            adversityReadyState = true;
+        }
+        if (iReadyState && adversityReadyState) {
+            gamePresenter.startGame();
+            Logger.log("双方已经准备");
+        }
     }
 
 }

@@ -295,4 +295,9 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     public void peaceReject(String s) {
         ToastUtil.showToast(this, s, ToastUtil.TOAST_ERROR);
     }
+
+    @Override
+    public void stopDrawing() {
+
+    }
 }

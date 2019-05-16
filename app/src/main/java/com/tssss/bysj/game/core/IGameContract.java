@@ -38,10 +38,16 @@ public interface IGameContract {
 
         void peaceReject(String s);
 
+        void stopDrawing();
+
     }
 
     interface IPresenter extends ILifeCircle {
         void prepareGame(String myAccountID, String armyAccountID);
+
+        void startGame();
+
+        void adversityReady();
 
         /**
          * 正在游戏
@@ -164,6 +170,11 @@ public interface IGameContract {
 
         @Override
         public void peaceReject(String s) {
+
+        }
+
+        @Override
+        public void stopDrawing() {
 
         }
 

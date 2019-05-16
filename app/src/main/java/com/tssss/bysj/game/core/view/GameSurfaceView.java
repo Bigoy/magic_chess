@@ -77,8 +77,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public void stopGame() {
-        canTouch = false;
         isDrawing = false;
+        canTouch = false;
     }
 
     public void touchTrue() {
@@ -107,8 +107,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         setFocusableInTouchMode(true);
         setZOrderOnTop(true);
         gameHolder.setFormat(PixelFormat.TRANSLUCENT);
-        drawThread = new Thread(this);
-        drawThread.setPriority(Thread.MAX_PRIORITY);
         gameUtil = GameUtil.getGameUtil();
         gameUtil.setContext(getContext());
     }
@@ -132,10 +130,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 清空画布
      */
     private void clear(Canvas gameCanvas) {
-        Paint paint = new Paint();
-        Xfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
-        paint.setXfermode(xfermode);
-        gameCanvas.drawPaint(paint);
+        if (null != gameCanvas) {
+            Paint paint = new Paint();
+            Xfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
+            paint.setXfermode(xfermode);
+            gameCanvas.drawPaint(paint);
+        }
     }
 
     /**
@@ -164,7 +164,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public void startDrawing() {
         isDrawing = true;
-        drawThread.start();
+        drawThread = new Thread(this);
+        drawThread.setPriority(Thread.MAX_PRIORITY);
+        if (drawThread.getState() == Thread.State.NEW) {
+            drawThread.start();
+        }
     }
 }
 

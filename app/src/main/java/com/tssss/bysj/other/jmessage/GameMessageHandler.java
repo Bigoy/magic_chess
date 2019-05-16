@@ -123,6 +123,10 @@ public class GameMessageHandler extends AbsTextMessageHandler {
             case "step_back":
                 gamePresenter.adversityStepBack();
                 break;
+            case "ready":
+                gamePresenter.adversityReady();
+                break;
+
         }
 
     }

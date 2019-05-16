@@ -71,7 +71,9 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                 prepareGameScene();
                 prepareArmyRole(role);
                 preparePlayOrder();
-                startGame();
+                umpire.ready(GamePresenter.this, myAccountID);
+                TextContent ready = TextContentFactory.ready();
+                sendMessage(ready);
             }
 
             @Override
@@ -297,6 +299,10 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         JMessageManager.sendTextMessage(armyAccountID, textContent);
     }
 
+    private void sendMessage(TextContent textContent, JMessageManager.OnSendCompleteCallBack callBack) {
+        JMessageManager.sendTextMessage(armyAccountID, textContent, callBack);
+    }
+
     public void receivedSyncChessmanMessage(String key, String position) {
         chessmanManager.syncChessmen(key, position);
     }
@@ -328,9 +334,9 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     }
 
     public void drawGame(Canvas gameCanvas) {
-        chessboard.draw(gameCanvas);
-        chessmanManager.drawChessmen(gameCanvas);
-        if (!chessmanManager.whoChecked().equals(ChessmanManager.UNKNOWN)) {
+        if (null != gameCanvas) {
+            chessboard.draw(gameCanvas);
+            chessmanManager.drawChessmen(gameCanvas);
             chessmanManager.drawMark(gameCanvas);
         }
     }
@@ -373,7 +379,8 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         this.armyRole = armyRole;
     }
 
-    private void startGame() {
+    @Override
+    public void startGame() {
         // 全部准备完后，3秒后正式开始游戏
         handler.postDelayed(new Runnable() {
             @Override
@@ -388,5 +395,9 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         }, 3000);
     }
 
+    @Override
+    public void adversityReady() {
+        umpire.ready(this, armyAccountID);
+    }
 
 }

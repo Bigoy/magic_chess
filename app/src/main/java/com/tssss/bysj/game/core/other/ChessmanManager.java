@@ -198,7 +198,6 @@ public class ChessmanManager {
             Logger.log("选中的棋子：" + ARMY_C);
             return ARMY_C;
         }
-        Logger.log("选中的棋子：" + UNKNOWN);
         return UNKNOWN;
     }
 
@@ -234,11 +233,14 @@ public class ChessmanManager {
      */
     public void drawMark(Canvas gameCanvas) {
         Chessman checkChessman = chessmen.get(whoChecked());
-        Anchor checkChessmanPosition = anchorManager.getAnchor(checkChessman.getPosition());
-        gameCanvas.drawCircle(checkChessmanPosition.getX(),
-                checkChessmanPosition.getY(),
-                80,
-                markPaint);
+        if (null != checkChessman) {
+            Anchor checkChessmanPosition = anchorManager.getAnchor(checkChessman.getPosition());
+            gameCanvas.drawCircle(checkChessmanPosition.getX(),
+                    checkChessmanPosition.getY(),
+                    80,
+                    markPaint);
+
+        }
     }
 }
 

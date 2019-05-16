@@ -143,4 +143,13 @@ public class TextContentFactory {
         textContent.setExtras(map);
         return textContent;
     }
+
+    public static TextContent ready() {
+        TextContent textContent = new TextContent("");
+        Map<String, String> map = new HashMap<>();
+        map.put(Constant.MESSAGE_TYPE, "game");
+        map.put(Constant.MESSAGE_GAME_OPERATION, "ready");
+        textContent.setExtras(map);
+        return textContent;
+    }
 }
