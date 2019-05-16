@@ -347,6 +347,8 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
 
     protected void prepareGameScene() {
         anchorManager.createAnchors();
+        chessmanManager.initChessmanPosition();
+        anchorManager.initAnchorUseState();
     }
 
     protected void preparePlayOrder() {

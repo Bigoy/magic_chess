@@ -77,7 +77,7 @@ public class ChessmanManager {
         chessmen.put(ARMY_C, armyC);
     }
 
-    private void initChessmanPosition() {
+    public void initChessmanPosition() {
         selfA.setPosition(AnchorManager.ONE);
         selfB.setPosition(AnchorManager.FOUR);
         selfC.setPosition(AnchorManager.SEVEN);
