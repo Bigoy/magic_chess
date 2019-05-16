@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.role.fragment;
+package com.tssss.bysj.game.role.info.fragment.news;
 
 
 import android.view.View;

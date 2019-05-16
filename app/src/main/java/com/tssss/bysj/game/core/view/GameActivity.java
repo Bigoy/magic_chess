@@ -45,7 +45,6 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     private GTextView timeTv;
     private Menu gameMenu;
     private AlertDialog.Builder prepareDialog;
-
     private GamePresenter gamePresenter;
 
     public GamePresenter getGamePresenter() {

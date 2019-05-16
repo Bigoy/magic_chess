@@ -1,34 +1,27 @@
-package com.tssss.bysj.game.role;
+package com.tssss.bysj.game.role.info;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.game.core.other.GameRole;
-import com.tssss.bysj.game.role.fragment.NewsFragment;
-import com.tssss.bysj.game.role.fragment.SignatureFragment;
-import com.tssss.bysj.game.role.fragment.battle_record.BattleRecordFragment;
+import com.tssss.bysj.game.role.info.fragment.news.NewsFragment;
+import com.tssss.bysj.game.role.info.fragment.battle_record.BattleRecordFragment;
+import com.tssss.bysj.game.role.info.fragment.battle_record.BattleRecordPresenter;
+import com.tssss.bysj.game.role.info.fragment.signature.SignatureFragment;
+import com.tssss.bysj.game.role.info.fragment.signature.SignaturePresenter;
 import com.tssss.bysj.other.Constant;
-import com.tssss.bysj.other.Logger;
-import com.tssss.bysj.user.User;
 import com.tssss.bysj.util.AnimationUtil;
-import com.tssss.bysj.util.StringUtil;
-
-import java.util.Map;
-
-import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.callback.GetUserInfoCallback;
-import cn.jpush.im.android.api.model.UserInfo;
 
 @ViewInject(layoutId = R.layout.activity_user_info)
-public class UserInfoActivity extends BaseActivity {
+public class UserInfoActivity extends BaseActivity implements
+        IUserInfoContract.IView {
     private ImageView avatar;
     private GTextView name;
     private GTextView sex;
@@ -37,17 +30,15 @@ public class UserInfoActivity extends BaseActivity {
     private GTextView signature;
     private GTextView battleRecord;
     private GTextView news;
-
-    String userAccount;
-    GameRole gameRole;
-
+    private String userAccount;
+    private GameRole gameRole;
     private SignatureFragment signatureFragment;
     private BattleRecordFragment battleRecordFragment;
     private NewsFragment newsFragment;
+    private UserInfoPresenter userInfoPresenter;
 
     public String getUserAccount() {
         return this.userAccount;
-
     }
 
     @Override
@@ -73,13 +64,9 @@ public class UserInfoActivity extends BaseActivity {
     protected void afterBindView() {
         Intent intent = getIntent();
         userAccount = intent.getStringExtra(Constant.ACCOUNT_ID);
-        loadUserInfo();
-
-        signatureFragment = new SignatureFragment();
-        startColorAnimation(signature);
-        replaceFragment(R.id.user_info_fragment_container, signatureFragment);
-        battleRecordFragment = new BattleRecordFragment();
-        newsFragment = new NewsFragment();
+        userInfoPresenter = new UserInfoPresenter(this);
+        userInfoPresenter.loadUserInfo(userAccount);
+        initFragment();
     }
 
     @Override
@@ -101,6 +88,14 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
+    private void initFragment() {
+        startColorAnimation(signature);
+        signatureFragment = new SignatureFragment();
+        replaceFragment(R.id.user_info_fragment_container, signatureFragment);
+        battleRecordFragment = new BattleRecordFragment();
+        newsFragment = new NewsFragment();
+    }
+
     private void startColorAnimation(GTextView view) {
         initCategoryTabState();
         AnimationUtil.startBackgroundColorAnimator(view);
@@ -115,8 +110,15 @@ public class UserInfoActivity extends BaseActivity {
         news.setBackgroundColor(0x00ffffff);
     }
 
+    @Override
+    protected int getTopBarCenterViewStyle() {
+        return R.drawable.user_info_title;
+    }
+
     @SuppressLint("SetTextI18n")
-    private void showUserInfo() {
+    @Override
+    public void showInfo(GameRole role) {
+        this.gameRole = role;
         if (null != gameRole) {
             Glide.with(UserInfoActivity.this)
                     .load(gameRole.getAvatarFile())
@@ -184,39 +186,6 @@ public class UserInfoActivity extends BaseActivity {
 
             }
         }
-    }
-
-    private void loadUserInfo() {
-        if (!StringUtil.isBlank(userAccount)) {
-            gameRole = new GameRole();
-            gameRole.setUser(new User(userAccount, null));
-            JMessageClient.getUserInfo(userAccount, new GetUserInfoCallback() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void gotResult(int i, String s, UserInfo userInfo) {
-                    if (i == 0) {
-                        Map<String, String> userInfoMap = (Map<String, String>) JSON.parse(userInfo.getSignature());
-                        if (null != userInfoMap) {
-                            gameRole.setName(userInfoMap.get(Constant.ROLE_NICK_NAME));
-                            gameRole.setAvatarFile(userInfo.getAvatarFile());
-                            gameRole.setSex(userInfoMap.get(Constant.ROLE_SEX));
-                            gameRole.setExp(Integer.valueOf(userInfoMap.get(Constant.ROLE_EXP)));
-                            gameRole.setLevel(userInfoMap.get(Constant.ROLE_LEVEL));
-                            gameRole.setSignature(userInfoMap.get(Constant.ROLE_SIGNATURE));
-                            showUserInfo();
-                            Logger.log(userInfo.getSignature());
-                        }
-
-                    }
-                }
-            });
-        }
-    }
-
-    @Override
-    protected int getTopBarCenterViewStyle() {
-        return R.drawable.user_info_title;
-
     }
 
 }

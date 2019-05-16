@@ -13,7 +13,7 @@ public class RankSortedListCallBack extends SortedListAdapterCallback<Rank> {
 
     @Override
     public int compare(Rank o1, Rank o2) {
-        return o1.getRole().getScore() - o2.getRole().getScore();
+        return o2.getRole().getScore() - o1.getRole().getScore();
     }
 
     @Override

@@ -3,10 +3,12 @@ package com.tssss.bysj.base;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -56,6 +58,29 @@ public abstract class BaseActivity extends LifeCircleMvpActivity implements
         mHandler = new Handler();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listenInputKeyboard();
+    }
+
+    protected void listenInputKeyboard() {
+        View decorView = getWindow().getDecorView();
+        Rect rect = new Rect();
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                decorView.getWindowVisibleDisplayFrame(rect);
+                int mainInvisibleHeight = decorView.getRootView().getHeight() - rect.bottom;
+                int screenHeight = decorView.getRootView().getHeight();
+                if (mainInvisibleHeight > screenHeight / 4) {
+                    //键盘弹起
+                    hideStatusBarAndNavigationBar();
+                }
+            }
+        });
+
+    }
     /**
      * 统一处理 Activity 的 TopBar 点击事件
      * <p>

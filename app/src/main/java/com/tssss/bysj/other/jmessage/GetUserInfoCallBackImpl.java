@@ -25,15 +25,20 @@ public class GetUserInfoCallBackImpl extends GetUserInfoCallback {
 
     @Override
     public void gotResult(int i, String s, UserInfo userInfo) {
-        gotUserInfoCount++;
-        if (i == 0) {
-            userInfoList.add(userInfo);
-            if (gotUserInfoCount == count) {
-                if (null != iGetUserInfoCallBack) {
-                    iGetUserInfoCallBack.onCompleted(userInfoList);
-                    gotUserInfoCount = 0;
+        if (null != iGetUserInfoCallBack) {
+            if (count > 0) {
+                gotUserInfoCount++;
+                if (i == 0) {
+                    userInfoList.add(userInfo);
+                    if (gotUserInfoCount == count) {
+                        iGetUserInfoCallBack.onCompleted(userInfoList);
+                        gotUserInfoCount = 0;
+                    }
                 }
+            }else {
+                iGetUserInfoCallBack.onCompleted(userInfoList);
             }
         }
+
     }
 }

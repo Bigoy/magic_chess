@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".game.role.fragment.battle_record.BattleRecordFragment">
+    tools:context=".game.role.info.fragment.battle_record.BattleRecordFragment">
 
     <com.tssss.bysj.componet.GTextView
         android:id="@+id/fragment_battle_record_loading"

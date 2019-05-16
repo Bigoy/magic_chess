@@ -29,27 +29,6 @@ public class GameRole {
     private int exp;
     private int score;
     private String chessmanCamp;
-    private String[] levels = new String[]{
-            Constant.ROLE_SX_I,
-            Constant.ROLE_SX_II,
-            Constant.ROLE_SX_III,
-            Constant.ROLE_ZSQS_I,
-            Constant.ROLE_ZSQS_II,
-            Constant.ROLE_ZSQS_III,
-            Constant.ROLE_LSJ_I,
-            Constant.ROLE_LSJ_II,
-            Constant.ROLE_LSJ_III,
-            Constant.ROLE_SQDL_I,
-            Constant.ROLE_SQDL_II,
-            Constant.ROLE_SQDL_III,
-            Constant.ROLE_DS_I,
-            Constant.ROLE_DS_II,
-            Constant.ROLE_DS_III,
-            Constant.ROLE_DJQS_I,
-            Constant.ROLE_DJQS_II,
-            Constant.ROLE_DJQS_III
-    };
-
 
     public GameRole() {
     }
@@ -297,6 +276,14 @@ public class GameRole {
             }
         } else if (Constant.ROLE_DJQS_III.equals(level)) {
             this.exp = newExp;
+        } else {
+            // 意外清空，全部重置
+            this.level = Constant.ROLE_SX_I;
+            this.exp = 0;
+            this.score = 0;
+        }
+        if (this.exp <= 0) {
+            this.exp = 0;
         }
         Map<String, String> myInfoMap = new HashMap<>();
         myInfoMap.put(Constant.ACCOUNT_ID, this.user.getUserId());

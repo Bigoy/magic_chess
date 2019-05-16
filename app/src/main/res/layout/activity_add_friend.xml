@@ -22,20 +22,38 @@
             android:inputType="text"
             tools:ignore="Autofill,HardcodedText,LabelFor" />
 
-        <ImageButton
-            android:id="@+id/add_friend_request"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginTop="32dp"
-            android:background="@null"
-            android:src="@drawable/ic_btn_seek_friends"
-            tools:ignore="ContentDescription" />
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/add_friend_request"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:src="@drawable/ic_btn_seek_friends"
+                android:visibility="visible"
+                tools:ignore="ContentDescription" />
+
+            <com.tssss.bysj.componet.GTextView
+                android:id="@+id/add_friend_feed_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#E05151"
+                android:textSize="28dp"
+                android:visibility="gone"
+                tools:ignore="SpUsage" />
+
+        </LinearLayout>
 
         <com.tssss.bysj.componet.GTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="48dp"
             android:text="推荐玩家："
             tools:ignore="HardcodedText" />
 
@@ -43,9 +61,9 @@
             android:id="@+id/add_friend_recommend_roles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="32dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:visibility="gone" />
@@ -54,9 +72,9 @@
             android:id="@+id/add_friend_recommend_loading"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="32dp"
             android:gravity="center"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"

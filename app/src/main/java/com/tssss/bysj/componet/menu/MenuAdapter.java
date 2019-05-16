@@ -77,13 +77,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             menuItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AnimationUtil.startBackgroundColorAnimator(menuItem);
+//                    AnimationUtil.startBackgroundColorAnimator(menuItem);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             listener.onMenuItemClick(v, position);
                         }
-                    }, 110);
+                    }, 100);
                 }
             });
         }

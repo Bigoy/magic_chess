@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.tssss.bysj.componet.GTextView
         android:id="@+id/fragment_signature"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/bg_signature"
+        android:layout_height="match_parent"
         android:padding="16dp"
         android:textColor="#353535"
         android:textSize="22dp"

@@ -16,8 +16,7 @@ import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
 import com.tssss.bysj.game.core.other.GameRole;
-import com.tssss.bysj.game.im.ChatActivity;
-import com.tssss.bysj.game.role.UserInfoActivity;
+import com.tssss.bysj.game.role.info.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.jmessage.JMessageHelper;
@@ -25,6 +24,8 @@ import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.other.jmessage.TextContentFactory;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.AnimationUtil;
+import com.tssss.bysj.util.IntentUtil;
+import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -298,62 +299,6 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
 
         }
     }
-    /*private ImageButton mFriendsBackIb, mSeekFriendsIb;
-    private ImageView mFriendsNullIv;
-    private GTextView mFriendsNumberGtv;
-
-    private FriendsPresenter friendsPresenter;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        friendsPresenter.loadFriends(
-                UserManager.getUserManager().getUser().getUserId(),
-                this);
-    }
-
-    @Override
-    protected PresenterImp attachPresenter() {
-        friendsPresenter = new FriendsPresenter();
-        return friendsPresenter;
-    }
-
-    @Override
-    protected void findViews() {
-        mFriendsBackIb = findViewById(R.id.friends_back_ib);
-        mSeekFriendsIb = findViewById(R.id.friends_seek_friends_ib);
-    }
-
-    @Override
-    protected void setEventListeners() {
-        mFriendsBackIb.setOnClickListener(this);
-        mSeekFriendsIb.setOnClickListener(this);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.friends_back_ib:
-                finish();
-                break;
-            case R.id.friends_seek_friends_ib:
-                openActivity(PeopleActivity.class);
-                break;
-        }
-    }
-
-    @Override
-    public void showNullFriends() {
-        mFriendsNullIv.setVisibility(View.VISIBLE);
-        mSeekFriendsIb.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showFriends(List<GameRole> friends) {
-        mFriendsNumberGtv.setText("当前好友数：" + friends.size());
-    }*/
-
 
     private void newFriend(ContactNotifyEvent event) {
         final UserInfo[] userInfoA = {null};
@@ -382,44 +327,49 @@ public class FriendsActivity extends BaseActivity implements OnMenuItemClickList
             public void onMenuItemClick(View v, int position) {
                 switch (position) {
                     case 0:
-                        Intent intent = new Intent(FriendsActivity.this, UserInfoActivity.class);
-                        intent.putExtra(Constant.ACCOUNT_ID, gameRole.getUser().getUserId());
-                        startActivity(intent);
+                        String accountID = gameRole.getUser().getUserId();
+                        if (!StringUtil.isBlank(accountID)) {
+                            Intent intent = new Intent(FriendsActivity.this, UserInfoActivity.class);
+                            intent.putExtra(Constant.ACCOUNT_ID, accountID);
+                            startActivity(intent);
+                        }
                         itemMenu.dismiss();
                         break;
                     case 1:
-                        Intent chatIntent = new Intent(FriendsActivity.this, ChatActivity.class);
-                        chatIntent.putExtra(Constant.ACCOUNT_ID, gameRole.getUser().getUserId());
-                        chatIntent.putExtra(Constant.ROLE_NICK_NAME, gameRole.getName());
-                        startActivity(chatIntent);
+                        String accountID01 = gameRole.getUser().getUserId();
+                        if (!StringUtil.isBlank(accountID01)) {
+                            IntentUtil.startChatIntent(FriendsActivity.this, accountID01);
+                        }
                         itemMenu.dismiss();
                         break;
                     case 2:
-                        itemMenu.dismiss();
-                        AlertDialog.Builder gameBuilder = new AlertDialog.Builder(FriendsActivity.this)
-                                .operationType(AlertDialog.OPERATION_TYPE_OK)
-                                .desc("请求发送中")
-                                .subDesc("对方同意后，自动开始游戏");
-                        gameBuilder.display();
                         String friendAccountId = gameRole.getUser().getUserId();
-                        GameRole myRole = UserDataCache.readRole();
-                        String msg = myRole.getName() + " 向你发来游戏请求";
-                        TextContent textContent = TextContentFactory.gameInvitation(msg);
-                        JMessageManager.sendTextMessage(friendAccountId, textContent,
-                                new JMessageManager.OnSendCompleteCallBack() {
-                                    @Override
-                                    public void onSuccess() {
+                        if (!StringUtil.isBlank(friendAccountId)) {
+                            AlertDialog.Builder gameBuilder = new AlertDialog.Builder(FriendsActivity.this)
+                                    .operationType(AlertDialog.OPERATION_TYPE_OK)
+                                    .desc("请求发送中")
+                                    .subDesc("对方同意后，自动开始游戏");
+                            gameBuilder.display();
+                            GameRole myRole = UserDataCache.readRole();
+                            String msg = myRole.getName() + " 向你发来游戏请求";
+                            TextContent textContent = TextContentFactory.gameInvitation(msg);
+                            JMessageManager.sendTextMessage(friendAccountId, textContent,
+                                    new JMessageManager.OnSendCompleteCallBack() {
+                                        @Override
+                                        public void onSuccess() {
 //                                        gameBuilder.dismiss();
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onFailure(String errorMsg) {
-                                        gameBuilder.dismiss();
-                                        ToastUtil.showToast(FriendsActivity.this,
-                                                errorMsg,
-                                                ToastUtil.TOAST_ERROR);
-                                    }
-                                });
+                                        @Override
+                                        public void onFailure(String errorMsg) {
+                                            gameBuilder.dismiss();
+                                            ToastUtil.showToast(FriendsActivity.this,
+                                                    errorMsg,
+                                                    ToastUtil.TOAST_ERROR);
+                                        }
+                                    });
+                        }
+                        itemMenu.dismiss();
                         break;
                 }
             }

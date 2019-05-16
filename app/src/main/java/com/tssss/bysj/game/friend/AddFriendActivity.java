@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseActivity;
 import com.tssss.bysj.base.annoation.ViewInject;
@@ -20,9 +23,6 @@ import com.tssss.bysj.util.ToastUtil;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 @ViewInject(layoutId = R.layout.activity_add_friend)
 public class AddFriendActivity extends BaseActivity implements IAddFriendContract.IView {
 
@@ -30,7 +30,7 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
     private ImageButton sendAddFriendRequest;
     private RecyclerView recommendRv;
     private GTextView loading;
-
+    private GTextView feedBack;
     private Handler handler;
     private AddFriendPresenter presenter;
     private AlertDialog.Builder sendingBuilder;
@@ -41,30 +41,39 @@ public class AddFriendActivity extends BaseActivity implements IAddFriendContrac
         sendAddFriendRequest = findViewById(R.id.add_friend_request);
         recommendRv = findViewById(R.id.add_friend_recommend_roles);
         loading = findViewById(R.id.add_friend_recommend_loading);
+        feedBack = findViewById(R.id.add_friend_feed_back);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()) {
-            case R.id.add_friend_request:
-                String targetAccountID = accountIDEt.getText().toString();
-                if (!AccountUtil.validPhoneNumber(targetAccountID)) {
-                    ToastUtil.showToast(this, "请重新输入对方的手机号码", ToastUtil.TOAST_ERROR);
-                } else if (targetAccountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
-                    ToastUtil.showToast(this, "不能添加自己", ToastUtil.TOAST_ERROR);
+        if (v.getId() == R.id.add_friend_request) {
+            String targetAccountID = accountIDEt.getText().toString();
+            if (!AccountUtil.validPhoneNumber(targetAccountID)) {
+                errorFeedBack("手机号码格式错误");
+            } else if (targetAccountID.equals(UserDataCache.readAccount(Constant.ACCOUNT_ID))) {
+                errorFeedBack("不能添加自己");
 
-                } else {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            presenter.sendAddFriendRequest(targetAccountID);
-                        }
-                    }, 300);
-                }
-                break;
-
+            } else {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        presenter.sendAddFriendRequest(targetAccountID);
+                    }
+                }, 300);
+            }
         }
+    }
+
+    private void errorFeedBack(String errorText) {
+        feedBack.setText(errorText);
+        AnimationUtil.flipView(this, sendAddFriendRequest, feedBack);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AnimationUtil.flipView(AddFriendActivity.this, feedBack, sendAddFriendRequest);
+            }
+        }, 1500);
     }
 
     @Override

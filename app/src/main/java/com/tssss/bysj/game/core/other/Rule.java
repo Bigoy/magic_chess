@@ -56,12 +56,12 @@ public class Rule {
     }
 
     /**
-    棋子移动条件：
-    a 新位置不能有棋子；
-    b 每次只能移动一格；
-    c 只能移动直线；
-    d 新位置是一个锚点；
-    e 两个圆圈之间不能直接走棋。
+     * 棋子移动条件：
+     * a 新位置不能有棋子；
+     * b 每次只能移动一格；
+     * c 只能移动直线；
+     * d 新位置是一个锚点；
+     * e 两个圆圈之间不能直接走棋。
      */
     public boolean canMoveChessman(int x, int y) {
         AnchorManager am = AnchorManager.getAnchorManager();
@@ -126,6 +126,12 @@ public class Rule {
     }
 
     public int calculateScore(String result) {
-        return 20;
+        int newScore = 10;
+        if (GameResult.WIN.equals(result)) {
+            newScore = 30;
+        } else if (GameResult.LOSE.equals(result)) {
+            newScore = 20;
+        }
+        return newScore;
     }
 }

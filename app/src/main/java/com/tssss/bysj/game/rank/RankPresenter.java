@@ -28,7 +28,6 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
 
     public void setOnRankItemClickListener(RankAdapter.RankViewHolder.OnRankItemClickListener onRankItemClickListener) {
         this.onRankItemClickListener = onRankItemClickListener;
-
     }
 
     @Override
@@ -47,6 +46,7 @@ public class RankPresenter extends BaseMvpPresenter<IRankContract.IView> impleme
                         rankSortedList.add(rank);
                     }
                     rankAdapter.setRankSortedList(rankSortedList);
+                    rankAdapter.setOnRankItemClickListener(onRankItemClickListener);
                     handler.post(() -> getView().showRank(rankAdapter));
 
                 } else {

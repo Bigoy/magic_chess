@@ -40,7 +40,7 @@ public abstract class BaseFragment extends LifeCircleMvpFragment implements View
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEventListeners();
-
+        afterActivityCreated();
     }
 
     @Override
@@ -49,6 +49,9 @@ public abstract class BaseFragment extends LifeCircleMvpFragment implements View
     }
 
     protected abstract void afterBindView();
+
+    protected void afterActivityCreated() {
+    }
 
     private View initFragmentView(LayoutInflater inflater, int layoutResId) {
         return inflater.inflate(layoutResId, null);

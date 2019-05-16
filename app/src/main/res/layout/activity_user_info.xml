@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="64dp"
-    android:orientation="vertical"
-    tools:context=".game.role.UserInfoActivity">
+    tools:context=".game.role.info.UserInfoActivity">
 
     <LinearLayout
+        android:id="@+id/user_info_ll"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="64dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/user_info_avatar"
+        <FrameLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="32dp"
             android:layout_marginTop="72dp"
-            android:background="@drawable/bg_item_avatar"
-            android:padding="3dp"
-            android:scaleType="fitXY"
-            tools:ignore="ContentDescription" />
+            android:foreground="@drawable/bg_item_avatar"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/user_info_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
 
 
         <LinearLayout
@@ -80,34 +91,10 @@
 
         </LinearLayout>
 
-
-      <!--  <LinearLayout
-            android:id="@+id/user_info_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <ImageButton
-                android:layout_marginTop="40dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:background="@null"
-                android:src="@drawable/ic_btn_edit" />
-
-            <com.tssss.bysj.componet.GTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/user_info_edit" />
-
-        </LinearLayout>-->
-
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/user_info_tab"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center"
@@ -117,7 +104,11 @@
         android:background="@drawable/category_tab"
         android:divider="@drawable/divider"
         android:orientation="horizontal"
-        android:showDividers="middle">
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_info_ll">
 
         <com.tssss.bysj.componet.GTextView
             android:id="@+id/user_info_signature"
@@ -158,23 +149,18 @@
 
     <LinearLayout
         android:id="@+id/user_info_fragment_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_weight="1"
-        android:orientation="vertical" />
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_info_tab" />
 
-</LinearLayout>
-
-    <!--<com.tssss.bysj.componet.GTextView
-    android:id="@+id/user_info_signature"
-    android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="24dp"
-    android:text="sfdsfsdfsfs"
-    android:textColor="#636262"
-    android:textSize="22dp" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>
 

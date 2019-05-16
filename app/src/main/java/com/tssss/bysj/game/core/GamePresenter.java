@@ -29,14 +29,13 @@ import cn.jpush.im.android.api.content.TextContent;
 
 @SuppressWarnings({"Convert2Lambda"})
 public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> implements
-        IGameContract.IPresenter, CountDownTimer.ICountTime {
+        IGameContract.IPresenter{
     private GameRole armyRole;
     private GameRole selfRole;
 
     private String armyAccountID;
     private String myAccountID;
     private Handler handler;
-    private CountDownTimer timer;
     private boolean isFirst;
     private Umpire umpire;
     private ChessmanManager chessmanManager;
@@ -52,7 +51,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         rule = Rule.getRule();
         anchorManager = AnchorManager.getAnchorManager();
         chessmanManager = ChessmanManager.getChessmanManager();
-        timer = new CountDownTimer(30, GamePresenter.this);
     }
 
     @Override
@@ -157,7 +155,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             @Override
             public void run() {
                 getView().turnMe();
-                startTimer();
             }
         });
     }
@@ -207,12 +204,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
     @Override
     public void surrender() {
         sendMessage(TextContentFactory.win());
-    }
-
-    @Override
-    public void cancelAndResetTimer() {
-        timer.cancelTimer();
-        timer.resetTimer();
     }
 
     @Override
@@ -273,28 +264,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
         return IGameContract.emptyView;
     }
 
-    @Override
-    public void onTicker(int time) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getView().timer(time);
-            }
-        });
-
-    }
-
-    @Override
-    public void onTimerFinish() {
-        sendMessage(TextContentFactory.win());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getView().result(GameResultFactory.lose());
-            }
-        });
-    }
-
     private void sendMessage(TextContent textContent) {
         JMessageManager.sendTextMessage(armyAccountID, textContent);
     }
@@ -313,7 +282,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
 
     public void moveChessman(int x, int y) {
         chessmanManager.moveChessman(x, y);
-        cancelAndResetTimer();
         Map<String, String> positionMap = new HashMap<>();
         String index = chessmanManager.whoChecked();
         String position = chessmanManager.getChessman(index).getPosition();
@@ -339,10 +307,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
             chessmanManager.drawChessmen(gameCanvas);
             chessmanManager.drawMark(gameCanvas);
         }
-    }
-
-    public void startTimer() {
-        timer.startTimer();
     }
 
     protected void prepareGameScene() {
@@ -390,9 +354,6 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
                 getView().showArmyInfo(armyRole.getName());
                 getView().showMyChessmenCamp(selfRole.getChessmanCamp());
                 getView().start(isFirst);
-                if (isFirst) {
-                    timer.startTimer();
-                }
             }
         }, 3000);
     }

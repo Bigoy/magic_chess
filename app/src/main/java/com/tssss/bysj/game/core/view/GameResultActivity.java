@@ -69,9 +69,14 @@ public class GameResultActivity extends BaseActivity {
                     showPeaceStyle();
                 }
                 fillData();
-                gameResultPresenter.uploadUserInfo(gameResult.getResult());
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        gameResultPresenter.uploadUserInfo(gameResult.getResult());
     }
 
     @Override

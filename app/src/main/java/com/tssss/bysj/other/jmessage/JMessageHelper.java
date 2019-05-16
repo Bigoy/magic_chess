@@ -7,6 +7,7 @@ import com.tssss.bysj.http.HttpUrl;
 import com.tssss.bysj.http.IHttpCallback;
 import com.tssss.bysj.http.OkHttpProvider;
 import com.tssss.bysj.other.Constant;
+import com.tssss.bysj.other.jmessage.callback.IGetAllFriendsCallBack;
 import com.tssss.bysj.other.jmessage.callback.IGetAllGameRoleCallBack;
 import com.tssss.bysj.other.jmessage.callback.IGetGameRoleCallBack;
 import com.tssss.bysj.other.jmessage.callback.IGetUserInfoCallBack;
@@ -18,8 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
+import cn.jpush.im.android.api.callback.GetUserInfoListCallback;
 import cn.jpush.im.android.api.model.UserInfo;
 
 public class JMessageHelper {
@@ -40,8 +43,8 @@ public class JMessageHelper {
         role.setUser(new User(roleInfoJson.getString(Constant.ACCOUNT_ID), ""));
         role.setName(roleInfoJson.getString(Constant.ROLE_NICK_NAME));
         role.setSex(roleInfoJson.getString(Constant.ROLE_SEX));
-        role.setSignature(Constant.ROLE_SIGNATURE);
-        role.setLevel(Constant.ROLE_LEVEL);
+        role.setSignature(roleInfoJson.getString(Constant.ROLE_SIGNATURE));
+        role.setLevel(roleInfoJson.getString(Constant.ROLE_LEVEL));
         try {
             role.setExp(Integer.valueOf(roleInfoJson.getString(Constant.ROLE_EXP)));
             role.setScore(Integer.valueOf(roleInfoJson.getString(Constant.ROLE_SCORE)));
@@ -92,7 +95,7 @@ public class JMessageHelper {
     }
 
     public static void listAllGameRoles(IGetAllGameRoleCallBack callBack) {
-        listUserInfo(new IGetUserInfoCallBack() {
+        listAllUserInfo(new IGetUserInfoCallBack() {
             @Override
             public void onCompleted(List<UserInfo> userInfoList) {
                 List<GameRole> gameRoleList = new ArrayList<>();
@@ -106,7 +109,7 @@ public class JMessageHelper {
         });
     }
 
-    public static void listUserInfo(IGetUserInfoCallBack observer) {
+    public static void listAllUserInfo(IGetUserInfoCallBack observer) {
         if (null != observer) {
             Map<String, Integer> paramMap = new HashMap<>();
             paramMap.put("start", 0);
@@ -115,7 +118,10 @@ public class JMessageHelper {
                 public void onSuccess(String result) {
                     com.alibaba.fastjson.JSONObject resultJson = JSON.parseObject(result);
                     JSONArray usersJsonArray = resultJson.getJSONArray("users");
-                    int usersJsonArraySize = usersJsonArray.size();
+                    int usersJsonArraySize = 0;
+                    if (null != usersJsonArray) {
+                        usersJsonArraySize = usersJsonArray.size();
+                    }
                     GetUserInfoCallBackImpl userInfoCallBack = new GetUserInfoCallBackImpl(usersJsonArraySize);
                     for (int i = 0; i < usersJsonArraySize; i++) {
                         String accountID = usersJsonArray.getJSONObject(i).getString("username");
@@ -131,8 +137,14 @@ public class JMessageHelper {
         }
     }
 
-    public void sendGameInvitationMessage() {
-
+    public static void listAllFriends(IGetAllFriendsCallBack callBack) {
+        if (null != callBack) {
+            ContactManager.getFriendList(new GetUserInfoListCallback() {
+                @Override
+                public void gotResult(int i, String s, List<UserInfo> list) {
+                    callBack.onSuccess(list);
+                }
+            });
+        }
     }
-
 }

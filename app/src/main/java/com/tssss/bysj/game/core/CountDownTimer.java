@@ -2,6 +2,8 @@ package com.tssss.bysj.game.core;
 
 import android.os.Handler;
 
+import com.tssss.bysj.other.Logger;
+
 public class CountDownTimer implements Runnable {
     private int time;
     private int countTime;
@@ -22,16 +24,17 @@ public class CountDownTimer implements Runnable {
     public void run() {
         if (isRun) {
             if (iCountTime != null) {
+
                 iCountTime.onTicker(countTime);
             }
             if (countTime == 0) {
                 cancelTimer();
                 if (iCountTime != null) {
                     iCountTime.onTimerFinish();
-
                 }
             } else {
                 countTime = time--;
+                Logger.log(countTime);
                 handler.postDelayed(this, 1000);
             }
         }

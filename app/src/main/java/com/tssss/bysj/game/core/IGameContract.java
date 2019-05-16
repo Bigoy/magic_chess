@@ -52,8 +52,6 @@ public interface IGameContract {
         /**
          * 正在游戏
          */
-        void cancelAndResetTimer();
-
         void urge();
 
         void beingUrged();

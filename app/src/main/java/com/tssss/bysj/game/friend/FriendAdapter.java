@@ -95,14 +95,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
                 @Override
                 public void onClick(View v) {
                     if (null != listeners) {
-                        AnimationUtil.startBackgroundColorAnimator(container, 0x00000000, 0xffB79489);
+//                        AnimationUtil.startBackgroundColorAnimator(container, 0x00000000, 0xffB79489);
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 listeners.onClick(v, position);
 //                                AnimationUtil.startBackgroundColorAnimator(container, 0xffB79489, 0x00000000);
                             }
-                        }, 110);
+                        }, 0);
                     }
                 }
             });

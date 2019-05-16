@@ -21,7 +21,7 @@ import com.tssss.bysj.game.hall.match.MatchPresenter;
 import com.tssss.bysj.game.help.RuleActivity;
 import com.tssss.bysj.game.news.veiw.NewsActivity;
 import com.tssss.bysj.game.rank.RankActivity;
-import com.tssss.bysj.game.role.UserInfoActivity;
+import com.tssss.bysj.game.role.info.UserInfoActivity;
 import com.tssss.bysj.game.setting.SettingActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.jmessage.JMessageManager;

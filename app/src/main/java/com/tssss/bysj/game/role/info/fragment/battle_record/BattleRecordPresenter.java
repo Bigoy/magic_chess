@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.role.fragment.battle_record;
+package com.tssss.bysj.game.role.info.fragment.battle_record;
 
 import android.os.Handler;
 
@@ -18,24 +18,10 @@ public class BattleRecordPresenter extends BaseMvpPresenter<IBattleRecordContrac
         implements IBattleRecordContract.IPresent {
 
     private Handler handler;
-    private boolean isCancel;
-
 
     public BattleRecordPresenter(IBattleRecordContract.IView view) {
         super(view);
         handler = new Handler();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isCancel = true;
-    }
-
-    @Override
-    public void onViewDestroy() {
-        super.onViewDestroy();
-        isCancel = true;
     }
 
     @Override
@@ -46,28 +32,15 @@ public class BattleRecordPresenter extends BaseMvpPresenter<IBattleRecordContrac
             OkHttpProvider.getInstance().requestAsyncGet(HttpUrl.URL_BATTLE_RECORD, paramMap, new IHttpCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    if (!isCancel) {
-                        List<BattleRecord> battleRecordList = new ArrayList<>();
-//                        battleRecordList.add(new BattleRecord(Constant.GAME_RESULT_WIN, "15196071596", "2019-05-01"));
-                        getView().showBattleRecord(battleRecordList);
-
-                    }
+                    List<BattleRecord> battleRecordList = new ArrayList<>();
+                    getView().showBattleRecord(battleRecordList);
                 }
 
                 @Override
                 public void onFailure(String errorMsg) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isCancel) {
-                                getView().showBattleRecord(null);
-
-                            }
-                        }
-                    });
+                    getView().showBattleRecord(null);
                 }
             });
-
 
         } else {
             throw new IllegalArgumentException("accountID非法");

@@ -7,19 +7,27 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="@drawable/ripe"
         android:id="@+id/item_friend_container"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal">
 
-
-        <ImageView
-            android:id="@+id/item_friend_avatar"
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:scaleType="fitXY" />
+            android:foreground="@drawable/bg_item_avatar"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/item_friend_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+        </FrameLayout>
 
 
         <com.tssss.bysj.componet.GTextView

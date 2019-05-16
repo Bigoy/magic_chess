@@ -12,7 +12,7 @@ import com.tssss.bysj.base.annoation.ViewInject;
 import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.game.friend.AddFriendCallBackHandler;
-import com.tssss.bysj.game.role.UserInfoActivity;
+import com.tssss.bysj.game.role.info.UserInfoActivity;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.jmessage.JMessageManager;
 import com.tssss.bysj.util.SystemUtil;
@@ -43,8 +43,20 @@ public class RankActivity extends BaseActivity implements IRankContract.IView, R
     @Override
     protected void afterBindView() {
         builder = new AlertDialog.Builder(this)
+                .desc("查看排名")
                 .subDesc("加载中...")
-                .operationType(AlertDialog.OPERATION_TYPE_SIMPLE);
+                .operationType(AlertDialog.OPERATION_TYPE_NO)
+                .operationListener(new AlertDialog.OnDialogOperationListener() {
+                    @Override
+                    public void ok() {
+
+                    }
+
+                    @Override
+                    public void no() {
+                        RankActivity.this.finish();
+                    }
+                });
         builder.display();
         rankPresenter = new RankPresenter(this, this);
         rankPresenter.loadRankData();

@@ -1,4 +1,4 @@
-package com.tssss.bysj.game.role.fragment.battle_record;
+package com.tssss.bysj.game.role.info.fragment.battle_record;
 
 public class BattleRecord {
 

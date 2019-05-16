@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".game.role.fragment.NewsFragment">
+    tools:context=".game.role.info.fragment.news.NewsFragment">
 
     <com.tssss.bysj.componet.GTextView
         android:id="@+id/fragment_news_loading"
