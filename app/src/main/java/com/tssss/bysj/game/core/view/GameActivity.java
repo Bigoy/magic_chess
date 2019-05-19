@@ -12,27 +12,23 @@ import com.tssss.bysj.componet.GTextView;
 import com.tssss.bysj.componet.dialog.AlertDialog;
 import com.tssss.bysj.componet.menu.Menu;
 import com.tssss.bysj.componet.menu.OnMenuItemClickListener;
-import com.tssss.bysj.game.Chessman;
 import com.tssss.bysj.game.core.GamePresenter;
 import com.tssss.bysj.game.core.IGameContract;
+import com.tssss.bysj.game.core.other.Chessman;
 import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.game.core.other.GameResultFactory;
 import com.tssss.bysj.other.Constant;
 import com.tssss.bysj.other.Logger;
 import com.tssss.bysj.other.jmessage.JMessageManager;
-import com.tssss.bysj.other.jmessage.TextContentFactory;
 import com.tssss.bysj.user.UserDataCache;
 import com.tssss.bysj.util.IntentUtil;
 import com.tssss.bysj.util.StringUtil;
 import com.tssss.bysj.util.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.event.MessageEvent;
 
 @SuppressWarnings("unused")
@@ -170,17 +166,20 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
         switch (position) {
             case 0:
                 gamePresenter.surrender();
+                gameMenu.dismiss();
                 break;
             case 1:
                 gamePresenter.urge();
+                gameMenu.dismiss();
                 break;
             case 2:
                 gamePresenter.stepBack();
+                gameMenu.dismiss();
                 break;
             case 3:
-                break;
-            default:
+                gamePresenter.peace();
                 gameMenu.dismiss();
+                break;
 
         }
     }
@@ -237,12 +236,11 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
     @Override
     public void beingUrged() {
         ToastUtil.showToast(this, "亲，这边麻烦快点儿呢？", ToastUtil.TOAST_ERROR);
-        Logger.log("敢催劳资");
     }
 
     @Override
     public void peace() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        AlertDialog.Builder peaceBuilder = new AlertDialog.Builder(this)
                 .desc("对方请求和棋")
                 .subDesc("和棋的话，双方不会有任何经验值加成，只会记录此次对战记录。")
                 .okDesc("同意，放TA一马")
@@ -258,7 +256,7 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
                         gamePresenter.peaceDenied();
                     }
                 });
-        builder.display();
+        peaceBuilder.display();
     }
 
     @Override
@@ -297,6 +295,6 @@ public class GameActivity extends BaseActivity implements View.OnTouchListener,
 
     @Override
     public void stopDrawing() {
-
+        mGameView.stopGame();
     }
 }

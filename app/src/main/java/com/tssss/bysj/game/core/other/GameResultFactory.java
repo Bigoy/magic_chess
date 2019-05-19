@@ -42,9 +42,9 @@ public class GameResultFactory {
         Map<String, String> map = (Map<String, String>) JSON.parse(gameResultJsonStr);
         if (null != map && map.size() > 0) {
             gameResult.setResult(map.get("result"));
-            gameResult.setResultDesc(map.get("result_desc"));
-            gameResult.setLevelDesc(map.get("level_desc"));
-            gameResult.setExpDesc(map.get("exp_desc"));
+            gameResult.setResultDesc(map.get("resultDesc"));
+            gameResult.setLevelDesc(map.get("levelDesc"));
+            gameResult.setExpDesc(map.get("expDesc"));
         }
         return gameResult;
     }

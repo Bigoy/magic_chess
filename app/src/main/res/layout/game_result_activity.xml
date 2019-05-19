@@ -18,7 +18,6 @@
             android:orientation="vertical">
 
             <com.tssss.bysj.componet.GTextView
-
                 android:id="@+id/game_result_result"
                 android:layout_width="match_parent"
                 android:layout_height="144dp"
@@ -30,7 +29,7 @@
             <com.tssss.bysj.componet.GTextView
                 android:id="@+id/game_result_exp"
                 android:layout_width="match_parent"
-                android:layout_height="144dp"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24dp"
@@ -40,7 +39,7 @@
             <com.tssss.bysj.componet.GTextView
                 android:id="@+id/game_result_desc"
                 android:layout_width="match_parent"
-                android:layout_height="144dp"
+                android:layout_height="30dp"
                 android:gravity="center"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
@@ -49,7 +48,7 @@
             <com.tssss.bysj.componet.GTextView
                 android:id="@+id/game_result_level_desc"
                 android:layout_width="match_parent"
-                android:layout_height="144dp"
+                android:layout_height="30dp"
                 android:gravity="center"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"

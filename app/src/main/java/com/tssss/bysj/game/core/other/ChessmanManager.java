@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.tssss.bysj.game.Chessman;
 import com.tssss.bysj.other.Logger;
 
 import java.util.HashMap;

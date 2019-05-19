@@ -4,9 +4,9 @@ import android.graphics.Canvas;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
-import com.tssss.bysj.game.Chessman;
 import com.tssss.bysj.game.core.other.AnchorManager;
 import com.tssss.bysj.game.core.other.Chessboard;
+import com.tssss.bysj.game.core.other.Chessman;
 import com.tssss.bysj.game.core.other.ChessmanManager;
 import com.tssss.bysj.game.core.other.GameResult;
 import com.tssss.bysj.game.core.other.GameResultFactory;
@@ -115,6 +115,12 @@ public class GamePresenter extends BaseMvpPresenter<IGameContract.IView> impleme
 
     @Override
     public void peaceGranted() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                getView().result(GameResultFactory.peace());
+            }
+        });
         sendMessage(TextContentFactory.peaceGrant());
     }
 

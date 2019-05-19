@@ -1,11 +1,8 @@
-package com.tssss.bysj.game;
+package com.tssss.bysj.game.core.other;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import com.tssss.bysj.game.core.other.Anchor;
-import com.tssss.bysj.game.core.other.AnchorManager;
 
 public class Chessman {
     // 棋子所属的阵营。

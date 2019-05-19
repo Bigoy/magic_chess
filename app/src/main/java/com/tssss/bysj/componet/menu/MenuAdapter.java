@@ -2,20 +2,18 @@ package com.tssss.bysj.componet.menu;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tssss.bysj.R;
 import com.tssss.bysj.base.BaseRvViewHolder;
 import com.tssss.bysj.componet.GTextView;
-import com.tssss.bysj.util.AnimationUtil;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
     private Context context;
@@ -62,7 +60,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         @Override
         public void fillData(String data) {
             menuItem.setText(data);
-            Log.i("MenuViewHolder", "data = " + data);
         }
 
         @Override
@@ -77,7 +74,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             menuItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    AnimationUtil.startBackgroundColorAnimator(menuItem);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

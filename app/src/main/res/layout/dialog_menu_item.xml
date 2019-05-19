@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:background="@drawable/ripe_menu"
         android:text="@string/dialog_no"
         android:textSize="22dp"
         tools:ignore="SpUsage" />
